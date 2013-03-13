@@ -139,14 +139,16 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		tx.executeSql('SELECT * FROM game', [], function(tx, results) {
 		var len = results.rows.length;
 		alert("bulunan dil sayısı len= "+len);
-		if(len!=1){
-		//Dil seçim sayfası açılacak
-		//$.mobile.changePage( $("#pageLang") , { transition: "slide"} );
+		if(len==1){
+		gameLang=results.rows.item(0).language;
+		alert("dil="+gameLang);
+		$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );	
 		}
 		else{
-		gameLang=results.rows.item(i).language;
-		alert("dil="+gameLang);
-		$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+		alert("dil yok=");
+		//Dil seçim sayfası açılacak
+		tx.executeSql('DELETE FROM game');
+		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );		
 		}
 	}, errorCB);
 	}
@@ -882,69 +884,6 @@ Bu uygulama; www.ozgurceuc.com sunduğu bir hizmettir. İnternet bağlantısı g
 </div>
 
 </div><!-- /page -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- /Sayfa başlangıcı -->   
-<div data-role="page" id="page3">
-
-<div data-role="header" data-theme="b" data-position="fixed">
-<a href="#page5" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>tGame - Crazy Math</h1>
-<a href="#page2" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
-
-</div><!-- /header -->
-    
-<br>
-<div data-role="content" id="ana_sayfa2_icerik">
-
-
-<div id="divQuestion" class="ui-bar ui-bar-d ui-corner-all">
-2<sup>3</sup>+4<sub>5</sub>&radic;3 &le; &ge; &ne; &asymp;
-</div>
-
-
-
-
-</div><!-- /content -->
-<div data-role="footer" data-theme="b" data-position="fixed" style="height:100px">
-<a href="#" data-role="button" data-icon="delete" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-
-<a href="#sonuclar" data-role="button" data-icon="check" data-theme="b" data-iconpos="right" style="width:20%" style="text-align:right; height:50px">&nbsp;</a>
-</div>
-</div><!-- /page -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
