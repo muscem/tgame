@@ -258,9 +258,10 @@ function chooseLang(lang){
 //Oynun dili (hem js degiskeni, hem de veritabanindaki degeri) degistirilecek
 //Sonra da pagePlayers sayfasina yönlendirilecek
 
-lang="en";	//Deneme amaçli, silinecek
-//gameLangChange(lang);	//tarayicida çalismayi önler
-$("#langSelect").val(lang);
+//lang="en";	//Deneme amaçli, silinecek
+gameLang=lang;
+gameLangChange();	//tarayicida çalismayi önler
+$("#langSelect").val(gameLang);
 $("#langSelect").trigger("change");
 $.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
 }
@@ -1092,9 +1093,9 @@ playMathris(level);
 
 
 function mathrisQuestionMove(level, iQuestion){
-var moveStep=3;	//moveStep : Her adimda kayacak miktar.
-var moveTime=500;	//moveTime: Her adimida beklenecek süre
-var qGap=3;		//questionGap: Her soru arasindaki mesafe
+var moveStep=50;	//moveStep : Her adimda kayacak miktar.
+var moveTime=10;	//moveTime: Her adimida beklenecek süre
+var qGap=10;		//questionGap: Her soru arasindaki mesafe
 var mathrisSetInt=[];
 var t,t2;
 
@@ -1103,7 +1104,12 @@ var qLen=$("#pageMathrisPlayQuestions").children().length;
 for(i=1;i<qLen+1;i++){
 t=0; //top
 for(i2=1;i2<i+1;i2++){	//Önceki sorularin yükseklikleri hesaplaniyor.
-t=t+$("#pageMathrisPlayQuestions div:nth-child("+i2+")").outerHeight();
+if(t==""){
+t=$("#pageMathrisPlayQuestions div:nth-child("+i2+")").outerHeight();
+}
+else{
+t=t+$("#pageMathrisPlayQuestions div:nth-child("+i2+")").outerHeight()+qGap;
+}
 }
 t2=$("#pageMathrisPlayQuestions").outerHeight();
 //alert("t= "+t+" -t2= "+t2);
@@ -1113,14 +1119,15 @@ return false;
 }
 
 //i. sorunun olmasi gereken "top" degeri hesaplaniyor
-t=$("#pageMathrisPlayQuestions").outerHeight()+$("#pageMathrisPlayQuestions").offset().top-t-qGap;
+t=$("#pageMathrisPlayQuestions").outerHeight()+$("#pageMathrisPlayQuestions").offset().top-t;
+//t=$("#pageMathrisPlayQuestions").outerHeight()+$("#pageMathrisPlayQuestions").offset().top-t-qGap;
 
 //i. sorunun su anki "top" degeri
-t2=$("#pageMathrisPlayQuestions div:nth-child("+i+")").offset().top;
+t2=$("#pageMathrisPlayQuestions div:nth-child("+i+")").offset().top+qGap;
 
 
 //moveStep>qGap olma durumu düsünüldü
-if(t>t2+moveStep){
+if(t>=t2+moveStep){
 
 mathrisSetInt[i]=setInterval(function (){
 var t3, t4;
@@ -1130,36 +1137,42 @@ qLen=$("#pageMathrisPlayQuestions").children().length;
 for(i3=1;i3<qLen+1;i3++){
 t3=0;	
 for(i4=1;i4<i3+1;i4++){	//Önceki sorularin yükseklikleri hesaplaniyor.
-t3=t3+$("#pageMathrisPlayQuestions div:nth-child("+i4+")").outerHeight();
+if(t3==""){
+t3=$("#pageMathrisPlayQuestions div:nth-child("+i4+")").outerHeight();
+}
+else{
+t3=t3+$("#pageMathrisPlayQuestions div:nth-child("+i4+")").outerHeight()+qGap;
+}
 }
 t4=$("#pageMathrisPlayQuestions").outerHeight();
 
-if(t3>t4){
+if((t3>=t4+moveStep)){
+//alert("oyun bitti");
 return false;
 //Ekran doldu, oyunun sonu.
 }
 
 //i3. sorunun olmasi gereken "top" degeri hesaplaniyor
-t3=$("#pageMathrisPlayQuestions").outerHeight()+$("#pageMathrisPlayQuestions").offset().top-t3-qGap;
+t3=$("#pageMathrisPlayQuestions").outerHeight()+$("#pageMathrisPlayQuestions").offset().top-t3;
 
 //i3. sorunun su anki "top" degeri
-t4=$("#pageMathrisPlayQuestions div:nth-child("+i3+")").offset().top;
+t4=$("#pageMathrisPlayQuestions div:nth-child("+i3+")").offset().top+qGap;
 
 
 //moveStep>qGap olma durumu düsünüldü
-if(t3>t4+moveStep){
+if(t3>=t4+moveStep){
 $("#pageMathrisPlayQuestions div:nth-child("+i3+")").css("top","+="+moveStep+"px");
 }
-else if(t3>t4){
-//alert("elseif");
-$("#pageMathrisPlayQuestions div:nth-child("+i3+")").css("top", t3.toString+"px");
-$("#pageMathrisPlayQuestions div:nth-child("+i3+")").removeClass("moving");
-window.clearInterval(mathrisSetInt[i3]);
-qMNew(level, iQuestion);
-}
+//else if(t3>t4){
+////alert("elseif");
+//$("#pageMathrisPlayQuestions div:nth-child("+i3+")").css("top", t3.toString+"px");
+//$("#pageMathrisPlayQuestions div:nth-child("+i3+")").removeClass("moving");
+//window.clearInterval(mathrisSetInt[i3]);
+//qMNew(level, iQuestion);
+//}
 else{
 //alert("else");
-$("#pageMathrisPlayQuestions div:nth-child("+i3+")").css("top", t3.toString+"px");
+$("#pageMathrisPlayQuestions div:nth-child("+i3+")").css("top", (t3+qGap).toString+"px");
 $("#pageMathrisPlayQuestions div:nth-child("+i3+")").removeClass("moving");
 window.clearInterval(mathrisSetInt[i3]);
 qMNew(level, iQuestion);
@@ -1169,14 +1182,14 @@ qMNew(level, iQuestion);
 
 
 }
-else if(t>t2){
+/*else if(t>t2){
 $("#pageMathrisPlayQuestions div:nth-child("+i+")").css("top", t.toString+"px");
 $("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("moving");
 window.clearInterval(mathrisSetInt[i]);
 qMNew(level, iQuestion);
-}
+}*/
 else{
-$("#pageMathrisPlayQuestions div:nth-child("+i+")").css("top", t.toString+"px");
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").css("top", (t+qGap).toString+"px");
 $("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("moving");
 window.clearInterval(mathrisSetInt[i]);
 qMNew(level, iQuestion);

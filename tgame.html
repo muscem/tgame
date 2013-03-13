@@ -44,6 +44,9 @@ var pShootout=new Array();	//shootout seviyesi (level)
 
 var gameMessage1=new Array();	//Henüz kullanmadım, çok dil için dizi oluşturmak gerek
 
+
+var db;	//Veritabanı için kullanacağım.
+
 function startGame(){
 //lang="en";
 //alert("UPDATE GAME SET language = '" + lang + "' WHERE id = '" + 1 + "'");
@@ -66,7 +69,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
     //
     function onDeviceReady() {
         //Veritabanı açılıyor (yoksa yaratılacak)
-		var db = window.openDatabase("tGameDB", "1.0", "tGameDB", 1000000);
+		db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
 		
 		//Oyunun ilk açılışı ise
 		//Veritabanına tablolar oluşturulacak
@@ -75,19 +78,31 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		//Oyunun dili öğrenilecek
 		alert("dil kontrol edilecek");
 		db.transaction(getLangDB, errorCB, successCB);
-		alert("oyuncu bilgileri kontrol edilecek");
-		db.transaction(getUserInfoDB, errorCB, successCB);
+		//alert("oyuncu bilgileri kontrol edilecek");
+		//db.transaction(getUserInfoDB, errorCB, successCB);
     }
 	
 	
     // Populate the database 
 	//
-    function createTable(gameDB) {
+    function createTable(tx) {
 		//Tablolar mevcut değilse oluşturulacak (oyun yüklendikten sonra ilk defa açılıyorsa).
-         gameDB.executeSql('CREATE TABLE IF NOT EXISTS game (id unique, language)');
-		 //gameDB.executeSql('CREATE TABLE IF NOT EXISTS players (id unique, name)');
-		 //gameDB.executeSql('CREATE TABLE IF NOT EXISTS levels (id unique, player_id, freemode, findout, mathris, mathrix, shootout)');
-		 gameDB.executeSql('CREATE TABLE IF NOT EXISTS players (id unique, name, freemode, findout, mathris, mathrix, shootout)');
+         tx.executeSql('CREATE TABLE IF NOT EXISTS game ('+
+					'id INTEGER PRIMARY KEY AUTOINCREMENT'+
+					', language VARCHAR(2))');
+		 
+		 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+		"firstName VARCHAR(50), " +
+		 //tx.executeSql('CREATE TABLE IF NOT EXISTS players (id unique, name)');
+		 //tx.executeSql('CREATE TABLE IF NOT EXISTS levels (id unique, player_id, freemode, findout, mathris, mathrix, shootout)');
+		 tx.executeSql('CREATE TABLE IF NOT EXISTS players ('+
+					'id INTEGER PRIMARY KEY AUTOINCREMENT'+
+					', name VARCHAR(50)'+
+					', freemode INTEGER'+
+					', findout INTEGER'+
+					', mathris INTEGER'+
+					', mathrix INTEGER'+
+					', shootout INTEGER)');
 
          //tx.executeSql('DROP TABLE IF EXISTS GAME');
 //         tx.executeSql('DROP TABLE IF EXISTS GAME');
@@ -97,7 +112,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
     }
 
 
-// Transaction error callback
+// Transaction error callbacks
     //
     function errorCB(err) {
 		//Veritabanına bağlanmakta sorun yaşanması durumu
@@ -116,12 +131,12 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	
 	}
 
-	function getLangDB(gameDB) {
+	function getLangDB(tx) {
 		alert("dil kontrol ediliyor");
 		//Oyunun daha önce açılıp, dil seçimi yapılıp yapılmadığı bulunuyor.
 		//Yapılmadıysa dil seçim sayfasına,
 		//aksi halde oyuncu seçim sayfasın yönlendirme yapılıyor.
-		gameDB.executeSql('SELECT * FROM game', [], function(gameDB, results) {
+		tx.executeSql('SELECT * FROM game', [], function(tx, results) {
 		var len = results.rows.length;
 		alert("bulunan dil sayısı len= "+len);
 		if(len!=1){
@@ -136,35 +151,42 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	}
 	
 	
-	
-	function gameLangChange(lang){
-		alert("oyun dili değiştiriliyor");
+
+	function gameLangChange(){
+	alert("oyun dili değiştiriliyor dil="+lang);
 	//Oyun dili değiştirildiğinde çağrılacak
 	//Veritabanındaki dili ve gameLang değişkenini değiştiren kod
-	gameLang=lang;
-	var db = window.openDatabase("tGameDB", "1.0", "tGameDB", 1000000);
-	db.transaction(function(gameDB){
-		gameDB.executeSql('SELECT * FROM game', [], function(gameDB, results) {
-			var len = results.rows.length;
-			if(len==0){
-			gameDB.executeSql('INSERT INTO game (id, language) VALUES (1, "'+gameLang+'")');
-			}
-			else{
-			gameDB.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + 1 + "'");
-			}	
-		}, errorCB);
-	}, [], updateCB, errorCB);
+	
+	db.transaction(function(tx){
+							
+	tx.executeSql('SELECT * FROM game', [], function (tx, results){
+	
+	var len = results.rows.length;
+	if(len==0){
+	tx.executeSql('INSERT INTO game (id, language) VALUES (1, "'+gameLang+'")');
+	}
+	else{
+	tx.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + 1 + "'");
+	}
+	
+	}, errorCB);
+	
+	}, updateCB, errorCB);
 	
 	}
+
+
+	
+	
 	
 	
 	function getUserInfoDB(){
-		alert("oyuncu bilgileri kontrol ediliyor");
+	alert("oyuncu bilgileri kontrol ediliyor");
 	//Kayıtlı oyuncu varsa,
 	//oyunculara ait bilgiler alınıp sayfalara ve değişkenlere yazılacak.
-	var db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
-	db.transaction(function(gameDB){
-	gameDB.executeSql('SELECT * FROM players', [], function(gameDB, results) {
+	db.transaction(function (tx){
+							 
+	tx.executeSql('SELECT * FROM players', [], function (tx, results){
 		var len = results.rows.length;
 		if(len>0){
 		var htmlCode="";
@@ -205,30 +227,36 @@ htmlCode=htmlCode+'<a href="#" data-role="button" data-icon="star" data-theme="d
 		//htmlcode sayfaya aktarılıyor
 		$("#players").html(htmlcode);
 		}
+		
 	}, errorCB);
-	
-	
-	}, [], updateCB, errorCB);
+
+	}, [], successCB, errorCB);
 	}
 
+	
 
-
+	
+	
 	function gamePlayerCreate(name){
 	//Veritabanına yeni bir oyuncu kaydeden kod
 	alert("oyuncu oluşturulkuyor");
-	var db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
-	db.transaction(function(gameDB, name){
-	gameDB.executeSql('INSERT INTO players (id, name, freemode, findout, mathris, mathrix, shootout) VALUES ("", "'+name+'", 1, 1, 1, 1, 1)');
+	pName=name;
+	db.transaction(function (tx){
+							 
+	tx.executeSql('INSERT INTO players (id, name, freemode, findout, mathris, mathrix, shootout) VALUES ("", "'+pName+'", 1, 1, 1, 1, 1)');
+	
 	}, [], updateCB, errorCB);
 	
 	}
 	
+	
+	
 	function gamePlayerDelete(id){
 	alert("oyuncu siliniyor")
+	pId=id;
 	//Veritabanından bir oyuncu silen kod
-	var db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
-	db.transaction(function(gameDB){
-	gameDB.executeSql("DELETE FROM players WHERE id='"+id+"'");
+	db.transaction(function(tx){
+	tx.executeSql("DELETE FROM players WHERE id='"+pId+"'");
 	}, [], updateCB, errorCB);
 	
 	}
@@ -237,53 +265,7 @@ htmlCode=htmlCode+'<a href="#" data-role="button" data-icon="star" data-theme="d
 
 
 
-function yerlestir(divId){
-var divTop;
-divTop = $("#"+divId).position().top;
-$("#"+divId).css('top', divTop+10);
-//$('#yaz1').css("top", 200);
-}
-function yerlestir2(){
-var divTop;
-divTop = $("#yaz1").position().top;
-$("#yaz1").css('top', divTop+10);
-divTop = $("#yaz2").position().top;
-$("#yaz2").css('top', divTop+10);
-}
-var har;
-function baslangic(){
-//Hareket başlangıcı
-//har=setInterval(yerlestir2,1000);
 
-var h=$("#ana_sayfa").height();
-var w=$("#ana_sayfa").width();
-var say;
-say=parseInt("1")+parseInt("3");
-//say=say*1+0;
-alert("cem "+say);
-//alert(h+" - "+w);
-//alert(divTop);
-//divTop = $("#yaz1").attr('width');
-//alert(divTop);
-//yerlestir("yaz1");
-//var dbShell = window.openDatabase(database_name, database_version, database_displayname, database_size);
-
-}
-function durdur(){
-	//alert("cem");
-har=window.clearInterval(har)
-}
-
-$("#wrongSignPng").live("click", function() {
-alert("wrong clicked");									  
-});
-$("#correctSignPng").live("click", function() {
-alert("correct clicked");									  
-});
-
-function createQuestion(){
-
-}
 
 
 
