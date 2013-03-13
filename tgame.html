@@ -141,10 +141,11 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		alert("bulunan dil sayısı len= "+len);
 		if(len!=1){
 		//Dil seçim sayfası açılacak
-		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );
+		//$.mobile.changePage( $("#pageLang") , { transition: "slide"} );
 		}
 		else{
 		gameLang=results.rows.item(i).language;
+		alert("dil="+gameLang);
 		$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
 		}
 	}, errorCB);
