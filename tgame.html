@@ -142,17 +142,17 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		if(len==1){
 		gameLang=results.rows.item(0).language;
 		alert("dil="+gameLang);
-		$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );	
+		//$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );	
 		}
 		else if(len>1){
 		//Yanlışlıkla birden fazla kayıt yapılırsa (programlama hatasıyla)
 		tx.executeSql('DELETE FROM game');
-		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );	
+		//$.mobile.changePage( $("#pageLang") , { transition: "slide"} );	
 		}
 		else{
 		alert("dil yok=");
 		//Dil seçim sayfası açılacak
-		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );		
+		//$.mobile.changePage( $("#pageLang") , { transition: "slide"} );		
 		}
 	}, errorCB);
 	}
