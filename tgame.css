@@ -1,0 +1,53 @@
+#wrongSignPng{
+	float:left;
+}
+#correctSignPng{
+	float:right;
+}
+#answerClick{
+	width:100%;
+	height:100%;
+	background-color:#09F;
+	z-index:9999999;
+}
+.spanLevel{
+	font-weight:bold;
+}
+.equationTable td{
+	vertical-align:middle;
+	text-align:center;
+}
+.equationTable{
+	width:auto;
+	text-align:center;
+}
+/*#pageFreeModePlayContent{
+	background-image:url(background.png);
+	background-repeat:no-repeat;
+    background-position:center center;
+    background-size:cover;
+	margin-left:auto;
+	margin-right:auto;
+}*/
+#pageFreeModePlayQuestion{
+	position:absolute;
+}
+#pageFreeModePlay{
+	background-color:#06C;
+}
+.pageFreeModePlayImage{
+	position:absolute;
+	float:none;
+	clear:none;
+	width:100%;
+	height:80%;
+}
+#pageFindOutPlayQuestion{
+	position:absolute;
+}
+/*.pageShootOutQuestion{
+	position:absolute;
+	clear:none;
+	float:none;
+	width:auto;
+}*/
