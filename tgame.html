@@ -144,10 +144,14 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		alert("dil="+gameLang);
 		$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );	
 		}
+		else if(len>1){
+		//Yanlışlıkla birden fazla kayıt yapılırsa (programlama hatasıyla)
+		tx.executeSql('DELETE FROM game');
+		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );	
+		}
 		else{
 		alert("dil yok=");
 		//Dil seçim sayfası açılacak
-		tx.executeSql('DELETE FROM game');
 		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );		
 		}
 	}, errorCB);
