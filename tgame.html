@@ -170,7 +170,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	
 	var len = results.rows.length;
 	if(len==0){
-	tx.executeSql('INSERT INTO game (id, language) VALUES (1, "'+gameLang+'")');
+	tx.executeSql('INSERT INTO game (id, language) VALUES ("", "'+gameLang+'")');
 	}
 	else{
 	tx.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + 1 + "'");
