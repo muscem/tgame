@@ -260,9 +260,12 @@ function chooseLang(lang){
 
 //lang="en";	//Deneme amaçli, silinecek
 gameLang=lang;
+
 gameLangChange();	//tarayicida çalismayi önler
+alert("sayfa degis"+gameLang);
 $("#langSelect").val(gameLang);
 $("#langSelect").trigger("change");
+
 $.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
 }
 /* pageLang kodu sonu */
