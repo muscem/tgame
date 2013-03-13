@@ -65,16 +65,17 @@ document.addEventListener("deviceready", onDeviceReady, false);
     // Cordova is ready
     //
     function onDeviceReady() {
-		alert("onDeviceReady tamamdır");
         //Veritabanı açılıyor (yoksa yaratılacak)
-		var db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
+		var db = window.openDatabase("tGameDB", "1.0", "tGameDB", 1000000);
 		
 		//Oyunun ilk açılışı ise
 		//Veritabanına tablolar oluşturulacak
 		db.transaction(createTable, errorCB, successCB);
 		
 		//Oyunun dili öğrenilecek
+		alert("dil kontrol edilecek");
 		db.transaction(getLangDB, errorCB, successCB);
+		alert("oyuncu bilgileri kontrol edilecek");
 		db.transaction(getUserInfoDB, errorCB, successCB);
     }
 	
@@ -87,7 +88,6 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		 //gameDB.executeSql('CREATE TABLE IF NOT EXISTS players (id unique, name)');
 		 //gameDB.executeSql('CREATE TABLE IF NOT EXISTS levels (id unique, player_id, freemode, findout, mathris, mathrix, shootout)');
 		 gameDB.executeSql('CREATE TABLE IF NOT EXISTS players (id unique, name, freemode, findout, mathris, mathrix, shootout)');
-		 alert ("veritabanı, game ve players tabloları oluşturuldu");
 
          //tx.executeSql('DROP TABLE IF EXISTS GAME');
 //         tx.executeSql('DROP TABLE IF EXISTS GAME');
@@ -108,21 +108,22 @@ document.addEventListener("deviceready", onDeviceReady, false);
     //
     function successCB() {
 		//Veritabanına başarıyla bağlanılması durumu
-        alert("success!");
+        //alert("success!");
     }
 	
 	function updateCB(){
 	//Veritabanında güncelleme yapıldığında, yani bir değer update edildiğinde
-	alert("veritabanı uğdate edildi");
 	
 	}
 
 	function getLangDB(gameDB) {
+		alert("dil kontrol ediliyor");
 		//Oyunun daha önce açılıp, dil seçimi yapılıp yapılmadığı bulunuyor.
 		//Yapılmadıysa dil seçim sayfasına,
 		//aksi halde oyuncu seçim sayfasın yönlendirme yapılıyor.
 		gameDB.executeSql('SELECT * FROM game', [], function(gameDB, results) {
 		var len = results.rows.length;
+		alert("bulunan dil sayısı len= "+len);
 		if(len!=1){
 		//Dil seçim sayfası açılacak
 		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );
@@ -137,10 +138,11 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	
 	
 	function gameLangChange(lang){
+		alert("oyun dili değiştiriliyor");
 	//Oyun dili değiştirildiğinde çağrılacak
 	//Veritabanındaki dili ve gameLang değişkenini değiştiren kod
 	gameLang=lang;
-	var db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
+	var db = window.openDatabase("tGameDB", "1.0", "tGameDB", 1000000);
 	db.transaction(function(gameDB){
 		gameDB.executeSql('SELECT * FROM game', [], function(gameDB, results) {
 			var len = results.rows.length;
@@ -157,6 +159,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	
 	
 	function getUserInfoDB(){
+		alert("oyuncu bilgileri kontrol ediliyor");
 	//Kayıtlı oyuncu varsa,
 	//oyunculara ait bilgiler alınıp sayfalara ve değişkenlere yazılacak.
 	var db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
@@ -200,7 +203,7 @@ htmlCode=htmlCode+'<a href="#" data-role="button" data-icon="star" data-theme="d
 '</div>';
 			}
 		//htmlcode sayfaya aktarılıyor
-		$("#palyers").html(htmlcode);
+		$("#players").html(htmlcode);
 		}
 	}, errorCB);
 	
@@ -212,6 +215,7 @@ htmlCode=htmlCode+'<a href="#" data-role="button" data-icon="star" data-theme="d
 
 	function gamePlayerCreate(name){
 	//Veritabanına yeni bir oyuncu kaydeden kod
+	alert("oyuncu oluşturulkuyor");
 	var db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
 	db.transaction(function(gameDB, name){
 	gameDB.executeSql('INSERT INTO players (id, name, freemode, findout, mathris, mathrix, shootout) VALUES ("", "'+name+'", 1, 1, 1, 1, 1)');
@@ -220,6 +224,7 @@ htmlCode=htmlCode+'<a href="#" data-role="button" data-icon="star" data-theme="d
 	}
 	
 	function gamePlayerDelete(id){
+	alert("oyuncu siliniyor")
 	//Veritabanından bir oyuncu silen kod
 	var db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
 	db.transaction(function(gameDB){
@@ -289,15 +294,6 @@ function createQuestion(){
 <body id="body" onLoad="startGame();"> 
 
 
-
-
-
-
-
-
-
-
-
 <!-- /Sayfa başlangıcı -->
 <!--İlk açılış sayfası olarak burası kullanılacak-->
 <div data-role="page" id="page1">
@@ -359,7 +355,7 @@ Crazy Math is loading...
 </select>
 <br>
 <h2 id="playersH">Players :</h2>
-<div id="palyers">
+<div id="players">
 <a href="#" data-role="button" data-icon="star" data-theme="d" onClick="playerSelect('id')">Oyuncu 1</a>
 <div class="ui-grid-a">
 <div class="ui-block-a">
