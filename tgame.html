@@ -253,12 +253,12 @@ htmlCode=htmlCode+'<div style="background-color:#999; padding:5px" class="ui-cor
 	tx.executeSql('SELECT * FROM game', [], function (tx, results){
 	var len = results.rows.length;
 	if(len==0 || len>1){
-	alert("Daha öncesinde dil yok. Yeni kayıt yapılacak");
+	alert("Daha öncesinde dil yok. Yeni kayıt yapılacak "+gameLang);
 	tx.executeSql("INSERT INTO game (language) VALUES ('"+gameLang+"')");
 	}
 	else{
 	var dbLangId=results.rows.item(0).id;	
-	alert("Daha önceki dil değeri değiştirilecek");
+	alert("Daha önceki dil değeri değiştirilecek. id="+dbLangId);
 	tx.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + dbLangId + "'");
 	}
 	
