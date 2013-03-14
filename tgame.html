@@ -17,265 +17,6 @@
 <!--<script src="cordova-2.2.0.js"></script>-->
 
 <script type="text/javascript">
-//Oyunun her yerinde kullanılacak bazı değişkenler
-//Veritabanından alınan bilgiler (p = player)
-var gameLang="";			//Oyun dili
-var gamePlayerID="";		//Oyuncu id
-
-//Oyuncunun seçimleri
-var gameMode;				//Oyun modu
-var gameOperation=[[]];			//Oyun işlem türü
-var gameOCount=[[]];				//Oyuns işlem sayısı
-var gameDigit=[[]];				//Oyun hane sayısı
-var gameNumber=[[]];				//Oyun sayı türü
-var gameDifficulty;			//Oyun zorluğu 0-1-2
-var gamelevel;				//Oyun seviyesi
-
-
-
-//Oyuncu bilgileri
-var pId=new Array(); 		//id
-var pName=new Array();		//name
-var pFreemode=new Array();	//freemode seviyesi (level)
-var pFindout=new Array();	//findout seviyesi (level)
-var pMathris=new Array();	//mathris seviyesi (level)
-var pMathrix=new Array();	//Mathrix seviyesi (level)
-var pShootout=new Array();	//shootout seviyesi (level)
-
-var gameMessage1=new Array();	//Henüz kullanmadım, çok dil için dizi oluşturmak gerek
-
-
-var db;	//Veritabanı için kullanacağım.
-
-function startGame(){
-//lang="en";
-//alert("UPDATE GAME SET language = '" + lang + "' WHERE id = '" + 1 + "'");
-////Oynun başlangıcında dil kontrol edilecek.
-//if(gameLang==""){
-//$.mobile.changePage( $("#pageLang") , { transition: "slide"} );
-//}
-//else{
-//$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
-//}
-}
-
-/* Veritananı bağlantı kodları başlangcı */
-//Veritabanı olmadan oyun çalışmayacağı için açılışta ilk yapılacak iş bu olacak.
-document.addEventListener("deviceready", onDeviceReady, false);
-
-
-
-    // Cordova is ready
-    //
-    function onDeviceReady() {
-        //Veritabanı açılıyor (yoksa yaratılacak)
-		db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
-		
-		//Oyunun ilk açılışı ise
-		//Veritabanına tablolar oluşturulacak
-		db.transaction(createTable, errorCB, successCB);
-		
-		//Oyunun dili öğrenilecek
-		alert("dil kontrol edilecek");
-		db.transaction(getLangDB, errorCB, successCB);
-		//alert("oyuncu bilgileri kontrol edilecek");
-		//db.transaction(getUserInfoDB, errorCB, successCB);
-    }
-	
-	
-    // Populate the database 
-	//
-    function createTable(tx) {
-		//Tablolar mevcut değilse oluşturulacak (oyun yüklendikten sonra ilk defa açılıyorsa).
-         tx.executeSql('CREATE TABLE IF NOT EXISTS game ('+
-					'id INTEGER PRIMARY KEY AUTOINCREMENT'+
-					', language VARCHAR(2))');
-		 
-		 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		"firstName VARCHAR(50), " +
-		 //tx.executeSql('CREATE TABLE IF NOT EXISTS players (id unique, name)');
-		 //tx.executeSql('CREATE TABLE IF NOT EXISTS levels (id unique, player_id, freemode, findout, mathris, mathrix, shootout)');
-		 tx.executeSql('CREATE TABLE IF NOT EXISTS players ('+
-					'id INTEGER PRIMARY KEY AUTOINCREMENT'+
-					', name VARCHAR(50)'+
-					', freemode INTEGER'+
-					', findout INTEGER'+
-					', mathris INTEGER'+
-					', mathrix INTEGER'+
-					', shootout INTEGER)');
-
-         //tx.executeSql('DROP TABLE IF EXISTS GAME');
-//         tx.executeSql('DROP TABLE IF EXISTS GAME');
-//         tx.executeSql('CREATE TABLE IF NOT EXISTS GAME (id unique, language)');
-//         tx.executeSql('INSERT INTO DEMO (id, data) VALUES (1, "First row")');
-//         tx.executeSql('INSERT INTO DEMO (id, data) VALUES (2, "Second row")');
-    }
-
-
-// Transaction error callbacks
-    //
-    function errorCB(err) {
-		//Veritabanına bağlanmakta sorun yaşanması durumu
-        alert("Error processing SQL: "+err);
-    }
-
-    // Transaction success callback
-    //
-    function successCB() {
-		//Veritabanına başarıyla bağlanılması durumu
-        //alert("success!");
-    }
-	
-	function updateCB(){
-	//Veritabanında güncelleme yapıldığında, yani bir değer update edildiğinde
-	
-	}
-
-	function getLangDB(tx) {
-		alert("dil kontrol ediliyor");
-		//Oyunun daha önce açılıp, dil seçimi yapılıp yapılmadığı bulunuyor.
-		//Yapılmadıysa dil seçim sayfasına,
-		//aksi halde oyuncu seçim sayfasın yönlendirme yapılıyor.
-		tx.executeSql('SELECT * FROM game', [], function(tx, results) {
-		var len = results.rows.length;
-		alert("bulunan dil sayısı len= "+len);
-		if(len==1){
-		gameLang=results.rows.item(0).language;
-		alert("dil="+gameLang);
-		//$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );	
-		}
-		else if(len>1){
-		//Yanlışlıkla birden fazla kayıt yapılırsa (programlama hatasıyla)
-		tx.executeSql('DELETE FROM game');
-		//$.mobile.changePage( $("#pageLang") , { transition: "slide"} );	
-		}
-		else{
-		alert("dil yok=");
-		//Dil seçim sayfası açılacak
-		//$.mobile.changePage( $("#pageLang") , { transition: "slide"} );		
-		}
-	}, errorCB);
-	}
-	
-	
-
-	function gameLangChange(){
-	alert("oyun dili değiştiriliyor dil="+gameLang);
-	//Oyun dili değiştirildiğinde çağrılacak
-	//Veritabanındaki dili ve gameLang değişkenini değiştiren kod
-	
-	db.transaction(function(tx){
-							
-	tx.executeSql('SELECT * FROM game', [], function (tx, results){
-	
-	var len = results.rows.length;
-	if(len==0){
-	tx.executeSql('INSERT INTO game (id, language) VALUES ("", "'+gameLang+'")');
-	}
-	else{
-	tx.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + 1 + "'");
-	}
-	
-	}, errorCB);
-	
-	}, updateCB, errorCB);
-	
-	}
-
-
-	
-	
-	
-	
-	function getUserInfoDB(){
-	alert("oyuncu bilgileri kontrol ediliyor");
-	//Kayıtlı oyuncu varsa,
-	//oyunculara ait bilgiler alınıp sayfalara ve değişkenlere yazılacak.
-	db.transaction(function (tx){
-							 
-	tx.executeSql('SELECT * FROM players', [], function (tx, results){
-		var len = results.rows.length;
-		if(len>0){
-		var htmlCode="";
-
-			for(i=0;i<len;i++){
-		pId[i]=results.rows.item(i).id;
-		pName[i]=results.rows.item(i).name;
-		pFreemode[i]=results.rows.item(i).freemode;
-		pFindout[i]=results.rows.item(i).findout;
-		pMathris[i]=results.rows.item(i).mathris;
-		pMathrix[i]=results.rows.item(i).mathrix;
-		pShootout[i]=results.rows.item(i).shootout;
-		
-//		gameLang=results.rows.item(i).language;
-htmlCode=htmlCode+'<a href="#" data-role="button" data-icon="star" data-theme="d"'+
-'onClick="playerSelect(\''+pId[i]+'\')">'+pName[i]+'</a>'+
-'<div class="ui-grid-a">'+
-'<div class="ui-block-a">'+
-'<div class="ui-grid-a" style="font-weight:bold">'+
-'<div class="ui-block-a"><span class="levelSpanFreemode spanLevel">Free Mode</span></div>'+
-'<div class="ui-block-b">: '+pFreemode[i]+'</div>'
-'<div class="ui-block-a"><span class="levelSpanFindout spanLevel">Find Out</span></div>'+
-'<div class="ui-block-b">: '+pFindout[i]+'</div>'+
-'<div class="ui-block-a"><span class="levelSpanMathris spanLevel">Mathris</span></div>'+
-'<div class="ui-block-b">: '+pMathris[i]+'</div>'+
-'<div class="ui-block-a"><span class="levelSpanMathrix spanLevel">Mathrix</span></div>'+
-'<div class="ui-block-b">: '+pMathrix[i]+'</div>'+
-'<div class="ui-block-a"><span class="levelSpanShootout spanLevel">Shoot Out</span></div>'+
-'<div class="ui-block-b">:'+pShootout[i]+'</div>'+
-'</div>'+
-'</div>'+
-'<div class="ui-block-b">'+
-'<a href="#" data-role="button" data-icon="delete" data-theme="d"'+
-'onClick="playerDelete(\''+pId[i]+'\')"><span class="playerDelSpan">Delete</span></a>'+
-'</div>'+
-'</div>';
-			}
-		//htmlcode sayfaya aktarılıyor
-		$("#players").html(htmlcode);
-		}
-		
-	}, errorCB);
-
-	}, [], successCB, errorCB);
-	}
-
-	
-
-	
-	
-	function gamePlayerCreate(name){
-	//Veritabanına yeni bir oyuncu kaydeden kod
-	alert("oyuncu oluşturulkuyor");
-	pName=name;
-	db.transaction(function (tx){
-							 
-	tx.executeSql('INSERT INTO players (id, name, freemode, findout, mathris, mathrix, shootout) VALUES ("", "'+pName+'", 1, 1, 1, 1, 1)');
-	
-	}, [], updateCB, errorCB);
-	
-	}
-	
-	
-	
-	function gamePlayerDelete(id){
-	alert("oyuncu siliniyor")
-	pId=id;
-	//Veritabanından bir oyuncu silen kod
-	db.transaction(function(tx){
-	tx.executeSql("DELETE FROM players WHERE id='"+pId+"'");
-	}, [], updateCB, errorCB);
-	
-	}
-	
-/* Veritananı bağlantı kodları sonu */
-
-
-
-
-
-
-
 
 
 </script>
@@ -295,7 +36,7 @@ htmlCode=htmlCode+'<a href="#" data-role="button" data-icon="star" data-theme="d
 <a href="#pagePlayers" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
 <h1>tGame - Crazy Math</h1>
 </div><!-- /header -->
-<div data-role="content" id="pageLangContent" align="center">
+<div data-role="content" id="page2content" align="center">
 Diller
 <img src="images/de.png" onClick="chooseLang('de');">
 <img src="images/en.png" onClick="chooseLang('en');">
@@ -331,7 +72,7 @@ Diller
 </select>
 <br>
 <h2 id="playersH">Players :</h2>
-<p id="players">
+<div id="players">
 <a href="#" data-role="button" data-icon="star" data-theme="d" onClick="playerSelect('id')">Oyuncu 1</a>
 <div class="ui-grid-a">
 <div class="ui-block-a">
@@ -358,7 +99,7 @@ Diller
 <div class="ui-block-b"><a href="#" data-role="button" data-icon="delete" data-theme="d"><span class="playerDelSpan" onClick="playerDelete('id')">Delete</span></a>
 </div>
 </div>
-</p>
+</div>
     
 <br>
 
@@ -391,7 +132,7 @@ Diller
 <a href="#page5" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
 
 </div><!-- /header -->
-<div data-role="content" id="pageGameModesContent">
+<div data-role="content" id="page2content">
 
 <a href="#" onClick="gameModeSelect(0);" data-role="button" data-theme="d">Free Mode (MathFree)</a>
 <a href="#" onClick="gameModeSelect(1);" data-role="button" data-theme="d">Find-Out(Mathout-MathFind)</a>
@@ -416,7 +157,7 @@ Diller
 <a href="#" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
 </div><!-- /header -->
 
-<div data-role="content" id="pageFreeModeLevelContent" align="center">
+<div data-role="content" id="page" align="center">
 
 <fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" >
 
@@ -902,20 +643,6 @@ Bu uygulama; www.ozgurceuc.com sunduğu bir hizmettir. İnternet bağlantısı g
 
 
 
-<!--Boş sayfa-->
-<!-- /Sayfa başlangıcı -->   
-<div data-role="page" id="page20">
-
-<div data-role="header" data-theme="b" data-position="fixed">
-<a href="#page1" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>tGame - Crazy Math</h1>
-<a href="#page3" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
-
-</div><!-- /header -->
-<div data-role="content" id="page20content">
-
-</div>
-</div><!-- /page -->
 
 
 
