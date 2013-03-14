@@ -251,15 +251,15 @@ htmlCode=htmlCode+'<div style="background-color:#999; padding:5px" class="ui-cor
 	db.transaction(function(tx){
 							
 	tx.executeSql('SELECT * FROM game', [], function (tx, results){
-	
 	var len = results.rows.length;
-	if(len==0){
+	if(len==0 || len>1){
 	alert("Daha öncesinde dil yok. Yeni kayıt yapılacak");
-	tx.executeSql('INSERT INTO game (language) VALUES ("'+gameLang+'")');
+	tx.executeSql("INSERT INTO game (language) VALUES ('"+gameLang+"')");
 	}
 	else{
+	var dbLangId=results.rows.item(0).id;	
 	alert("Daha önceki dil değeri değiştirilecek");
-	tx.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + 1 + "'");
+	tx.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + dbLangId + "'");
 	}
 	
 	}, errorCB);
