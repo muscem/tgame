@@ -290,7 +290,8 @@ gameLang=lang;
 gameLangChange();	//tarayicida çalismayi önler
 alert("sayfa degis"+gameLang);
 $("#langSelect").val(gameLang);
-//$("#langSelect").trigger("change");
+
+$("#langSelect").trigger("change");  //Bunun içinde gameLanguageChanged() çalistiriliyor
 
 $.mobile.changePage( $("#pagePlayers") );
 }

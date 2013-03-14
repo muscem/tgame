@@ -140,10 +140,6 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	
 	
 
-
-
-
-
 	function gamePlayerCreate(name){
 	//Veritabanına yeni bir oyuncu kaydeden kod
 	if(name!=""){
@@ -180,9 +176,9 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		pShootout[i]=results.rows.item(i).shootout;
 		
 //		gameLang=results.rows.item(i).language;
-htmlCode=htmlCode+'<div style="background-color:#999; padding:5px" class="ui-corner-all">'+
+htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 ''+
-'<a href="#" data-role="button" data-icon="star" data-theme="d" onClick="playerSelect(\''+pId[i]+'\')">'+pName[i]+'</a>'+
+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="star" data-theme="d" onclick="playerSelect(\''+pId[i]+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+pName[i]+'</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a>'+
 ''+
 '<div class="ui-grid-a">'+
 '<div class="ui-block-a">'+
@@ -201,14 +197,15 @@ htmlCode=htmlCode+'<div style="background-color:#999; padding:5px" class="ui-cor
 '</div>'+
 ''+
 '<div class="ui-block-b">'+
-'<a href="#" data-role="button" data-icon="delete" data-theme="d"'+
-'onClick="playerDelete(\''+pId[i]+'\')"><span class="playerDelSpan">Delete</span></a>'+
+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="delete" data-theme="d" onclick="playerDelete(\''+pId[i]+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text"><span class="playerDelSpan">Delete</span></span><span class="ui-icon ui-icon-delete ui-icon-shadow">&nbsp;</span></span></a>'+
 '</div>'+
 '</div>'+
 '</div>';
 			}
 		//htmlcode sayfaya aktarılıyor
-		$("#players").html(htmlcode);
+		$("#pagePlayersList").html(htmlcode);
+		$("#pagePlayersList").trigger( "create" );
+		
 		}
 		
 	}, errorCB);
@@ -415,10 +412,10 @@ Explanations of games.
 
 <br>
 <h2 id="playersH">Players :</h2>
-<div id="players">
+<div id="pagePlayersList">
 
 
-<div style="background-color:#999; padding:5px" class="ui-corner-all">
+<div class="pagePlayersPlayerInfo ui-corner-all">
 
 <a href="#" data-role="button" data-icon="star" data-theme="d" onClick="playerSelect('id')">Oyuncu 1</a>
 
@@ -450,6 +447,8 @@ Explanations of games.
 </div>
 
 </div>
+
+
 
 </div>
 
