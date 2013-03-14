@@ -175,6 +175,22 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		pMathrix[i]=results.rows.item(i).mathrix;
 		pShootout[i]=results.rows.item(i).shootout;
 		
+		alert("pId[i]= "+results.rows.item(i).id+" - "+
+		"pName[i]= "+results.rows.item(i).name+" - "+
+		"pFreemode[i]= "+results.rows.item(i).freemode+" - "+
+		"pFindout[i]= "+results.rows.item(i).findout+" - "+
+		"pMathris[i]= "+results.rows.item(i).mathris+" - "+
+		"pMathrix[i]= "+results.rows.item(i).mathrix+" - "+
+		"pShootout[i]= "+results.rows.item(i).shootout);
+		
+		alert("pId[i]= "+pId[i]+" - "+
+		"pName[i]= "+pName[i]+" - "+
+		"pFreemode[i]= "+pFreemode[i]+" - "+
+		"pFindout[i]= "+pFindout[i]+" - "+
+		"pMathris[i]= "+pMathris[i]+" - "+
+		"pMathrix[i]= "+pMathrix[i]+" - "+
+		"pShootout[i]= "+pShootout[i]);
+		
 //		gameLang=results.rows.item(i).language;
 htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 ''+
@@ -205,11 +221,10 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 		//htmlcode sayfaya aktarılıyor
 		$("#pagePlayersList").html(htmlcode);
 		$("#pagePlayersList").trigger( "create" );
-		
+		alert("herşey sayfaya yüklendi");
 		}
 		
-	}, 
-	function (){alert("sql hata1");});
+	}, function (){alert("sql hata1");});
 
 	}, function (){alert("sql hata2");}, successCB);
 	}
