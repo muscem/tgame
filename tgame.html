@@ -19,6 +19,7 @@
 <script type="text/javascript">
 
 
+
 </script>
 </head> 
 <body id="body" onLoad="startGame();"> 
@@ -29,38 +30,73 @@
 
 
 <!-- /Sayfa başlangıcı -->
-<!--Program yüklendikten sonraki ilk açılışta dil seçimi yaptıracak sayfa-->
-<div data-role="page" id="pageLang">
-<div data-role="header" data-theme="b" data-position="fixed">
-<a href="#page1" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<a href="#pagePlayers" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
-<h1>tGame - Crazy Math</h1>
-</div><!-- /header -->
-<div data-role="content" id="pageLangContent" align="center">
-Diller
-<img src="images/de.png" onClick="chooseLang('de');">
-<img src="images/en.png" onClick="chooseLang('en');">
-<img src="images/es.png" onClick="chooseLang('es');">
-<img src="images/fr.png" onClick="chooseLang('fr');">
-<img src="images/it.png" onClick="chooseLang('it');">
-<img src="images/tr.png" onClick="chooseLang('tr');">
+<div data-role="page" id="pageOpening">
 
+<div data-role="header" data-theme="b" data-position="fixed">
+<a href="#" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
+<a href="#pageLang" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
+</div><!-- /header -->
+
+<div data-role="content" id="pageLangContent" align="center">
+MathMadness is checking some controls. Please wait.
 </div>
+
 </div><!-- /page -->
 
 
 
 
 
-<!-- /Sayfa başlangıcı -->   
-<div data-role="page" id="pagePlayers">
+<!-- /Sayfa başlangıcı -->
+<!--Program yüklendikten sonraki ilk açılışta dil seçimi yaptıracak sayfa-->
+<div data-role="page" id="pageLang">
+
 <div data-role="header" data-theme="b" data-position="fixed">
-<a href="#pageLang" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<a href="#pageGameModes" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
-<h1>tGame - Crazy Math</h1>
+<a href="#pageOpening" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
+<a href="#pagePlayers" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
 </div><!-- /header -->
 
-<div data-role="content" id="pagePlayerscontent">
+<div data-role="content" id="pageLangContent" align="center">
+<h1>Choose Your Language</h1>
+<img src="images/de.png" onClick="chooseLang('de');">
+<img src="images/en.png" onClick="chooseLang('en');">
+<img src="images/es.png" onClick="chooseLang('es');">
+<img src="images/fr.png" onClick="chooseLang('fr');">
+<img src="images/it.png" onClick="chooseLang('it');">
+<img src="images/tr.png" onClick="chooseLang('tr');">
+</div>
+
+</div><!-- /page -->
+
+
+
+
+<!-- /Sayfa başlangıcı -->
+<div data-role="page" id="pageInfo">
+
+<div data-role="header" data-theme="b" data-position="fixed">
+<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
+</div><!-- /header -->
+
+<div data-role="content" id="pageInfoContent" align="center">
+Explanations of games.
+</div>
+
+</div><!-- /page -->
+
+
+<!-- /Sayfa başlangıcı -->
+<div data-role="page" id="pageSettings">
+
+<div data-role="header" data-theme="b" data-position="fixed">
+<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
+</div><!-- /header -->
+
+<div data-role="content" id="pageLangContent" align="center">
 <label for="langSelect" class="select" style="margin-top:20px; font-weight:bold"><h2 id="langLabel">Language :</h2></label>
 <select name="langSelect" id="langSelect" onChange="langChangeSelect();">
    <option value="de">Deutsch</option>
@@ -70,40 +106,70 @@ Diller
    <option value="it">Italiano</option>
    <option value="tr">Türkçe</option>
 </select>
+</div>
+
+</div><!-- /page -->
+
+
+
+
+
+<!-- /Sayfa başlangıcı -->   
+<div data-role="page" id="pagePlayers">
+
+<div data-role="header" data-theme="b" data-position="fixed">
+<a href="#pageLang" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
+</div><!-- /header -->
+
+<div data-role="content" id="pagePlayersContent">
+
 <br>
 <h2 id="playersH">Players :</h2>
 <div id="players">
+
+
+<div style="background-color:#999; padding:5px" class="ui-corner-all">
+
 <a href="#" data-role="button" data-icon="star" data-theme="d" onClick="playerSelect('id')">Oyuncu 1</a>
+
 <div class="ui-grid-a">
 <div class="ui-block-a">
 
 <div class="ui-grid-a" style="font-weight:bold">
-
 <div class="ui-block-a"><span class="levelSpanFreemode">Free Mode</span></div>
-<div class="ui-block-b">: 1</div>
+<div class="ui-block-b">: <span class="playerLevelSpanFreemode">1</span></div>
 
 <div class="ui-block-a"><span class="levelSpanFindout">Find Out</span></div>
-<div class="ui-block-b">: 1</div>
+<div class="ui-block-b">: <span class="playerLevelSpanFreemode">1</span></div>
 
 <div class="ui-block-a"><span class="levelSpanMathris">Mathris</span></div>
-<div class="ui-block-b">: 1</div>
+<div class="ui-block-b">: <span class="playerLevelSpanFreemode">1</span></div>
 
 <div class="ui-block-a"><span class="levelSpanMathrix">Mathrix</span></div>
-<div class="ui-block-b">: 1</div>
+<div class="ui-block-b">: <span class="playerLevelSpanFreemode">1</span></div>
 
 <div class="ui-block-a"><span class="levelSpanShootout">Shoot Out</span></div>
-<div class="ui-block-b">: 1</div>
+<div class="ui-block-b">: <span class="playerLevelSpanFreemode">1</span></div>
 </div>
 
 </div>
-<div class="ui-block-b"><a href="#" data-role="button" data-icon="delete" data-theme="d"><span class="playerDelSpan" onClick="playerDelete('id')">Delete</span></a>
+
+<div class="ui-block-b">
+<a href="#" data-role="button" data-icon="delete" data-theme="d"><span class="playerDelSpan" onClick="playerDelete('id')">Delete</span></a>
 </div>
 </div>
+
 </div>
-    
+
+</div>
+
+<br>  
+<hr>  
 <br>
 
 <h2 id="newPlayerH">Create New Player :</h2>
+
 <div class="ui-grid-a">
 <div class="ui-block-a">
 <label for="basic" style="margin-top:10px; font-weight:bold" id="playerNameLabel">Name</label>
@@ -113,34 +179,58 @@ Diller
 </div>
 </div>
 <a href="#" data-role="button" data-theme="d"><span id="playerCreateSpan">Create</span></a>
+
 </div> 
+
+
+<div data-role="footer" data-theme="b" data-position="fixed" align="center">
+<a href="#pageSettings" id="gameSettings" onClick="" data-icon="gear" data-theme="b" data-iconpos="left" style="width:50px">&nbsp;</a>
+<a href="#pageInfo" id="gameInfo" onClick="" data-icon="info" data-theme="b" data-iconpos="left" style="width:50px">&nbsp;</a>
+</div><!-- /footer --> 
 
 </div><!-- /page -->
 
 
 
 
+<!-- /Sayfa başlangıcı -->
+<div data-role="page" id="pageGameModesInfo">
 
+<div data-role="header" data-theme="b" data-position="fixed">
+<a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
+</div><!-- /header -->
+
+<div data-role="content" id="pageInfoContent" align="center">
+Explanations of modes.
+
+
+</div>
+
+</div><!-- /page -->
 
 
 
 <!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageGameModes">
+
 <div data-role="header" data-theme="b" data-position="fixed">
-<a href="#page1" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>tGame - Crazy Math</h1>
-<a href="#page5" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
-
+<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
 </div><!-- /header -->
+
 <div data-role="content" id="pageGameModesContent">
-
-<a href="#" onClick="gameModeSelect(0);" data-role="button" data-theme="d">Free Mode (MathFree)</a>
-<a href="#" onClick="gameModeSelect(1);" data-role="button" data-theme="d">Find-Out(Mathout-MathFind)</a>
-<a href="#" onClick="gameModeSelect(2);" data-role="button" data-theme="d">Mathris</a><!--class="ui-disabled"-->
+<a href="#" onClick="gameModeSelect(0);" data-role="button" data-theme="d">Free Mode</a>
+<a href="#" onClick="gameModeSelect(1);" data-role="button" data-theme="d">Find-Out</a>
+<a href="#" onClick="gameModeSelect(2);" data-role="button" data-theme="d">Mathris</a>
 <a href="#" onClick="gameModeSelect(3);" data-role="button" data-theme="d">Mathrix</a>
-<a href="#" onClick="gameModeSelect(4);" data-role="button" data-theme="d">Shoot-Out</a>
-
+<a href="#" onClick="gameModeSelect(4);" data-role="button" data-theme="d">Shoot-Out</a><!--class="ui-disabled"-->
 </div>
+
+<div data-role="footer" data-theme="b" data-position="fixed" align="center">
+<a href="#pageGameModesInfo" id="gameInfo" onClick="" data-icon="info" data-theme="b" data-iconpos="left" style="width:50px">&nbsp;</a>
+</div><!-- /footer -->
+
 </div><!-- /page -->
 
 
@@ -151,35 +241,38 @@ Diller
 
 <!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageFreeModeLevel">
+
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>tGame - Crazy Math</h1>
-<a href="#" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
 </div><!-- /header -->
 
 <div data-role="content" id="pageFreeModeLevelContent" align="center">
 
-<fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" >
+<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
-<input type="radio" name="gHardness" id="easy" value="1" checked />
-<label for="easy">Kolay</label>
+<input type="radio" name="gDifficulty" id="easy" value="1" checked="checked" />
+<label class="labelEasy" for="easy">Kolay</label>
 
-<input type="radio" name="gHardness" id="moderate" value="2" disabled />
-<label for="moderate">Normal</label>
+<input type="radio" name="gDifficulty" id="moderate" value="2" disabled/>
+<label class="labelModerate" for="moderate">Normal</label>
 
-<input type="radio" name="gHardness" id="hard" value="3" disabled />
-<label for="hard">Zor</label>
+<input type="radio" name="gDifficulty" id="hard" value="3" disabled />
+<label class="labelHard" for="hard">Zor</label>
 
 </fieldset>
-
+        
+<hr>
 <br>
 
 <h3>İşlemler (Operations)</h3>
+
 <label><input type="checkbox" name="operation" id="oAdd" data-mini="true" /><span id="spanOAdd">Toplama</span></label>
 <label><input type="checkbox" name="operation" id="oSub" data-mini="true" disabled /><span id="spanOSub">Çıkarma</span></label>
 <label><input type="checkbox" name="operation" id="oMul" data-mini="true" disabled /><span id="spanOMul">Çarpma</span></label>
 <label><input type="checkbox" name="operation" id="oDiv" data-mini="true" disabled /><span id="spanODiv">Bölme</span></label>
 
+<hr>
 <br>
 
 <h3>Sayılar (Numbers)</h3>
@@ -193,6 +286,7 @@ Diller
 
 <label><input type="checkbox" name="number" id="nRoo" data-mini="true" disabled /><span id="spanNRoo">Köklü Sayılar</span></label>
 
+<hr>
 <br>
 
 <h3>Hane Sayısı (Digit)</h3>
@@ -208,6 +302,7 @@ Diller
 <label><input type="checkbox" name="digit" id="digit5" data-mini="true" disabled /><span id="spanDigit5">XXXXX</span></label>
 
 
+<hr>
 <br>
 
 <h3>İşlem sayısı (Operation count)</h3>
@@ -227,8 +322,7 @@ X ? X ? X ? X ? X</span></label>
 <label><input type="checkbox" name="oCount" id="oCount5" data-mini="true" disabled /><span id="spanCount5">
 X ? X ? X ? X ? X ? X</span></label>
 
-
-
+<hr>
 <br>
 
 <h3>İşaret</h3>
@@ -245,71 +339,42 @@ X ? X ? X ? X ? X ? X</span></label>
 
 <label><input type="checkbox" name="eSign" id="eSign5" data-mini="true" disabled /><span id="spanESign5">&le;</span></label>
 
+<hr>
 <br>
-
 <a href="#" onClick="playFreeMode();" data-role="button" data-theme="d">Play</a>
 
-<!--<div class="ui-bar ui-bar-d ui-corner-all">
-Bu uygulama, www.ozgurceuc.com sitesinin sunduğu uçuş arama hizmetini mobil olarak kullanabilmenizi sağlamak amacıyla hazırlanmıştır. 
-</div>
-
-<div class="content-primary">
-<a href="#" data-role="button" data-icon="home" data-theme="d">Ana Sayfa</a>
-<a href="#secenekler" data-role="button" data-icon="search" data-theme="d">Arama Sayfası</a>
-<a href="#sonuclar" data-role="button" data-icon="grid" data-theme="d" data-iconpos="right">Sonuçlar Sayfası</a>
-</div>
-
-<div class="ui-bar ui-bar-d ui-corner-all">
-Bu uygulama; www.ozgurceuc.com sunduğu bir hizmettir. İnternet bağlantısı gerektirmektedir.
-</div>-->
-
 </div><!-- /content -->
+ 
 </div><!-- /page -->
 
 
 
 
-<!--Boş sayfa-->
+
 <!-- /Sayfa başlangıcı -->   
-<div data-role="page" id="pageFreeModePlay" ><!--style="background-image:url(background.png); background-repeat:no-repeat; background-size:cover; background-position:center center;"-->
+<div data-role="page" id="pageFreeModePlay" >
+
 <div data-role="header" data-theme="b" data-position="fixed">
-<a href="#page1" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>tGame - Crazy Math</h1>
-<a href="#page3" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
+<a href="#pageFreeModeLevel" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
 </div><!-- /header -->
-<!--<img class="pageFreeModePlayImage" src="background.png">-->
+
+
 <div data-role="content" id="pageFreeModePlayContent">
+
 <input type="range" name="pageFreeModePlaySlider" id="pageFreeModePlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
-
-
+<input type="text" value="" id="playFreeModeAnswer" style="visibility:hidden" disabled>
 
 <div id="pageFreeModePlayQuestion" class="ui-bar ui-bar-d ui-corner-all pageFreeModePlayQuestion">
-<!--<table class="equationTable">
-<tr>
-<td>35<sup>3</sup><hr>25</td>
-<td>x</td>
-<td>58</td>
-<td>+</td>
-<td>51</td>
-<td valign="top">-</td>
-<td>5</td>
-<td>&divide;<sup>3</sup>&radic;</td>
-<td>2</td>
-<td>x-+/</td>
-</tr>
+Question</div>
 
-</table>
-Bu uygulama; www.ozgurceuc.com sunduğu bir hizmettir. İnternet bağlantısı gerektirmektedir.-->
 </div>
-<a href="#" onClick="playFreeMode();" data-role="button" data-theme="d">Play</a>
-</div>
-<input type="text" value="" id="playFreeModeAnswer" style="visibility:hidden" disabled>
+
 <div data-role="footer" data-theme="b" data-position="fixed" align="center">
-
 <a href="#" id="playFreeModeWrong" onClick="" data-icon="delete" data-theme="b" data-iconpos="left" style="width:48%">Yanlış</a>
 <a href="#" id="playFreeModeRight" onClick="" data-icon="check" data-theme="b" data-iconpos="right" style="width:48%">Doğru</a>
+</div><!-- /footer --> 
 
-</div><!-- /navbar --> 
 </div><!-- /page -->
 
 
@@ -329,27 +394,23 @@ Bu uygulama; www.ozgurceuc.com sunduğu bir hizmettir. İnternet bağlantısı g
 
 <!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageFindOutLevel">
+
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>tGame - Crazy Math</h1>
-<a href="#" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
 </div><!-- /header -->
 
 <div data-role="content" id="pageFindOutLevelContent" align="center">
 
-
-<fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" >
-
-<input type="radio" name="gHardness" id="easy" value="1" />
-<label for="easy">Kolay</label>
-
-<input type="radio" name="gHardness" id="moderate" value="2" checked="checked" />
-<label for="moderate">Normal</label>
-
-<input type="radio" name="gHardness" id="hard" value="3" />
-<label for="hard">Zor</label>
-
+<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
+<input type="radio" name="gDifficulty" id="easy" value="1" checked="checked" />
+<label class="labelEasy" for="easy">Kolay</label>
+<input type="radio" name="gDifficulty" id="moderate" value="2" disabled/>
+<label class="labelModerate" for="moderate">Normal</label>
+<input type="radio" name="gDifficulty" id="hard" value="3" disabled />
+<label class="labelHard" for="hard">Zor</label>
 </fieldset>
+
 
 <br>
 <h3>Level</h3>
@@ -358,6 +419,7 @@ Bu uygulama; www.ozgurceuc.com sunduğu bir hizmettir. İnternet bağlantısı g
 <a href="#" onClick="playFindOut(3)" data-role="button" data-theme="d" id="level3" >3</a>
 
 </div><!-- /content -->
+
 </div><!-- /page -->
 
 
@@ -367,23 +429,24 @@ Bu uygulama; www.ozgurceuc.com sunduğu bir hizmettir. İnternet bağlantısı g
 <!--Boş sayfa-->
 <!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageFindOutPlay">
+
 <div data-role="header" data-theme="b" data-position="fixed">
-<a href="#page1" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>tGame - Crazy Math</h1>
-<a href="#page3" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
+<a href="#pageFindOutLevel" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
 </div><!-- /header -->
 
 <div data-role="content" id="pageFindOutPlayContent">
+
 <input type="range" name="pageFindOutPlaySlider" id="pageFindOutPlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
 
+<input type="text" value="" id="playFreeModeAnswer" style="visibility:hidden" disabled>
 
 <!--<img class="pageFreeModePlayImage" src="background.png">-->
 <div id="pageFindOutPlayQuestion" class="ui-bar ui-bar-d ui-corner-all pageFindOutPlayQuestion">
+</div>
 
 </div>
-<a href="#" onClick="playFindOut();" data-role="button" data-theme="d">Play</a>
-</div>
-<input type="text" value="" id="playFreeModeAnswer" style="visibility:hidden" disabled>
+
 <div data-role="footer" data-theme="b" data-position="fixed" align="center">
 <table width="100%" style="margin:0px;">
 <tr>
@@ -394,7 +457,8 @@ Bu uygulama; www.ozgurceuc.com sunduğu bir hizmettir. İnternet bağlantısı g
 <td><a href="#" id="playFindOutLess" onClick="" data-role="button" data-theme="b">&lt;</a></td>
 <td><a href="#" id="playFindOutEqLess" onClick="" data-role="button" data-theme="b">&le;</a></td>
 </tr></table>
-</div><!-- /navbar --> 
+</div><!-- /footer --> 
+
 </div><!-- /page -->
 
 
@@ -404,25 +468,25 @@ Bu uygulama; www.ozgurceuc.com sunduğu bir hizmettir. İnternet bağlantısı g
 
 <!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageMathrisLevel">
+
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>tGame - Crazy Math</h1>
-<a href="#" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
 </div><!-- /header -->
 
 <div data-role="content" id="pageMathrisLevelContent" align="center">
 
 
-<fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" >
+<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
-<input type="radio" name="gHardness" id="easy" value="1" />
-<label for="easy">Kolay</label>
+<input type="radio" name="gDifficulty" id="easy" value="1" checked="checked" />
+<label class="labelEasy" for="easy">Kolay</label>
 
-<input type="radio" name="gHardness" id="moderate" value="2" checked="checked" />
-<label for="moderate">Normal</label>
+<input type="radio" name="gDifficulty" id="moderate" value="2" disabled/>
+<label class="labelModerate" for="moderate">Normal</label>
 
-<input type="radio" name="gHardness" id="hard" value="3" />
-<label for="hard">Zor</label>
+<input type="radio" name="gDifficulty" id="hard" value="3" disabled />
+<label class="labelHard" for="hard">Zor</label>
 
 </fieldset>
 
@@ -442,10 +506,10 @@ Bu uygulama; www.ozgurceuc.com sunduğu bir hizmettir. İnternet bağlantısı g
 <!--Boş sayfa-->
 <!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageMathrisPlay">
+
 <div data-role="header" data-theme="b" data-position="fixed">
-<a href="#page1" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>tGame - Crazy Math</h1>
-<a href="#page3" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
+<a href="#pageMathrisLevel" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
 </div><!-- /header -->
 
 <div data-role="content" id="pageMathrisPlayContent" >
@@ -454,11 +518,11 @@ Bu uygulama; www.ozgurceuc.com sunduğu bir hizmettir. İnternet bağlantısı g
 
 <div id="pageMathrisPlayQuestions2" style="margin:0px; padding:0px 0px; height:800px; overflow:hidden; background-color:#35F">
 
-<!--<img class="pageFreeModePlayImage" src="background.png">-->
-<div id="pageMathrisPlayQuestions" style="margin:0px; padding:0px 0px; height:750px; overflow:hidden; border:2; border-color:#006; background-color:#09F; position:relative;">
 
+<div id="pageMathrisPlayQuestions" style="margin:0px; padding:0px 0px; height:750px; overflow:hidden; border-color:#006; background-color:#09F; position:relative;">
 
 <!--Sorular buraya gelecek-->
+
 </div>
 </div>
 </div>
@@ -474,25 +538,25 @@ Bu uygulama; www.ozgurceuc.com sunduğu bir hizmettir. İnternet bağlantısı g
 
 <!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageMathrixLevel">
+
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>tGame - Crazy Math</h1>
-<a href="#" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
 </div><!-- /header -->
 
 <div data-role="content" id="pageMathrixLevelContent" align="center">
 
 
-<fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" >
+<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
-<input type="radio" name="gHardness" id="easy" value="1" />
-<label for="easy">Kolay</label>
+<input type="radio" name="gDifficulty" id="easy" value="1" checked="checked" />
+<label class="labelEasy" for="easy">Kolay</label>
 
-<input type="radio" name="gHardness" id="moderate" value="2" checked="checked" />
-<label for="moderate">Normal</label>
+<input type="radio" name="gDifficulty" id="moderate" value="2" disabled/>
+<label class="labelModerate" for="moderate">Normal</label>
 
-<input type="radio" name="gHardness" id="hard" value="3" />
-<label for="hard">Zor</label>
+<input type="radio" name="gDifficulty" id="hard" value="3" disabled />
+<label class="labelHard" for="hard">Zor</label>
 
 </fieldset>
 
@@ -512,27 +576,29 @@ Bu uygulama; www.ozgurceuc.com sunduğu bir hizmettir. İnternet bağlantısı g
 <!--Boş sayfa-->
 <!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageMathrixPlay">
+
 <div data-role="header" data-theme="b" data-position="fixed">
-<a href="#page1" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>tGame - Crazy Math</h1>
-<a href="#page3" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
+<a href="#pageMathrixLevel" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
 </div><!-- /header -->
 
 <div data-role="content" id="pageMathrixPlayContent" style="margin:0px; padding:0px" >
+
 <div>
 <input type="range" name="pageMathrixPlaySlider" id="pageMathrixPlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
 </div>
 
-<!--<img class="pageFreeModePlayImage" src="background.png">-->
+
 <div id="pageMathrixPlayQuestionsView" style="margin:0px; padding:0px 0px; height:300px; overflow:hidden">
+
 <div id="pageMathrixPlayQuestions" style="margin:0px; padding:0px 5px; position:relative;">
 
 <!--Sorular buraya gelecek-->
-</div>
-
-
 
 </div>
+
+</div>
+
 </div>
 
 </div><!-- /page -->
@@ -547,35 +613,27 @@ Bu uygulama; www.ozgurceuc.com sunduğu bir hizmettir. İnternet bağlantısı g
 
 
 
-
-
-
-
-
-
-
-
 <!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageShootOutLevel">
+
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>tGame - Crazy Math</h1>
-<a href="#" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
 </div><!-- /header -->
 
 <div data-role="content" id="pageShootOutLevelContent" align="center">
 
 
-<fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" >
+<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
-<input type="radio" name="gHardness" id="easy" value="1" />
-<label for="easy">Kolay</label>
+<input type="radio" name="gDifficulty" id="easy" value="1" checked="checked" />
+<label class="labelEasy" for="easy">Kolay</label>
 
-<input type="radio" name="gHardness" id="moderate" value="2" checked="checked" />
-<label for="moderate">Normal</label>
+<input type="radio" name="gDifficulty" id="moderate" value="2" disabled/>
+<label class="labelModerate" for="moderate">Normal</label>
 
-<input type="radio" name="gHardness" id="hard" value="3" />
-<label for="hard">Zor</label>
+<input type="radio" name="gDifficulty" id="hard" value="3" disabled />
+<label class="labelHard" for="hard">Zor</label>
 
 </fieldset>
 
@@ -592,55 +650,28 @@ Bu uygulama; www.ozgurceuc.com sunduğu bir hizmettir. İnternet bağlantısı g
 
 
 
-<!--Boş sayfa-->
+
 <!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageShootOutPlay">
+
 <div data-role="header" data-theme="b" data-position="fixed">
-<a href="#page1" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>tGame - Crazy Math</h1>
-<a href="#page3" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
+<a href="#pageShootOutLevel" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
 </div><!-- /header -->
 
 <div data-role="content" id="pageShootOutPlayContent" >
 
 <input type="range" name="pageShootOutPlaySlider" id="pageShootOutPlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
 
-
-<!--<img class="pageFreeModePlayImage" src="background.png">-->
-<div id="pageShootOutPlayQuestions" style="margin:0px; padding:0px 0px; height:300px; overflow:hidden; border:2; border-color:#006; background-color:#09F">
-
+<div id="pageShootOutPlayQuestions" style="margin:0px; padding:0px 0px; height:300px; overflow:hidden; border-color:#006; background-color:#09F">
 
 <!--Sorular buraya gelecek-->
 
 </div>
+
 </div>
 
 </div><!-- /page -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
