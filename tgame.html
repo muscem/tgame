@@ -254,9 +254,11 @@ htmlCode=htmlCode+'<div style="background-color:#999; padding:5px" class="ui-cor
 	
 	var len = results.rows.length;
 	if(len==0){
-	tx.executeSql('INSERT INTO game (id, language) VALUES ("", "'+gameLang+'")');
+	alert("Daha öncesinde dil yok. Yeni kayıt yapılacak");
+	tx.executeSql('INSERT INTO game (language) VALUES ("'+gameLang+'")');
 	}
 	else{
+	alert("Daha önceki dil değeri değiştirilecek");
 	tx.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + 1 + "'");
 	}
 	
