@@ -162,10 +162,9 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	tx.executeSql('SELECT * FROM players', [], function (tx, results){
 		var len = results.rows.length;
 		alert("Kayıtlı oyuncu sayısı ="+len);
-		if(len>0){
 		var htmlCode="";
-
-			for(i=0;i<len;i++){
+		if(len>0){
+		for(i=0;i<len;i++){
 		pId[i]=results.rows.item(i).id;
 		pName[i]=results.rows.item(i).name;
 		pFreemode[i]=results.rows.item(i).freemode;
@@ -199,7 +198,7 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 '<div class="ui-block-a">'+
 '<div class="ui-grid-a" style="font-weight:bold">'+
 '<div class="ui-block-a"><span class="levelSpanFreemode spanLevel">Free Mode</span></div>'+
-'<div class="ui-block-b">: <span class="playerLevelSpanFreemode">'+pFreemode[i]+'</span</div>'+
+'<div class="ui-block-b">: <span class="playerLevelSpanFreemode">'+pFreemode[i]+'</span></div>'+
 '<div class="ui-block-a"><span class="levelSpanFindout spanLevel">Find Out</span></div>'+
 '<div class="ui-block-b">: <span class="playerLevelSpanFindout">'+pFindout[i]+'</span></div>'+
 '<div class="ui-block-a"><span class="levelSpanMathris spanLevel">Mathris</span></div>'+
@@ -217,23 +216,17 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 '</div>'+
 '</div>';
 			}
+		}
 		//htmlcode sayfaya aktarılıyor
 		$("#pagePlayersList").html(htmlCode);
 		$("#pagePlayersList").trigger( "create" );
 		alert("herşey sayfaya yüklendi");
-		}
+		
 		
 	}, function (){alert("sql hata1");});
 
 	}, function (){alert("sql hata2");}, successCB);
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -483,8 +476,6 @@ Explanations of games.
 </div>
 </div>
 <a href="#" data-role="button" data-theme="d" onClick="playerCreate();"><span id="playerCreateSpan">Create</span></a>
-
-
 
 </div> 
 
