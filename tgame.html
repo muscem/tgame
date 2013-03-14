@@ -143,9 +143,8 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	function gamePlayerCreate(name){
 	//Veritabanına yeni bir oyuncu kaydeden kod
 	if(name!=""){
-	pName=name;
 	db.transaction(function (tx){
-	tx.executeSql("INSERT INTO players (name, freemode, findout, mathris, mathrix, shootout) VALUES ('"+pName+"', 1, 1, 1, 1, 1)");
+	tx.executeSql("INSERT INTO players (name, freemode, findout, mathris, mathrix, shootout) VALUES ('"+name+"', 1, 1, 1, 1, 1)");
 	
 	}, errorCB, successCB);
 	}
@@ -308,12 +307,13 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 	
 	function gamePlayerDelete(id){
 	alert("oyuncu siliniyor")
-	pId=id;
 	//Veritabanından bir oyuncu silen kod
 	db.transaction(function(tx){
-	tx.executeSql("DELETE FROM players WHERE id='"+pId+"'");
-	}, [], updateCB, errorCB);
+	tx.executeSql("DELETE FROM players WHERE id='"+id+"'");
+	}, function (){alert("silmede hata sql");});
 	
+	
+	listPagePlayersUserInfoDB();
 	}
 	
 /* Veritananı bağlantı kodları sonu */
