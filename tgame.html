@@ -18,11 +18,258 @@
 
 <script type="text/javascript">
 
+var dbOk =0;	//Veritabanına bağlı olmadan da çalışabilmesi (yapılabilirse)
+
+//Oyunun her yerinde kullanılacak bazı değişkenler
+//Veritabanından alınan bilgiler (p = player)
+var gameLang="";			//Oyun dili
+var gamePlayerID="";		//Oyuncu id
+
+//Oyuncunun seçimleri
+var gameMode;				//Oyun modu
+var gameOperation=[[]];			//Oyun işlem türü
+var gameOCount=[[]];				//Oyuns işlem sayısı
+var gameDigit=[[]];				//Oyun hane sayısı
+var gameNumber=[[]];				//Oyun sayı türü
+var gameDifficulty;			//Oyun zorluğu 0-1-2
+var gamelevel;				//Oyun seviyesi
+
+
+
+//Oyuncu bilgileri
+var pId=new Array(); 		//id
+var pName=new Array();		//name
+var pFreemode=new Array();	//freemode seviyesi (level)
+var pFindout=new Array();	//findout seviyesi (level)
+var pMathris=new Array();	//mathris seviyesi (level)
+var pMathrix=new Array();	//Mathrix seviyesi (level)
+var pShootout=new Array();	//shootout seviyesi (level)
+
+var gameMessage1=new Array();	//Henüz kullanmadım, çok dil için dizi oluşturmak gerek
+
+var db;	//Veritabanı için kullanacağım.
+
+/* Veritananı bağlantı kodları başlangcı */
+//Veritabanı olmadan oyun çalışmayacağı için açılışta ilk yapılacak iş bu olacak.
+document.addEventListener("deviceready", onDeviceReady, false);
+
+
+
+    // Cordova is ready
+    //
+    function onDeviceReady() {
+        //Veritabanı açılıyor (yoksa yaratılacak)
+		db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
+		
+		//Oyunun ilk açılışı ise
+		//Veritabanına tablolar oluşturulacak
+		db.transaction(createTable, errorCB, createTableSuccess);
+		
+		//Oyunun dili öğrenilecek
+		
+		
+    }
+	
+	
+    // Populate the database 
+	//
+    function createTable(tx) {
+		//Tablolar mevcut değilse oluşturulacak (oyun yüklendikten sonra ilk defa açılıyorsa).
+         tx.executeSql('CREATE TABLE IF NOT EXISTS game ('+
+					'id INTEGER PRIMARY KEY AUTOINCREMENT'+
+					', language VARCHAR(2))');
+		 
+		 tx.executeSql('CREATE TABLE IF NOT EXISTS players ('+
+					'id INTEGER PRIMARY KEY AUTOINCREMENT'+
+					', name VARCHAR(50)'+
+					', freemode INTEGER'+
+					', findout INTEGER'+
+					', mathris INTEGER'+
+					', mathrix INTEGER'+
+					', shootout INTEGER)');
+
+		}
+
+
+	function createTableSuccess(){
+	//Veritabanı kullanılabilir durumda
+	alert("Veritabanı kullanılabilir durumda");
+	dbOk=1;
+	
+	alert("dil kontrol edilecek");
+	db.transaction(getLangDB, errorCB, successCB);
+	}
+
+
+// Önemsiz callback'ler
+    function errorCB(err) {
+		//Veritabanına bağlanmakta sorun yaşanması durumu
+        alert("Error processing SQL: "+err);
+    }
+
+    function successCB() {
+		//Veritabanına başarıyla bağlanılması durumu
+        //alert("success!");
+    }
+	
+	function updateCB(){
+	//Veritabanında güncelleme yapıldığında, yani bir değer update edildiğinde
+	}
+// Önemsiz callback'ler sonu
+	
+	function getUserInfıSuccess(){
+	//Oyuncu veritabanı başarıyla kontrol edildikten sonra, pagePlayers sayfası açılıyor
+	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+	}
+	
+	function getLangDB(tx) {
+		alert("dil kontrol ediliyor");
+		//Oyunun daha önce açılıp, dil seçimi yapılıp yapılmadığı bulunuyor.
+		//Yapılmadıysa dil seçim sayfasına,
+		//aksi halde oyuncu seçim sayfasın yönlendirme yapılıyor.
+		tx.executeSql('SELECT * FROM game', [], function(tx, results) {
+		var len = results.rows.length;
+		alert("bulunan dil sayısı len= "+len);
+		if(len==1){
+		gameLang=results.rows.item(0).language;
+		alert("dil="+gameLang);
+		
+		//Dil daha önceden seçilmişse, oyuncu kaydıda yapılmış olabilir. Kontrol ediliyor
+		alert("oyuncu bilgileri kontrol edilecek");
+		db.transaction(getUserInfoDB, errorCB, getUserInfıSuccess);
+		}
+		else if(len>1){
+		//Yanlışlıkla birden fazla kayıt yapılırsa (programlama hatasıyla)
+		alert("Birden fazla dil kaydı olmuş. Hata!");
+		tx.executeSql('DELETE FROM game');
+		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );	
+		}
+		else{
+		alert("dil yok=");
+		//Dil seçim sayfası açılacak
+		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );		
+		}
+	}, errorCB);
+	}
+	
+	
+		
+	
+	function getUserInfoDB(){
+	alert("oyuncu bilgileri kontrol ediliyor");
+	//Kayıtlı oyuncu varsa,
+	//oyunculara ait bilgiler alınıp sayfalara ve değişkenlere yazılacak.
+	db.transaction(function (tx){
+							 
+	tx.executeSql('SELECT * FROM players', [], function (tx, results){
+		var len = results.rows.length;
+		if(len>0){
+		var htmlCode="";
+
+			for(i=0;i<len;i++){
+		pId[i]=results.rows.item(i).id;
+		pName[i]=results.rows.item(i).name;
+		pFreemode[i]=results.rows.item(i).freemode;
+		pFindout[i]=results.rows.item(i).findout;
+		pMathris[i]=results.rows.item(i).mathris;
+		pMathrix[i]=results.rows.item(i).mathrix;
+		pShootout[i]=results.rows.item(i).shootout;
+		
+//		gameLang=results.rows.item(i).language;
+htmlCode=htmlCode+'<div style="background-color:#999; padding:5px" class="ui-corner-all">'+
+''+
+'<a href="#" data-role="button" data-icon="star" data-theme="d" onClick="playerSelect(\''+pId[i]+'\')">'+pName[i]+'</a>'+
+''+
+'<div class="ui-grid-a">'+
+'<div class="ui-block-a">'+
+'<div class="ui-grid-a" style="font-weight:bold">'+
+'<div class="ui-block-a"><span class="levelSpanFreemode spanLevel">Free Mode</span></div>'+
+'<div class="ui-block-b">: <span class="playerLevelSpanFreemode">'+pFreemode[i]+'</span</div>'
+'<div class="ui-block-a"><span class="levelSpanFindout spanLevel">Find Out</span></div>'+
+'<div class="ui-block-b">: <span class="playerLevelSpanFindout">'+pFindout[i]+'</span></div>'+
+'<div class="ui-block-a"><span class="levelSpanMathris spanLevel">Mathris</span></div>'+
+'<div class="ui-block-b">: <span class="playerLevelSpanMathris">'+pMathris[i]+'</span></div>'+
+'<div class="ui-block-a"><span class="levelSpanMathrix spanLevel">Mathrix</span></div>'+
+'<div class="ui-block-b">: <span class="playerLevelSpanMathrix">'+pMathrix[i]+'</span></div>'+
+'<div class="ui-block-a"><span class="levelSpanShootout spanLevel">Shoot Out</span></div>'+
+'<div class="ui-block-b">: <span class="playerLevelSpanShootout">'+pShootout[i]+'</span></div>'+
+'</div>'+
+'</div>'+
+''+
+'<div class="ui-block-b">'+
+'<a href="#" data-role="button" data-icon="delete" data-theme="d"'+
+'onClick="playerDelete(\''+pId[i]+'\')"><span class="playerDelSpan">Delete</span></a>'+
+'</div>'+
+'</div>'+
+'</div>';
+			}
+		//htmlcode sayfaya aktarılıyor
+		$("#players").html(htmlcode);
+		}
+		
+	}, errorCB);
+
+	}, [], successCB, errorCB);
+	}
+
+	
+
+	
+	
+	function gamePlayerCreate(name){
+	//Veritabanına yeni bir oyuncu kaydeden kod
+	alert("oyuncu oluşturulkuyor");
+	pName=name;
+	db.transaction(function (tx){
+							 
+	tx.executeSql('INSERT INTO players (id, name, freemode, findout, mathris, mathrix, shootout) VALUES ("", "'+pName+'", 1, 1, 1, 1, 1)');
+	
+	}, [], updateCB, errorCB);
+	
+	}
+	
+	
+	
+	function gamePlayerDelete(id){
+	alert("oyuncu siliniyor")
+	pId=id;
+	//Veritabanından bir oyuncu silen kod
+	db.transaction(function(tx){
+	tx.executeSql("DELETE FROM players WHERE id='"+pId+"'");
+	}, [], updateCB, errorCB);
+	
+	}
+	
+/* Veritananı bağlantı kodları sonu */
+
+
+	function gameLangChange(){
+	alert("oyun dili değiştiriliyor dil="+gameLang);
+	//Oyun dili değiştirildiğinde çağrılacak
+	//Veritabanındaki dili ve gameLang değişkenini değiştiren kod
+	
+	db.transaction(function(tx){
+							
+	tx.executeSql('SELECT * FROM game', [], function (tx, results){
+	
+	var len = results.rows.length;
+	if(len==0){
+	tx.executeSql('INSERT INTO game (id, language) VALUES ("", "'+gameLang+'")');
+	}
+	else{
+	tx.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + 1 + "'");
+	}
+	
+	}, errorCB);
+	
+	}, updateCB, errorCB);
+	
+	}
 
 
 </script>
 </head> 
-<body id="body" onLoad="startGame();"> 
+<body id="body"> 
 
 
 
@@ -141,22 +388,22 @@ Explanations of games.
 <div class="ui-block-b">: <span class="playerLevelSpanFreemode">1</span></div>
 
 <div class="ui-block-a"><span class="levelSpanFindout">Find Out</span></div>
-<div class="ui-block-b">: <span class="playerLevelSpanFreemode">1</span></div>
+<div class="ui-block-b">: <span class="playerLevelSpanFindout">1</span></div>
 
 <div class="ui-block-a"><span class="levelSpanMathris">Mathris</span></div>
-<div class="ui-block-b">: <span class="playerLevelSpanFreemode">1</span></div>
+<div class="ui-block-b">: <span class="playerLevelSpanMathris">1</span></div>
 
 <div class="ui-block-a"><span class="levelSpanMathrix">Mathrix</span></div>
-<div class="ui-block-b">: <span class="playerLevelSpanFreemode">1</span></div>
+<div class="ui-block-b">: <span class="playerLevelSpanMathrix">1</span></div>
 
 <div class="ui-block-a"><span class="levelSpanShootout">Shoot Out</span></div>
-<div class="ui-block-b">: <span class="playerLevelSpanFreemode">1</span></div>
+<div class="ui-block-b">: <span class="playerLevelSpanShootout">1</span></div>
 </div>
 
 </div>
 
 <div class="ui-block-b">
-<a href="#" data-role="button" data-icon="delete" data-theme="d"><span class="playerDelSpan" onClick="playerDelete('id')">Delete</span></a>
+<a href="#" data-role="button" data-icon="delete" data-theme="d" onClick="playerDelete('id')"><span class="playerDelSpan">Delete</span></a>
 </div>
 </div>
 
