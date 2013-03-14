@@ -208,9 +208,10 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 		
 		}
 		
-	}, errorCB);
+	}, 
+	function (){alert("sql hata1");});
 
-	}, errorCB, successCB);
+	}, function (){alert("sql hata2");}, successCB);
 	}
 	
 	
@@ -242,7 +243,7 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 
 
 
-	function getUserInfoSuccess(){
+	function listPagePlayersUserInfoDBSuccess(){
 	//Oyuncu veritabanı başarıyla kontrol edildikten sonra, pagePlayers sayfası açılıyor
 	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
 	}
@@ -261,7 +262,7 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 		
 		//Dil daha önceden seçilmişse, oyuncu kaydıda yapılmış olabilir. Kontrol ediliyor
 		alert("oyuncu bilgileri kontrol edilecek");
-		db.transaction(getUserInfoDB, errorCB, getUserInfoSuccess);
+		db.transaction(listPagePlayersUserInfoDB, errorCB, listPagePlayersUserInfoDBSuccess);
 		}
 		else if(len>1){
 		//Yanlışlıkla birden fazla kayıt yapılırsa (programlama hatasıyla)
