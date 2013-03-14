@@ -259,12 +259,15 @@ htmlCode=htmlCode+'<div style="background-color:#999; padding:5px" class="ui-cor
 	else{
 	var dbLangId=results.rows.item(0).id;	
 	alert("Daha önceki dil değeri değiştirilecek. id="+dbLangId);
+	var dbLangPre=results.rows.item(0).language;	
+	alert("Önceki dil. id="+dbLangPre);
 	tx.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + dbLangId + "'");
 	}
 	
-	}, errorCB);
+	}, function (){ alert("sql error var");});
+/*	}, errorCB);*/
 	
-	}, updateCB, errorCB);
+	}, errorCB, updateCB);
 	
 	}
 
