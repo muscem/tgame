@@ -23,6 +23,32 @@ else{	//langSelVal=="en"		Ingilizce
 /* Dil seçeneklerini yazmak için kullanilacak kod sonu */
 
 
+
+//Bir sayfaya ait olmayan kodlar baslangici
+function gameLanguageChanged(){
+pagePlayersLanguageChange(gameLang);
+}
+
+//Bir sayfaya ait olmayan kodlar sonu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //Deneme amaçli degerler
 gameNumber = [[1,2]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
 gameOperation=[[1]];	//[[1,2],[1,2,3],[1]];
@@ -257,7 +283,7 @@ function chooseLang(lang){
 //Seçilen bayraga göre
 //Oynun dili (hem js degiskeni, hem de veritabanindaki degeri) degistirilecek
 //Sonra da pagePlayers sayfasina yönlendirilecek
-
+alert("dil seçildi = "+lang);
 //lang="en";	//Deneme amaçli, silinecek
 gameLang=lang;
 
@@ -271,20 +297,23 @@ $.mobile.changePage( $("#pagePlayers") );
 /* pageLang kodu sonu */
 
 
-
-
-
-
- 
  
 /* pagePlayers kodu baslangici */
 function langChangeSelect() {
 var lang;
 lang=$("#langSelect").val();
+if(lang!=""){
+gameLang=lang;
+gameLangChange();	//tarayicida çalismayi önler
+}
 //gameLangChange(lang);		//Tarayicida çalismayi önler
-pagePlayersLanguageChange(lang);
+gameLanguageChanged();
 };
 
+
+
+
+//pagePlayer sayfasinin dilini degistiren kod
 function pagePlayersLanguageChange(lang){
 //Dil degisimi ile sayfada yazilar degisecek
 
@@ -352,18 +381,21 @@ $(".levelSpanShootout").html(levelSpanShootout[langID]);
 }
 
 
+
+
 function playerCreate(){
 var name;
-name=$("#langLabel").text();
+name=$("#createPlayerName").val();
+alert("Yeni oyuncu kaydi isim "+ name);
 gamePlayerCreate(name);
-getUserInfoDB();	//Yeni olusturulanla birlikte oyuncular yeniden listeleniyor
-langChangeSelect();
+listPagePlayersUserInfoDB();	//Yeni olusturulanla birlikte oyuncular yeniden listeleniyor
+//langChangeSelect();
 }
 
 function playerDelete(id){
 gamePlayerDelete(id);
-getUserInfoDB();	//Silinen disindaki oyuncular yeniden listeleniyor
-langChangeSelect();
+listPagePlayersUserInfoDB();	//Silinen disindaki oyuncular yeniden listeleniyor
+//langChangeSelect();
 }
 
 

@@ -18,8 +18,6 @@
 
 <script type="text/javascript">
 
-var dbOk =0;	//Veritabanına bağlı olmadan da çalışabilmesi (yapılabilirse)
-
 //Oyunun her yerinde kullanılacak bazı değişkenler
 //Veritabanından alınan bilgiler (p = player)
 var gameLang="";			//Oyun dili
@@ -64,10 +62,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		//Oyunun ilk açılışı ise
 		//Veritabanına tablolar oluşturulacak
 		db.transaction(createTable, errorCB, createTableSuccess);
-		
-		//Oyunun dili öğrenilecek
-		
-		
+
     }
 	
 	
@@ -94,7 +89,6 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	function createTableSuccess(){
 	//Veritabanı kullanılabilir durumda
 	alert("Veritabanı kullanılabilir durumda");
-	dbOk=1;
 	
 	alert("dil kontrol edilecek");
 	db.transaction(getLangDB, errorCB, successCB);
@@ -116,49 +110,58 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	//Veritabanında güncelleme yapıldığında, yani bir değer update edildiğinde
 	}
 // Önemsiz callback'ler sonu
+
+	function gameLangChange(){
+	alert("oyun dili değiştiriliyor dil="+gameLang);
+	//Oyun dili değiştirildiğinde çağrılacak
+	//Veritabanındaki dili ve gameLang değişkenini değiştiren kod
 	
-	function getUserInfıSuccess(){
-	//Oyuncu veritabanı başarıyla kontrol edildikten sonra, pagePlayers sayfası açılıyor
-	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+	db.transaction(function(tx){
+							
+	tx.executeSql('SELECT * FROM game', [], function (tx, results){
+	var len = results.rows.length;
+	if(len==0 || len>1){
+	alert("Daha öncesinde dil yok. Yeni kayıt yapılacak "+gameLang);
+	tx.executeSql("INSERT INTO game (language) VALUES ('"+gameLang+"')");
+	}
+	else{
+	var dbLangId=results.rows.item(0).id;	
+	alert("Daha önceki dil değeri değiştirilecek. id="+dbLangId);
+	var dbLangPre=results.rows.item(0).language;	
+	alert("Önceki dil. id="+dbLangPre);
+	tx.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + dbLangId + "'");
 	}
 	
-	function getLangDB(tx) {
-		alert("dil kontrol ediliyor");
-		//Oyunun daha önce açılıp, dil seçimi yapılıp yapılmadığı bulunuyor.
-		//Yapılmadıysa dil seçim sayfasına,
-		//aksi halde oyuncu seçim sayfasın yönlendirme yapılıyor.
-		tx.executeSql('SELECT * FROM game', [], function(tx, results) {
-		var len = results.rows.length;
-		alert("bulunan dil sayısı len= "+len);
-		if(len==1){
-		gameLang=results.rows.item(0).language;
-		alert("dil="+gameLang);
-		
-		//Dil daha önceden seçilmişse, oyuncu kaydıda yapılmış olabilir. Kontrol ediliyor
-		alert("oyuncu bilgileri kontrol edilecek");
-		db.transaction(getUserInfoDB, errorCB, getUserInfıSuccess);
-		}
-		else if(len>1){
-		//Yanlışlıkla birden fazla kayıt yapılırsa (programlama hatasıyla)
-		alert("Birden fazla dil kaydı olmuş. Hata!");
-		tx.executeSql('DELETE FROM game');
-		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );	
-		}
-		else{
-		alert("dil yok=");
-		//Dil seçim sayfası açılacak
-		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );		
-		}
 	}, errorCB);
+	
+	}, errorCB, successCB);
+	
 	}
 	
 	
-		
+
+
+
+
+
+	function gamePlayerCreate(name){
+	//Veritabanına yeni bir oyuncu kaydeden kod
+	if(name!=""){
+	pName=name;
+	db.transaction(function (tx){
+	tx.executeSql("INSERT INTO players (name, freemode, findout, mathris, mathrix, shootout) VALUES ('"+pName+"', '1', '1', '1', '1', '1')");
 	
-	function getUserInfoDB(){
-	alert("oyuncu bilgileri kontrol ediliyor");
+	}, [], errorCB, successCB);
+	}
+	}
+
+
+
+
+	function listPagePlayersUserInfoDB(){
+	alert("oyuncu bilgileri listeleniyor");
 	//Kayıtlı oyuncu varsa,
-	//oyunculara ait bilgiler alınıp sayfalara ve değişkenlere yazılacak.
+	//oyunculara ait bilgiler alınıp pagePlayer sayfasına yazılacak.
 	db.transaction(function (tx){
 							 
 	tx.executeSql('SELECT * FROM players', [], function (tx, results){
@@ -209,24 +212,83 @@ htmlCode=htmlCode+'<div style="background-color:#999; padding:5px" class="ui-cor
 		
 	}, errorCB);
 
-	}, [], successCB, errorCB);
+	}, [], errorCB, successCB);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+	function getUserInfoSuccess(){
+	//Oyuncu veritabanı başarıyla kontrol edildikten sonra, pagePlayers sayfası açılıyor
+	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+	}
+	
+	function getLangDB(tx) {
+		alert("dil kontrol ediliyor");
+		//Oyunun daha önce açılıp, dil seçimi yapılıp yapılmadığı bulunuyor.
+		//Yapılmadıysa dil seçim sayfasına,
+		//aksi halde oyuncu seçim sayfasın yönlendirme yapılıyor.
+		tx.executeSql('SELECT * FROM game', [], function(tx, results) {
+		var len = results.rows.length;
+		alert("bulunan dil sayısı len= "+len);
+		if(len==1){
+		gameLang=results.rows.item(0).language;
+		alert("dil="+gameLang);
+		
+		//Dil daha önceden seçilmişse, oyuncu kaydıda yapılmış olabilir. Kontrol ediliyor
+		alert("oyuncu bilgileri kontrol edilecek");
+		db.transaction(getUserInfoDB, errorCB, getUserInfoSuccess);
+		}
+		else if(len>1){
+		//Yanlışlıkla birden fazla kayıt yapılırsa (programlama hatasıyla)
+		alert("Birden fazla dil kaydı olmuş. Hata!");
+		tx.executeSql('DELETE FROM game');
+		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );	
+		}
+		else{
+		alert("dil yok=");
+		//Dil seçim sayfası açılacak
+		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );		
+		}
+	}, errorCB);
+	}
+	
+	
+		
+	
+
 
 	
 
 	
 	
-	function gamePlayerCreate(name){
-	//Veritabanına yeni bir oyuncu kaydeden kod
-	alert("oyuncu oluşturulkuyor");
-	pName=name;
-	db.transaction(function (tx){
-							 
-	tx.executeSql('INSERT INTO players (id, name, freemode, findout, mathris, mathrix, shootout) VALUES ("", "'+pName+'", 1, 1, 1, 1, 1)');
-	
-	}, [], updateCB, errorCB);
-	
-	}
+
 	
 	
 	
@@ -243,33 +305,7 @@ htmlCode=htmlCode+'<div style="background-color:#999; padding:5px" class="ui-cor
 /* Veritananı bağlantı kodları sonu */
 
 
-	function gameLangChange(){
-	alert("oyun dili değiştiriliyor dil="+gameLang);
-	//Oyun dili değiştirildiğinde çağrılacak
-	//Veritabanındaki dili ve gameLang değişkenini değiştiren kod
 	
-	db.transaction(function(tx){
-							
-	tx.executeSql('SELECT * FROM game', [], function (tx, results){
-	var len = results.rows.length;
-	if(len==0 || len>1){
-	alert("Daha öncesinde dil yok. Yeni kayıt yapılacak "+gameLang);
-	tx.executeSql("INSERT INTO game (language) VALUES ('"+gameLang+"')");
-	}
-	else{
-	var dbLangId=results.rows.item(0).id;	
-	alert("Daha önceki dil değeri değiştirilecek. id="+dbLangId);
-	var dbLangPre=results.rows.item(0).language;	
-	alert("Önceki dil. id="+dbLangPre);
-	tx.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + dbLangId + "'");
-	}
-	
-	}, function (){ alert("sql error var");});
-/*	}, errorCB);*/
-	
-	}, errorCB, updateCB);
-	
-	}
 
 
 </script>
@@ -427,10 +463,10 @@ Explanations of games.
 <label for="basic" style="margin-top:10px; font-weight:bold" id="playerNameLabel">Name</label>
 </div>
 <div class="ui-block-b">
-<input type="text" name="name" id="basic" value="" />
+<input type="text" name="name" id="createPlayerName" value="" />
 </div>
 </div>
-<a href="#" data-role="button" data-theme="d"><span id="playerCreateSpan">Create</span></a>
+<a href="#" data-role="button" data-theme="d" onClick="playerCreate();"><span id="playerCreateSpan">Create</span></a>
 
 </div> 
 
