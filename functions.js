@@ -290,25 +290,40 @@ gameLang=lang;
 gameLangChange();	//tarayicida çalismayi önler
 alert("sayfa degis"+gameLang);
 $("#langSelect").val(gameLang);
-$("#langSelect").trigger("change");
+//$("#langSelect").trigger("change");
 
 $.mobile.changePage( $("#pagePlayers") );
 }
 /* pageLang kodu sonu */
 
 
- 
-/* pagePlayers kodu baslangici */
+
+/* pageGameSettings kodu baslangici */
 function langChangeSelect() {
 var lang;
 lang=$("#langSelect").val();
 if(lang!=""){
 gameLang=lang;
 gameLangChange();	//tarayicida çalismayi önler
+gameLanguageChanged();
 }
 //gameLangChange(lang);		//Tarayicida çalismayi önler
-gameLanguageChanged();
+
 };
+/* pageGameSettings kodu sonu */
+
+
+
+
+
+
+
+
+
+
+ 
+/* pagePlayers kodu baslangici */
+
 
 
 
@@ -387,9 +402,11 @@ function playerCreate(){
 var name;
 name=$("#createPlayerName").val();
 alert("Yeni oyuncu kaydi isim "+ name);
+if(name!=""){
 gamePlayerCreate(name);
 listPagePlayersUserInfoDB();	//Yeni olusturulanla birlikte oyuncular yeniden listeleniyor
 //langChangeSelect();
+}
 }
 
 function playerDelete(id){

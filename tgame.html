@@ -149,9 +149,9 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	if(name!=""){
 	pName=name;
 	db.transaction(function (tx){
-	tx.executeSql("INSERT INTO players (name, freemode, findout, mathris, mathrix, shootout) VALUES ('"+pName+"', '1', '1', '1', '1', '1')");
+	tx.executeSql("INSERT INTO players (name, freemode, findout, mathris, mathrix, shootout) VALUES ('"+pName+"', 1, 1, 1, 1, 1)");
 	
-	}, [], errorCB, successCB);
+	}, errorCB, successCB);
 	}
 	}
 
@@ -166,6 +166,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 							 
 	tx.executeSql('SELECT * FROM players', [], function (tx, results){
 		var len = results.rows.length;
+		alert("Kayıtlı oyuncu sayısı ="+len);
 		if(len>0){
 		var htmlCode="";
 
@@ -212,7 +213,7 @@ htmlCode=htmlCode+'<div style="background-color:#999; padding:5px" class="ui-cor
 		
 	}, errorCB);
 
-	}, [], errorCB, successCB);
+	}, errorCB, successCB);
 	}
 	
 	
@@ -362,14 +363,14 @@ MathMadness is checking some controls. Please wait.
 
 
 <!-- /Sayfa başlangıcı -->
-<div data-role="page" id="pageInfo">
+<div data-role="page" id="pageGameInfo">
 
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>MathMadness</h1>
 </div><!-- /header -->
 
-<div data-role="content" id="pageInfoContent" align="center">
+<div data-role="content" id="pageGameInfoContent" align="center">
 Explanations of games.
 </div>
 
@@ -377,14 +378,14 @@ Explanations of games.
 
 
 <!-- /Sayfa başlangıcı -->
-<div data-role="page" id="pageSettings">
+<div data-role="page" id="pageGameSettings">
 
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>MathMadness</h1>
 </div><!-- /header -->
 
-<div data-role="content" id="pageLangContent" align="center">
+<div data-role="content" id="pageGameSettingsContent" align="center">
 <label for="langSelect" class="select" style="margin-top:20px; font-weight:bold"><h2 id="langLabel">Language :</h2></label>
 <select name="langSelect" id="langSelect" onChange="langChangeSelect();">
    <option value="de">Deutsch</option>
@@ -472,8 +473,8 @@ Explanations of games.
 
 
 <div data-role="footer" data-theme="b" data-position="fixed" align="center">
-<a href="#pageSettings" id="gameSettings" onClick="" data-icon="gear" data-theme="b" data-iconpos="left" style="width:50px">&nbsp;</a>
-<a href="#pageInfo" id="gameInfo" onClick="" data-icon="info" data-theme="b" data-iconpos="left" style="width:50px">&nbsp;</a>
+<a href="#pageGameSettings" id="pageGameSettingsLink" onClick="" data-icon="gear" data-theme="b" data-iconpos="left" style="width:50px">&nbsp;</a>
+<a href="#pageGameInfo" id="pageGameInfoLink" onClick="" data-icon="info" data-theme="b" data-iconpos="left" style="width:50px">&nbsp;</a>
 </div><!-- /footer --> 
 
 </div><!-- /page -->
