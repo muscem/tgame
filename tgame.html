@@ -60,8 +60,8 @@ pId[0]=0; 		//id
 pName[0]="Oyuncuuu 1";
 
 //gamePlayerID=0 veritabanindan gelemeyecek bir sayi. Bu yüzden deneme kisisi (guest) için ayridim.	
-for(i1=1;i1<6;i1++){
-for(i2=1;i2<4;i2++){
+for(var i1=1;i1<6;i1++){
+for(var i2=1;i2<4;i2++){
 pLevels[0][i1][i2]=1;
 lastSelFMOp[0][i1][i2]=1;
 lastSelFMNum[0][i1][i2]=1;
@@ -80,7 +80,7 @@ lastSelDif[0][5]=1;
 
 	
 
-var gameMessage1=new Array();	//Henüz kullanmadım, çok dil için dizi oluşturmak gerek
+var gameMessage1=[];	//Henüz kullanmadım, çok dil için dizi oluşturmak gerek
 
 var db;	//Veritabanı için kullanacağım.
 
@@ -239,69 +239,69 @@ alert("tablolar oluşturuldu");
 		var htmlCode="";
 		var id;
 		if(len>0){
-		for(i=0;i<len;i++){
+		for(var i=0;i<len;i++){
 		pId[i]=results.rows.item(i).id;
 		id=pId[i];
 		pName[id]=results.rows.item(i).name;
 		
 		var deg=[];
 		deg=results.rows.item(i).plfreemode.split("|");
-		for(j=1;j<deg.length+1;j++){	//deg.length=3
+		for(var j=1;j<deg.length+1;j++){	//deg.length=3
 		pLevels[id][1][j]=deg[j-1];
 		}
 		
 		deg.length=0;
 		deg=results.rows.item(i).plfindout.split("|");
-		for(j=1;j<deg.length+1;j++){	//deg.length=3
+		for(var j=1;j<deg.length+1;j++){	//deg.length=3
 		pLevels[id][2][j]=deg[j-1];
 		}
 		
 		deg.length=0;
 		deg=results.rows.item(i).plmathris.split("|");
-		for(j=1;j<deg.length+1;j++){	//deg.length=3
+		for(var j=1;j<deg.length+1;j++){	//deg.length=3
 		pLevels[id][3][j]=deg[j-1];
 		}
 		
 		deg.length=0;
 		deg=results.rows.item(i).plmathrix.split("|");
-		for(j=1;j<deg.length+1;j++){	//deg.length=3
+		for(var j=1;j<deg.length+1;j++){	//deg.length=3
 		pLevels[id][4][j]=deg[j-1];
 		}
 		
 		deg.length=0;
 		deg=results.rows.item(i).plshootout.split("|");
-		for(j=1;j<deg.length+1;j++){	//deg.length=3
+		for(var j=1;j<deg.length+1;j++){	//deg.length=3
 		pLevels[id][5][j]=deg[j-1];
 		}
 		
 		
 		deg.length=0;
 		deg=results.rows.item(i).fmoperation.split("|");
-		for(j=1;j<deg.length+1;j++){	//deg.length=12
+		for(var j=1;j<deg.length+1;j++){	//deg.length=12
 		lastSelFMOp[id][1][j]=deg[j-1];
 		}
 		
 		deg.length=0;
 		deg=results.rows.item(i).fmnumbers.split("|");
-		for(j=1;j<deg.length+1;j++){	//deg.length=15
+		for(var j=1;j<deg.length+1;j++){	//deg.length=15
 		lastSelFMNum[id][1][j]=deg[j-1];
 		}
 		
 		deg.length=0;
 		deg=results.rows.item(i).fmdigit.split("|");
-		for(j=1;j<deg.length+1;j++){	//deg.length=15
+		for(var j=1;j<deg.length+1;j++){	//deg.length=15
 		lastSelFMDig[id][1][j]=deg[j-1];
 		}
 		
 		deg.length=0;
 		deg=results.rows.item(i).fmocount.split("|");
-		for(j=1;j<deg.length+1;j++){	//deg.length=15
+		for(var j=1;j<deg.length+1;j++){	//deg.length=15
 		lastSelFMOC[id][1][j]=deg[j-1];
 		}
 		
 		deg.length=0;
 		deg=results.rows.item(i).fmsign.split("|");
-		for(j=1;j<deg.length+1;j++){	//deg.length=18
+		for(var j=1;j<deg.length+1;j++){	//deg.length=18
 		lastSelFMS[id][1][j]=deg[j-1];
 		}
 		
