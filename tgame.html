@@ -125,7 +125,7 @@ alert("game tablosu oluşturulacak");
 					', plmathris VARCHAR(11)'+		//player level
 					', plmathrix VARCHAR(11)'+		//player level
 					', plshootout VARCHAR(11)'+		//player level
-					', freemodediffiulty INTEGER'+	//Free mode last selected difficulty
+					', freemodedifficulty INTEGER'+	//Free mode last selected difficulty
 					', findoutdifficulty INTEGER'+	//Find out last selected difficulty
 					', mathrisdifficulty INTEGER'+	//Mathris last selected difficulty
 					', mathrixdifficulty INTEGER'+	//Mathrix mode last selected difficulty
@@ -203,7 +203,7 @@ alert("tablolar oluşturuldu");
 
 	if(name!=""){
 	db.transaction(function (tx){
-	tx.executeSql("INSERT INTO players (name, plfreemode, plfindout, plmathris, plmathrix, plshootout, freemodediffiulty, findoutdifficulty, mathrisdifficulty, mathrixdifficulty, shootoutdifficulty, fmoperation, fmnumbers, fmdigit, fmocount, fmsign) VALUES ('"+name+"', '1|0|0', '1|0|0', '1|0|0', '1|0|0', '1|0|0', 1, 1, 1, 1, 1, '1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0')");
+	tx.executeSql("INSERT INTO players (name, plfreemode, plfindout, plmathris, plmathrix, plshootout, freemodedifficulty, findoutdifficulty, mathrisdifficulty, mathrixdifficulty, shootoutdifficulty, fmoperation, fmnumbers, fmdigit, fmocount, fmsign) VALUES ('"+name+"', '1|0|0', '1|0|0', '1|0|0', '1|0|0', '1|0|0', 1, 1, 1, 1, 1, '1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0')");
 	alert("Yeni oyuncu kaydedildi");
 	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
 	}, errorCB, successCB);
@@ -253,6 +253,12 @@ alert("tablolar oluşturuldu");
 		id=pId[i];
 		pName[id]=results.rows.item(i).name;
 		
+		alert("id ve isim alındı");
+		var a=results.rows.item(i).plfreemode;
+		var b=[];
+		b=a.split("|");
+		
+		alert("leveller listelenecek");
 		var deg=[];
 		deg=results.rows.item(i).plfreemode.split("|");
 		for(var j=1;j<deg.length+1;j++){	//deg.length=3
@@ -283,7 +289,7 @@ alert("tablolar oluşturuldu");
 		pLevels[id][5][j]=deg[j-1];
 		}
 		
-		
+		alert("free mode seçimler listelenecek");
 		deg.length=0;
 		deg=results.rows.item(i).fmoperation.split("|");
 		for(var j=1;j<deg.length+1;j++){	//deg.length=12
@@ -313,13 +319,13 @@ alert("tablolar oluşturuldu");
 		for(var j=1;j<deg.length+1;j++){	//deg.length=18
 		lastSelFMS[id][1][j]=deg[j-1];
 		}
-		
-		lastSelDif[id][1]=results.rows.item(i).freemodediffiulty;
+		alert("dif listelenecek");
+		lastSelDif[id][1]=results.rows.item(i).freemodedifficulty;
 		lastSelDif[id][2]=results.rows.item(i).findoutdifficulty;
 		lastSelDif[id][3]=results.rows.item(i).mathrisdifficulty;
 		lastSelDif[id][4]=results.rows.item(i).mathrixdifficulty;
 		lastSelDif[id][5]=results.rows.item(i).shootoutdifficulty;
-		
+		alert("listeleme bitti");
 
 htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 '<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="star" data-theme="d" onclick="playerSelect(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+pName[id]+'</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a>'+
@@ -372,6 +378,8 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 '</p>'+
 '</div>'+
 '</div>';
+
+alert("htmlcode yazıldı");
 			}
 		}
 		else if(len==0){
