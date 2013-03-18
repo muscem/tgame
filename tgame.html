@@ -194,7 +194,10 @@ alert("tablolar oluşturuldu");
 	
 
 	function gamePlayerCreate(name){
-	//Veritabanına yeni bir oyuncu kaydeden kod
+	if(name==""){
+	name=$("#pagePlayerCreateContent").find("#createPlayerName").val();
+	}
+	alert("name= "+name);
 	if(name!=""){
 	db.transaction(function (tx){
 	tx.executeSql("INSERT INTO players (name, plfreemode, plfindout, plmathris, plmathrix, plshootout, freemodediffiulty, findoutdifficulty, mathrisdifficulty, mathrixdifficulty, shootoutdifficulty, fmoperation, fmnumbers, fmdigit, fmocount, fmsign) VALUES ('"+name+"', '1|0|0', '1|0|0', '1|0|0', '1|0|0', '1|0|0', 1, 1, 1, 1, 1, '1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0')");
@@ -628,7 +631,7 @@ Explanations of games.
 <label id="labelDelete" style="font-weight:bold;">Name :</label>
 <input type="text" name="createnewname" id="createPlayerName" value="" data-theme="d" />
 <p align="center"><button type="button" onClick="closePageToPlayers();" data-theme="d" data-inline="true" ><span class="playerCancelSpan">Cancel</span></button>
-<button type="button" id="pagePlayerCreateButton" onClick="" data-theme="d" data-inline="true" >Create</button>
+<button type="button" id="pagePlayerCreateButton" onClick="gamePlayerCreate('');" data-theme="d" data-inline="true" ><span class="playerCancelSpan">Create</span></button>
 </p>
 </div>
 </form>
