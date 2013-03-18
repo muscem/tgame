@@ -260,17 +260,23 @@ alert("tablolar oluşturuldu");
 		
 		alert("leveller listelenecek");
 		var deg=[];
+		alert("leveller listelenecek2");
 		deg=results.rows.item(i).plfreemode.split("|");
+		alert("leveller listelenecek3");
 		for(var j=1;j<deg.length+1;j++){	//deg.length=3
 		pLevels[id][1][j]=deg[j-1];
 		}
 		
+		alert("leveller listelenecek4");
 		deg.length=0;
+		alert("leveller listelenecek5");
 		deg=results.rows.item(i).plfindout.split("|");
+		alert("leveller listelenecek6");
 		for(var j=1;j<deg.length+1;j++){	//deg.length=3
 		pLevels[id][2][j]=deg[j-1];
 		}
 		
+		alert("leveller listelenecek7");
 		deg.length=0;
 		deg=results.rows.item(i).plmathris.split("|");
 		for(var j=1;j<deg.length+1;j++){	//deg.length=3
