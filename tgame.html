@@ -257,11 +257,19 @@ alert("tablolar oluşturuldu");
 		var a=results.rows.item(i).plfreemode;
 		var b=[];
 		b=a.split("|");
+		alert("deg (b) sayısı = "+b.length);
+		alert("deg (b) 0 ="+b[0]);
+		alert("deg (b) 1 ="+b[1]);
+		alert("deg (b) 2 ="+b[2]);
 		
 		alert("leveller listelenecek");
 		var deg=[];
 		alert("leveller listelenecek2");
 		deg=results.rows.item(i).plfreemode.split("|");
+		alert("deg sayısı = "+deg.length);
+		alert("deg 0 ="+deg[0]);
+		alert("deg 1 ="+deg[1]);
+		alert("deg 2 ="+deg[2]);
 		alert("leveller listelenecek3");
 		for(var j=1;j<4;j++){	//deg.length=3
 		pLevels[id][1][j]=deg[j-1];
@@ -425,10 +433,10 @@ alert("htmlcode yazıldı");
 		if(len==1){
 		gameLang=results.rows.item(0).language;
 		alert("dil="+gameLang);
-		
+		$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );	
 		//Dil daha önceden seçilmişse, oyuncu kaydıda yapılmış olabilir. Kontrol ediliyor
-		alert("oyuncu bilgileri kontrol edilecek");
-		db.transaction(listPagePlayersUserInfoDB, errorCB, listPagePlayersUserInfoDBSuccess);
+		//alert("oyuncu bilgileri kontrol edilecek");
+		//db.transaction(listPagePlayersUserInfoDB, errorCB, listPagePlayersUserInfoDBSuccess);
 		}
 		else if(len>1){
 		//Yanlışlıkla birden fazla kayıt yapılırsa (programlama hatasıyla)
