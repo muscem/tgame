@@ -21,7 +21,7 @@
 //Oyunun her yerinde kullanılacak bazı değişkenler
 //Veritabanından alınan bilgiler (p = player)
 var gameLang="";			//Oyun dili
-var gamePlayerID="";		//Oyuncu id
+var gamePlayerID=0;		//Oyuncu id
 
 //Oyuncunun seçimleri
 var gameMode;				//Oyun modu
@@ -29,19 +29,56 @@ var gameOperation=[[]];			//Oyun işlem türü
 var gameOCount=[[]];				//Oyuns işlem sayısı
 var gameDigit=[[]];				//Oyun hane sayısı
 var gameNumber=[[]];				//Oyun sayı türü
-var gameDifficulty;			//Oyun zorluğu 0-1-2
+var gameDifficulty;			//Oyun zorluğu 1-2-3
 var gamelevel;				//Oyun seviyesi
 
 
 
 //Oyuncu bilgileri
-var pId=new Array(); 		//id
-var pName=new Array();		//name
-var pFreemode=new Array();	//freemode seviyesi (level)
-var pFindout=new Array();	//findout seviyesi (level)
-var pMathris=new Array();	//mathris seviyesi (level)
-var pMathrix=new Array();	//Mathrix seviyesi (level)
-var pShootout=new Array();	//shootout seviyesi (level)
+var pId=[]; 		//id
+var pName=[];		//name
+
+var pLevels=[[[]]];		//pLevels[gamePlayerID][mode][Difficulty]=level
+//mode= 1-Free mode	2-Find out	3-Matris	4-Mathrix	5-Shoot out
+
+//son seçilen zorluk
+var lastSelDif=[[]];	//freemode diffiulty	 lastSelFMDif[gamePlayerID][mode]=dif
+//mode= 1-Free mode	2-Find out	3-Matris	4-Mathrix	5-Shoot out
+//dif= 1-easy, 2-moderate, 3-hard
+
+
+//(seçilen son durum)
+var lastSelFMOp=[[[]]];		//son seçilen operation	lastSelFMOp[gamePlayerID][operation]= 0 or 1
+var lastSelFMNum=[[[]]];	// 0: not selected
+var lastSelFMDig=[[[]]];	// 1: selected
+var lastSelFMOC=[[[]]];		
+var lastSelFMS=[[[]]];		
+
+
+
+pId[0]=0; 		//id
+pName[0]="Oyuncuuu 1";
+
+//gamePlayerID=0 veritabanindan gelemeyecek bir sayi. Bu yüzden deneme kisisi (guest) için ayridim.	
+for(i1=1;i1<6;i1++){
+for(i2=1;i2<4;i2++){
+pLevels[0][i1][i2]=1;
+lastSelFMOp[0][i1][i2]=1;
+lastSelFMNum[0][i1][i2]=1;
+lastSelFMDig[0][i1][i2]=1;
+lastSelFMOC[0][i1][i2]=1;
+lastSelFMS[0][i1][i2]=1;
+}
+}
+
+//son seçilen zorluk: 1-easy, 2-moderate, 3-hard (diffiulty )
+lastSelDif[0][1]=1;
+lastSelDif[0][2]=1;	
+lastSelDif[0][3]=1;	
+lastSelDif[0][4]=1;	
+lastSelDif[0][5]=1;	
+
+	
 
 var gameMessage1=new Array();	//Henüz kullanmadım, çok dil için dizi oluşturmak gerek
 
@@ -77,12 +114,23 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		 tx.executeSql('CREATE TABLE IF NOT EXISTS players ('+
 					'id INTEGER PRIMARY KEY AUTOINCREMENT'+
 					', name VARCHAR(50)'+
-					', freemode INTEGER'+
-					', findout INTEGER'+
-					', mathris INTEGER'+
-					', mathrix INTEGER'+
-					', shootout INTEGER)');
-
+					', plfreemode VARCHAR(11)'+		//player level	Easy | Moderate | Hard
+					', plfindout VARCHAR(11)'+		//player level
+					', plmathris VARCHAR(11)'+		//player level
+					', plmathrix VARCHAR(11)'+		//player level
+					', plshootout VARCHAR(11)'+	//player level
+					', freemodediffiulty INTEGER'+			//Free mode last selected difficulty
+					', findoutdifficulty INTEGER'+		//Find out last selected difficulty
+					', mathrisdifficulty INTEGER'+		//Mathris last selected difficulty
+					', mathrixdifficulty INTEGER'+		//Mathrix mode last selected difficulty
+					', shootoutdifficulty INTEGER'+	//Shoo out mode last selected difficulty
+					', fmoperation VARCHAR(23)'+		//Free mode last selected easy operation
+					', fmnumbers VARCHAR(29)'+		//Free mode last selected easy number
+					', fmdigit VARCHAR(29)'+			//Free mode last selected easy digit
+					', fmocount VARCHAR(29)'+		//Free mode last selected easy op. c.
+					', fmsign VARCHAR(35) )');			//Free mode last selected esy sign
+					
+		
 		}
 
 
@@ -144,13 +192,18 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	//Veritabanına yeni bir oyuncu kaydeden kod
 	if(name!=""){
 	db.transaction(function (tx){
-	tx.executeSql("INSERT INTO players (name, freemode, findout, mathris, mathrix, shootout) VALUES ('"+name+"', 1, 1, 1, 1, 1)");
-	
+	tx.executeSql("INSERT INTO players (name, plfreemode, plfindout, plmathris, plmathrix, plshootout, freemodediffiulty, findoutdifficulty, mathrisdifficulty, mathrixdifficulty, shootoutdifficulty, fmoperation, fmnumbers, fmdigit, fmocount, fmsign) VALUES ('"+name+"', '1|0|0', '1|0|0', '1|0|0', '1|0|0', '1|0|0', 1, 1, 1, 1, 1, '1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0')");
+					
 	}, errorCB, successCB);
 	}
 	}
 
-
+//		function dbVarConvert(varchar, id){
+//		var t=[];
+//		t.length=0;
+//		t=varchar.split("|");
+//		return t;
+//		}
 
 
 	function listPagePlayersUserInfoDB(){
@@ -158,64 +211,165 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	//Kayıtlı oyuncu varsa,
 	//oyunculara ait bilgiler alınıp pagePlayer sayfasına yazılacak.
 	db.transaction(function (tx){
-							 
+	
 	tx.executeSql('SELECT * FROM players', [], function (tx, results){
 		var len = results.rows.length;
+		
+		//Player'a ait değişkenler sıfırlanıyor
+		pId.length=0;
+		pName.length=0;
+		pLevels.length=0;
+		lastSelFMOp.length=0;
+		lastSelFMNum.length=0;
+		lastSelFMDig.length=0;
+		lastSelFMOC.length=0;
+		lastSelFMS.length=0;
+		lastSelDif.length=0;		
+
+
+
+
+		
 		alert("Kayıtlı oyuncu sayısı ="+len);
 		var htmlCode="";
+		var id;
 		if(len>0){
 		for(i=0;i<len;i++){
 		pId[i]=results.rows.item(i).id;
-		pName[i]=results.rows.item(i).name;
-		pFreemode[i]=results.rows.item(i).freemode;
-		pFindout[i]=results.rows.item(i).findout;
-		pMathris[i]=results.rows.item(i).mathris;
-		pMathrix[i]=results.rows.item(i).mathrix;
-		pShootout[i]=results.rows.item(i).shootout;
+		id=pId[i];
+		pName[id]=results.rows.item(i).name;
 		
-		alert("pId[i]= "+results.rows.item(i).id+" - "+
-		"pName[i]= "+results.rows.item(i).name+" - "+
-		"pFreemode[i]= "+results.rows.item(i).freemode+" - "+
-		"pFindout[i]= "+results.rows.item(i).findout+" - "+
-		"pMathris[i]= "+results.rows.item(i).mathris+" - "+
-		"pMathrix[i]= "+results.rows.item(i).mathrix+" - "+
-		"pShootout[i]= "+results.rows.item(i).shootout);
+		var deg=[];
+		deg=results.rows.item(i).plfreemode.split("|");
+		for(j=1;j<deg.length+1;j++){	//deg.length=3
+		pLevels[id][1][j]=deg[j-1];
+		}
 		
-		alert("pId[i]= "+pId[i]+" - "+
-		"pName[i]= "+pName[i]+" - "+
-		"pFreemode[i]= "+pFreemode[i]+" - "+
-		"pFindout[i]= "+pFindout[i]+" - "+
-		"pMathris[i]= "+pMathris[i]+" - "+
-		"pMathrix[i]= "+pMathrix[i]+" - "+
-		"pShootout[i]= "+pShootout[i]);
+		deg.length=0;
+		deg=results.rows.item(i).plfindout.split("|");
+		for(j=1;j<deg.length+1;j++){	//deg.length=3
+		pLevels[id][2][j]=deg[j-1];
+		}
 		
-//		gameLang=results.rows.item(i).language;
+		deg.length=0;
+		deg=results.rows.item(i).plmathris.split("|");
+		for(j=1;j<deg.length+1;j++){	//deg.length=3
+		pLevels[id][3][j]=deg[j-1];
+		}
+		
+		deg.length=0;
+		deg=results.rows.item(i).plmathrix.split("|");
+		for(j=1;j<deg.length+1;j++){	//deg.length=3
+		pLevels[id][4][j]=deg[j-1];
+		}
+		
+		deg.length=0;
+		deg=results.rows.item(i).plshootout.split("|");
+		for(j=1;j<deg.length+1;j++){	//deg.length=3
+		pLevels[id][5][j]=deg[j-1];
+		}
+		
+		
+		deg.length=0;
+		deg=results.rows.item(i).fmoperation.split("|");
+		for(j=1;j<deg.length+1;j++){	//deg.length=12
+		lastSelFMOp[id][1][j]=deg[j-1];
+		}
+		
+		deg.length=0;
+		deg=results.rows.item(i).fmnumbers.split("|");
+		for(j=1;j<deg.length+1;j++){	//deg.length=15
+		lastSelFMNum[id][1][j]=deg[j-1];
+		}
+		
+		deg.length=0;
+		deg=results.rows.item(i).fmdigit.split("|");
+		for(j=1;j<deg.length+1;j++){	//deg.length=15
+		lastSelFMDig[id][1][j]=deg[j-1];
+		}
+		
+		deg.length=0;
+		deg=results.rows.item(i).fmocount.split("|");
+		for(j=1;j<deg.length+1;j++){	//deg.length=15
+		lastSelFMOC[id][1][j]=deg[j-1];
+		}
+		
+		deg.length=0;
+		deg=results.rows.item(i).fmsign.split("|");
+		for(j=1;j<deg.length+1;j++){	//deg.length=18
+		lastSelFMS[id][1][j]=deg[j-1];
+		}
+		
+		lastSelDif[id][1]=results.rows.item(i).freemodediffiulty;
+		lastSelDif[id][2]=results.rows.item(i).findoutdifficulty;
+		lastSelDif[id][3]=results.rows.item(i).mathrisdifficulty;
+		lastSelDif[id][4]=results.rows.item(i).mathrixdifficulty;
+		lastSelDif[id][5]=results.rows.item(i).shootoutdifficulty;
+		
+
 htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
-''+
-'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="star" data-theme="d" onclick="playerSelect(\''+pId[i]+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+pName[i]+'</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a>'+
-''+
-'<div class="ui-grid-a">'+
-'<div class="ui-block-a">'+
-'<div class="ui-grid-a" style="font-weight:bold">'+
-'<div class="ui-block-a"><span class="levelSpanFreemode spanLevel">Free Mode</span></div>'+
-'<div class="ui-block-b">: <span class="playerLevelSpanFreemode">'+pFreemode[i]+'</span></div>'+
-'<div class="ui-block-a"><span class="levelSpanFindout spanLevel">Find Out</span></div>'+
-'<div class="ui-block-b">: <span class="playerLevelSpanFindout">'+pFindout[i]+'</span></div>'+
-'<div class="ui-block-a"><span class="levelSpanMathris spanLevel">Mathris</span></div>'+
-'<div class="ui-block-b">: <span class="playerLevelSpanMathris">'+pMathris[i]+'</span></div>'+
-'<div class="ui-block-a"><span class="levelSpanMathrix spanLevel">Mathrix</span></div>'+
-'<div class="ui-block-b">: <span class="playerLevelSpanMathrix">'+pMathrix[i]+'</span></div>'+
-'<div class="ui-block-a"><span class="levelSpanShootout spanLevel">Shoot Out</span></div>'+
-'<div class="ui-block-b">: <span class="playerLevelSpanShootout">'+pShootout[i]+'</span></div>'+
-'</div>'+
-'</div>'+
-''+
-'<div class="ui-block-b">'+
-'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="delete" data-theme="d" onclick="playerDelete(\''+pId[i]+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text"><span class="playerDelSpan">Delete</span></span><span class="ui-icon ui-icon-delete ui-icon-shadow">&nbsp;</span></span></a>'+
-'</div>'+
+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="star" data-theme="d" onclick="playerSelect(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+pName[id]+'</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a>'+
+'<table class="playerTable" cellpadding="0" cellspacing="0">'+
+'<tbody><tr>'+
+'<th colspan="2"><span class="levelSpanMode">Modes</span></th>'+
+'<th><span class="levelSpanDifE">Easy</span></th>'+
+'<th><span class="levelSpanDifM">Moderate</span></th>'+
+'<th><span class="levelSpanDifH">Hard</span></th>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanFreemode">Free Mode</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanFreemodeE">'+pLevels[id][1][1]+'</span></td>'+
+'<td><span class="playerLevelSpanFreemodeM">'+pLevels[id][1][2]+'</span></td>'+
+'<td><span class="playerLevelSpanFreemodeH">'+pLevels[id][1][3]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanFindout">Find Out</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanFindoutE">'+pLevels[id][2][1]+'</span></td>'+
+'<td><span class="playerLevelSpanFindoutM">'+pLevels[id][2][2]+'</span></td>'+
+'<td><span class="playerLevelSpanFindoutH">'+pLevels[id][2][3]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanMathris">Mathris</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanMathrisE">'+pLevels[id][3][1]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrisM">'+pLevels[id][3][2]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrisH">'+pLevels[id][3][3]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanMathrix">Mathrix</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanMathrixE">'+pLevels[id][4][1]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrixM">'+pLevels[id][4][2]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrixH">'+pLevels[id][4][3]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanShootout">Shoot Out</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanShootoutE">'+pLevels[id][5][1]+'</span></td>'+
+'<td><span class="playerLevelSpanShootoutM">'+pLevels[id][5][2]+'</span></td>'+
+'<td><span class="playerLevelSpanShootoutH">'+pLevels[id][5][3]+'</span></td>'+
+'</tr>'+
+'</tbody></table>'+
+'<p align="center">'+
+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="refresh" data-theme="d" data-inline="true" onclick="openPagePlayerRename(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text"><span class="playerRenameSpan">Rename</span></span><span class="ui-icon ui-icon-refresh ui-icon-shadow">&nbsp;</span></span></a>'+
+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="delete" data-theme="d" data-inline="true" onclick="openPagePlayerDelete(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text"><span class="playerDeleteSpan">Delete</span></span><span class="ui-icon ui-icon-delete ui-icon-shadow">&nbsp;</span></span></a>'+
+'</p>'+
 '</div>'+
 '</div>';
 			}
+		}
+		else if(len==0){
+		//eğer bütün oyuncular silinmiş ise
+		//seçili dilde "Yeni Oyuncu" adında oyuncu oluşturulacak
+		if(gameLang=="de") gamePlayerCreate("Neue Spieler");
+		if(gameLang=="en") gamePlayerCreate("New player");
+		if(gameLang=="es") gamePlayerCreate("Nuevo Jugador");
+		if(gameLang=="fr") gamePlayerCreate("Nouveau Joueur");
+		if(gameLang=="it") gamePlayerCreate("Nuovo Giocatore");
+		if(gameLang=="tr") gamePlayerCreate("Yeni Oyuncu");
+		
 		}
 		//htmlcode sayfaya aktarılıyor
 		$("#pagePlayersList").html(htmlCode);
@@ -223,38 +377,12 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 		alert("herşey sayfaya yüklendi");
 		
 		
-	}, function (){alert("sql hata1");});
-
-	}, function (){alert("sql hata2");}, successCB);
+	}, errorCB);
+	
+	}, errorCB, successCB);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
-
-
-
-
-
-
-
-
-
-
-	function listPagePlayersUserInfoDBSuccess(){
-	//Oyuncu veritabanı başarıyla kontrol edildikten sonra, pagePlayers sayfası açılıyor
-	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
-	}
-	
 	function getLangDB(tx) {
 		alert("dil kontrol ediliyor");
 		//Oyunun daha önce açılıp, dil seçimi yapılıp yapılmadığı bulunuyor.
@@ -284,35 +412,55 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 		}
 	}, errorCB);
 	}
-	
-	
-		
-	
 
-
-	
-
-	
-	
-
-	
-	
+	function listPagePlayersUserInfoDBSuccess(){
+	//Oyuncu veritabanı başarıyla kontrol edildikten sonra, pagePlayers sayfası açılıyor
+	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+	}
 	
 	function gamePlayerDelete(id){
 	alert("oyuncu siliniyor")
 	//Veritabanından bir oyuncu silen kod
 	db.transaction(function(tx){
 	tx.executeSql("DELETE FROM players WHERE id='"+id+"'");
-	}, function (){alert("silmede hata sql");});
+	}, errorCB);
 	
 	
 	listPagePlayersUserInfoDB();
 	}
 	
+	function gamePlayerRename(id){
+	var name;
+	//name=$("#pagePlayerRenameContent").find("#newname").val();
+	//alert("oyuncu adı değiştiriliyor id="+id+" name ="+name);
+	
+	db.transaction(function(tx){
+							
+	tx.executeSql('SELECT * FROM player', [], function (tx, results){
+	var len = results.rows.length;
+	if(len==0 || len>1){
+	alert("Hata oldu. Daha önceden olmayan bir oyuncu sanıldı");
+	}
+	else{
+	tx.executeSql("UPDATE player SET name = '" + name + "' WHERE id = '" + id + "'");
+	}
+	
+	}, errorCB);
+	
+	}, errorCB, successCB);
+	
+	}
+	
+	
+	
+	
+	
+	function playerDifUpdate(mod, v){
+	tx.executeSql("UPDATE player SET "+mod+" = '" + v + "' WHERE id = '" + gamePlayerID + "'");
+	}
 /* Veritananı bağlantı kodları sonu */
 
 
-	
 
 
 </script>
@@ -407,6 +555,83 @@ Explanations of games.
 
 
 
+<!-- /Sayfa başlangıcı -->
+<div data-role="page" id="pagePlayerRename">
+
+<div data-role="header" data-theme="b" data-position="fixed">
+<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
+</div><!-- /header -->
+
+<div data-role="content" id="pagePlayerRenameContent" align="center">
+<form>
+<div style="padding:10px 10px;" align="left">
+<h2 id="pagePlayerRenamePlayerH" align="center">Rename Player</h2>
+<h3 id="pagePlayerRenamePlayerName" align="center">Oyuncu 1</h3>
+
+
+<label id="labelNewName" for="newname" style="font-weight:bold;">New Name :</label>
+<input type="text" name="newname" id="newname" value="" data-theme="d" />
+<p align="center">
+<button type="button" onClick="closePageToPlayers();" data-theme="d" data-inline="true" ><span class="playerCancelSpan">Cancel</span></button>
+<button type="button" id="pagePlayerRenameButton" onClick="" data-theme="d" data-inline="true" >Rename</button>
+</p>
+</div>
+</form>
+</div>
+</div><!-- /page -->
+
+
+
+
+<!-- /Sayfa başlangıcı -->
+<div data-role="page" id="pagePlayerDelete">
+
+<div data-role="header" data-theme="b" data-position="fixed">
+<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
+</div><!-- /header -->
+
+<div data-role="content" id="pagePlayerDeleteContent" align="center">
+<form>
+<div style="padding:10px 10px;" align="left">
+<h2 id="pagePlayerDeletePlayerH" align="center">Delete Player</h2>
+<h3 id="pagePlayerDeletePlayerName" align="center">Oyuncu 1</h3>
+<label id="labelDelete" style="font-weight:bold;">Are you sure to delete player?</label>
+<br>
+<p align="center"><button type="button" onClick="closePageToPlayers();" data-theme="d" data-inline="true" ><span class="playerCancelSpan">Cancel</span></button>
+<button type="button" id="pagePlayerDeleteButton" onClick="" data-theme="d" data-inline="true" >Delete</button>
+</p>
+</div>
+</form>
+</div>
+
+</div><!-- /page -->
+
+<!-- /Sayfa başlangıcı -->
+<div data-role="page" id="pagePlayerCreate">
+
+<div data-role="header" data-theme="b" data-position="fixed">
+<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
+</div><!-- /header -->
+
+<div data-role="content" id="pagePlayerCreateContent" align="center">
+<form>
+<div style="padding:10px 10px;" align="left">
+<h2 id="pagePlayerDeletePlayerH" align="center">Create Player</h2>
+<label id="labelDelete" style="font-weight:bold;">Name :</label>
+<input type="text" name="createnewname" id="createPlayerName" value="" data-theme="d" />
+<p align="center"><button type="button" onClick="closePageToPlayers();" data-theme="d" data-inline="true" ><span class="playerCancelSpan">Cancel</span></button>
+<button type="button" id="pagePlayerCreateButton" onClick="" data-theme="d" data-inline="true" >Create</button>
+</p>
+</div>
+</form>
+
+</div>
+
+</div><!-- /page -->
+
 
 
 <!-- /Sayfa başlangıcı -->   
@@ -426,46 +651,82 @@ Explanations of games.
 
 <div class="pagePlayersPlayerInfo ui-corner-all">
 
-<a href="#" data-role="button" data-icon="star" data-theme="d" onClick="playerSelect('id')">Oyuncu 1</a>
+<a href="#" data-role="button" data-icon="star" data-theme="d" onClick="playerSelect('0')">Oyuncu 1</a>
 
-<div class="ui-grid-a">
-<div class="ui-block-a">
+<table class="playerTable" cellpadding="0" cellspacing="0" >
+<tr>
+<th colspan="2"><span class="levelSpanMode">Modes</span></th>
+<th><span class="levelSpanDifE">Easy</span></th>
+<th><span class="levelSpanDifM">Moderate</span></th>
+<th><span class="levelSpanDifH">Hard</span></th>
+</tr>
 
-<div class="ui-grid-a" style="font-weight:bold">
-<div class="ui-block-a"><span class="levelSpanFreemode">Free Mode</span></div>
-<div class="ui-block-b">: <span class="playerLevelSpanFreemode">1</span></div>
+<tr>
+<td class="td1"><span class="levelSpanFreemode">Free Mode</span></td>
+<td>:</td>
+<td><span class="playerLevelSpanFreemodeE">1</span></td>
+<td><span class="playerLevelSpanFreemodeM">1</span></td>
+<td><span class="playerLevelSpanFreemodeH">1</span></td>
+</tr>
 
-<div class="ui-block-a"><span class="levelSpanFindout">Find Out</span></div>
-<div class="ui-block-b">: <span class="playerLevelSpanFindout">1</span></div>
+<tr>
+<td class="td1"><span class="levelSpanFindout">Find Out</span></td>
+<td>:</td>
+<td><span class="playerLevelSpanFindoutE">1</span></td>
+<td><span class="playerLevelSpanFindoutM">1</span></td>
+<td><span class="playerLevelSpanFindoutH">1</span></td>
+</tr>
 
-<div class="ui-block-a"><span class="levelSpanMathris">Mathris</span></div>
-<div class="ui-block-b">: <span class="playerLevelSpanMathris">1</span></div>
+<tr>
+<td class="td1"><span class="levelSpanMathris">Mathris</span></td>
+<td>:</td>
+<td><span class="playerLevelSpanMathrisE">1</span></td>
+<td><span class="playerLevelSpanMathrisM">1</span></td>
+<td><span class="playerLevelSpanMathrisH">1</span></td>
+</tr>
 
-<div class="ui-block-a"><span class="levelSpanMathrix">Mathrix</span></div>
-<div class="ui-block-b">: <span class="playerLevelSpanMathrix">1</span></div>
+<tr>
+<td class="td1"><span class="levelSpanMathrix">Mathrix</span></td>
+<td>:</td>
+<td><span class="playerLevelSpanMathrixE">1</span></td>
+<td><span class="playerLevelSpanMathrixM">1</span></td>
+<td><span class="playerLevelSpanMathrixH">1</span></td>
+</tr>
 
-<div class="ui-block-a"><span class="levelSpanShootout">Shoot Out</span></div>
-<div class="ui-block-b">: <span class="playerLevelSpanShootout">1</span></div>
+<tr>
+<td class="td1"><span class="levelSpanShootout">Shoot Out</span></td>
+<td>:</td>
+<td><span class="playerLevelSpanShootoutE">1</span></td>
+<td><span class="playerLevelSpanShootoutM">1</span></td>
+<td><span class="playerLevelSpanShootoutH">1</span></td>
+</tr>
+
+</table>
+
+<p align="center">
+<a href="#" data-role="button" data-icon="refresh" data-theme="d" data-iconpos="left" data-mini="true" onClick="openPagePlayerRename('0');" data-inline="true" ><span id="playerRenameSpan">Rename</span></a>
+
+<a href="#" data-role="button" data-icon="refresh" data-theme="d" data-iconpos="left" data-mini="true" onClick="openPagePlayerDelete('0');" data-inline="true" ><span id="playerDeleteSpan">Delete</span></a>
+
+
+</p>
+
+
 </div>
 
-</div>
-
-<div class="ui-block-b">
-<a href="#" data-role="button" data-icon="delete" data-theme="d" onClick="playerDelete('id')"><span class="playerDelSpan">Delete</span></a>
-</div>
-</div>
-
-</div>
-
 
 
 </div>
+
 
 <br>  
 <hr>  
 <br>
 
-<h2 id="newPlayerH">Create New Player :</h2>
+<a href="#" data-role="button" data-theme="d" onClick="openPagePlayerCreate();" ><span id="playerCreateSpan">Create</span></a>
+
+
+<!--<h2 id="newPlayerH">Create New Player :</h2>
 
 <div class="ui-grid-a">
 <div class="ui-block-a">
@@ -475,17 +736,19 @@ Explanations of games.
 <input type="text" name="name" id="createPlayerName" value="" />
 </div>
 </div>
-<a href="#" data-role="button" data-theme="d" onClick="playerCreate();"><span id="playerCreateSpan">Create</span></a>
+<a href="#" data-role="button" data-theme="d" onClick="playerCreate();"><span id="playerCreateSpan">Create</span></a>-->
 
 </div> 
 
 
 <div data-role="footer" data-theme="b" data-position="fixed" align="center">
-<a href="#pageGameSettings" id="pageGameSettingsLink" onClick="" data-icon="gear" data-theme="b" data-iconpos="left" style="width:50px">&nbsp;</a>
-<a href="#pageGameInfo" id="pageGameInfoLink" onClick="" data-icon="info" data-theme="b" data-iconpos="left" style="width:50px">&nbsp;</a>
+<a href="#pageGameSettings" id="pageGameSettingsLink" onClick="" data-icon="gear" data-theme="b" data-iconpos="left" data-inline="true">&nbsp;</a>
+<a href="#pageGameInfo" id="pageGameInfoLink" onClick="" data-icon="info" data-theme="b" data-iconpos="left" data-inline="true">&nbsp;</a>
 </div><!-- /footer --> 
 
 </div><!-- /page -->
+
+
 
 
 
@@ -517,11 +780,12 @@ Explanations of modes.
 </div><!-- /header -->
 
 <div data-role="content" id="pageGameModesContent">
-<a href="#" onClick="gameModeSelect(0);" data-role="button" data-theme="d">Free Mode</a>
-<a href="#" onClick="gameModeSelect(1);" data-role="button" data-theme="d">Find-Out</a>
-<a href="#" onClick="gameModeSelect(2);" data-role="button" data-theme="d">Mathris</a>
-<a href="#" onClick="gameModeSelect(3);" data-role="button" data-theme="d">Mathrix</a>
-<a href="#" onClick="gameModeSelect(4);" data-role="button" data-theme="d">Shoot-Out</a><!--class="ui-disabled"-->
+<a href="#" id="pageGameModesFreeMode" onClick="gameModeSelect(0);" data-role="button" data-theme="d" class="ui-disabled">Free Mode</a>
+<a href="#" id="pageGameModesFindOut" onClick="gameModeSelect(1);" data-role="button" data-theme="d" class="ui-disabled">Find-Out</a>
+<a href="#" id="pageGameModesMathris" onClick="gameModeSelect(2);" data-role="button" data-theme="d" class="ui-disabled">Mathris</a>
+<a href="#" id="pageGameModesMathrix" onClick="gameModeSelect(3);" data-role="button" data-theme="d" class="ui-disabled">Mathrix</a>
+<a href="#" id="pageGameModesShootOut" onClick="gameModeSelect(4);" data-role="button" data-theme="d" class="ui-disabled">Shoot-Out</a><!--class="ui-disabled"-->
+
 </div>
 
 <div data-role="footer" data-theme="b" data-position="fixed" align="center">
@@ -548,16 +812,18 @@ Explanations of modes.
 
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
-<input type="radio" name="gDifficulty" id="easy" value="1" checked="checked" />
-<label class="labelEasy" for="easy">Kolay</label>
+<input type="radio" name="gDifficulty" id="freeModeEasy" onClick="difficultyClick('fmdiffiulty', 1);" />
+<label class="labelEasy" for="freeModeEasy">Kolay</label>
 
-<input type="radio" name="gDifficulty" id="moderate" value="2" disabled/>
-<label class="labelModerate" for="moderate">Normal</label>
+<input type="radio" name="gDifficulty" id="freeModeModerate" onClick="difficultyClick('fmdiffiulty', 2);" />
+<label class="labelModerate" for="freeModeModerate">Normal</label>
 
-<input type="radio" name="gDifficulty" id="hard" value="3" disabled />
-<label class="labelHard" for="hard">Zor</label>
+<input type="radio" name="gDifficulty" id="freeModeHard" onClick="difficultyClick('fmdiffiulty', 3);" />
+<label class="labelHard" for="freeModeHard">Zor</label>
 
 </fieldset>
+
+<a href="#" onClick="goster();" data-role="button" data-theme="d">Göster</a>
         
 <hr>
 <br>
@@ -700,11 +966,11 @@ Question</div>
 <div data-role="content" id="pageFindOutLevelContent" align="center">
 
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
-<input type="radio" name="gDifficulty" id="easy" value="1" checked="checked" />
+<input type="radio" name="gDifficulty" id="easy" value="1" onClick="difficultyClick('findoutdifficulty', 1);" />
 <label class="labelEasy" for="easy">Kolay</label>
-<input type="radio" name="gDifficulty" id="moderate" value="2" disabled/>
+<input type="radio" name="gDifficulty" id="moderate" value="2" onClick="difficultyClick('findoutdifficulty', 2);"/>
 <label class="labelModerate" for="moderate">Normal</label>
-<input type="radio" name="gDifficulty" id="hard" value="3" disabled />
+<input type="radio" name="gDifficulty" id="hard" value="3" onClick="difficultyClick('findoutdifficulty', 3);" />
 <label class="labelHard" for="hard">Zor</label>
 </fieldset>
 
@@ -776,13 +1042,13 @@ Question</div>
 
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
-<input type="radio" name="gDifficulty" id="easy" value="1" checked="checked" />
+<input type="radio" name="gDifficulty" id="easy" value="1" onClick="difficultyClick('mathrisdifficulty', 1);" />
 <label class="labelEasy" for="easy">Kolay</label>
 
-<input type="radio" name="gDifficulty" id="moderate" value="2" disabled/>
+<input type="radio" name="gDifficulty" id="moderate" value="2" onClick="difficultyClick('mathrisdifficulty', 2);" />
 <label class="labelModerate" for="moderate">Normal</label>
 
-<input type="radio" name="gDifficulty" id="hard" value="3" disabled />
+<input type="radio" name="gDifficulty" id="hard" value="3" onClick="difficultyClick('mathrisdifficulty', 3);" />
 <label class="labelHard" for="hard">Zor</label>
 
 </fieldset>
@@ -846,13 +1112,13 @@ Question</div>
 
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
-<input type="radio" name="gDifficulty" id="easy" value="1" checked="checked" />
+<input type="radio" name="gDifficulty" id="easy" value="1" onClick="difficultyClick('mathrixdifficulty', 1);" />
 <label class="labelEasy" for="easy">Kolay</label>
 
-<input type="radio" name="gDifficulty" id="moderate" value="2" disabled/>
+<input type="radio" name="gDifficulty" id="moderate" value="2" onClick="difficultyClick('mathrixdifficulty', 2);" />
 <label class="labelModerate" for="moderate">Normal</label>
 
-<input type="radio" name="gDifficulty" id="hard" value="3" disabled />
+<input type="radio" name="gDifficulty" id="hard" value="3" onClick="difficultyClick('mathrixdifficulty', 3);" />
 <label class="labelHard" for="hard">Zor</label>
 
 </fieldset>
@@ -923,13 +1189,13 @@ Question</div>
 
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
-<input type="radio" name="gDifficulty" id="easy" value="1" checked="checked" />
+<input type="radio" name="gDifficulty" id="easy" value="1" onClick="difficultyClick('shootoutdifficulty', 1);" />
 <label class="labelEasy" for="easy">Kolay</label>
 
-<input type="radio" name="gDifficulty" id="moderate" value="2" disabled/>
+<input type="radio" name="gDifficulty" id="moderate" value="2" onClick="difficultyClick('shootoutdifficulty', 2);" />
 <label class="labelModerate" for="moderate">Normal</label>
 
-<input type="radio" name="gDifficulty" id="hard" value="3" disabled />
+<input type="radio" name="gDifficulty" id="hard" value="3" onClick="difficultyClick('shootoutdifficulty', 3);" />
 <label class="labelHard" for="hard">Zor</label>
 
 </fieldset>

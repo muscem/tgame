@@ -57,3 +57,18 @@
 	margin:5px;
 	background-color:#CCC;
 }
+.playerTable{
+	width:100%;
+	font-weight:bold;
+}
+.playerTable td{
+	text-align:center;
+}
+.playerTable th{
+	text-align:center;
+	border-bottom:solid;
+	border-bottom-color:#333;
+}
+.playerTable td.td1{
+	text-align:left;
+}

@@ -22,28 +22,79 @@ else{	//langSelVal=="en"		Ingilizce
 }
 /* Dil seçeneklerini yazmak için kullanilacak kod sonu */
 
+function closePageToPlayers(){
+gamePlayerID=0;
+$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+}
+
+function openPagePlayerRename(id){
+gamePlayerID=id;
+$.mobile.changePage( $("#pagePlayerRename") , { transition: "slide"} );
+}
+
+$("#pagePlayerRename").live('pagebeforeshow', function(event){
+$("#pagePlayerRenameContent").find("#pagePlayerRenameButton").attr("onclick","gamePlayerRename("+gamePlayerID+");");
+$("#pagePlayerRenameContent").find("#pagePlayerRenamePlayerName").html(pName[gamePlayerID]);
+$("#pagePlayerRenameContent").find("#newname").val("");
+});
+
+
+function openPagePlayerDelete(id){
+gamePlayerID=id;
+$.mobile.changePage( $("#pagePlayerDelete") , { transition: "slide"} );
+}
+
+$("#pagePlayerDelete").live('pagebeforeshow', function(event){
+$("#pagePlayerDeleteContent").find("#pagePlayerDeleteButton").attr("onclick","gamePlayerDelete("+gamePlayerID+");");
+$("#pagePlayerDeleteContent").find("#pagePlayerDeletePlayerName").html(pName[gamePlayerID]);
+});
+
+
+function openPagePlayerCreate(){
+$.mobile.changePage( $("#pagePlayerCreate") , { transition: "slide"} );
+$("#pagePlayerCreateContent").find("#createPlayerName").val("");
+}
+
+
+//Veritabanina kayit sirasinda kullanilacak sorunlu karakterleri önlemek için
+//Inernetten buldum.
+function mysql_real_escape_string (str) {
+    return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
+        switch (char) {
+            case "\0":
+                //return "\\0";
+				return "";
+            case "\x08":
+                //return "\\b";
+				return "";
+            case "\x09":
+                //return "\\t";
+				return "";
+            case "\x1a":
+                //return "\\z";
+				return "";
+            case "\n":
+                //return "\\n";
+				return "";
+            case "\r":
+                //return "\\r";
+				return "";
+            case "\"":
+            case "'":
+            case "\\":
+            case "%":
+				return "";
+                //return "\\"+char; // prepends a backslash to backslash, percent,
+                                  // and double/single quotes
+        }
+    });
+}
 
 
 //Bir sayfaya ait olmayan kodlar baslangici
 function gameLanguageChanged(){
 pagePlayersLanguageChange(gameLang);
 }
-
-//Bir sayfaya ait olmayan kodlar sonu
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -274,6 +325,9 @@ result=result-iDiff;
 return result;
 }
 
+//Bir sayfaya ait olmayan kodlar sonu
+
+
 
 
 
@@ -286,8 +340,6 @@ function chooseLang(lang){
 alert("dil seçildi = "+lang);
 //lang="en";	//Deneme amaçli, silinecek
 gameLang=lang;
-
-
 
 //gameLangChange();	//tarayicida çalismayi önler
 //alert("sayfa degis"+gameLang);
@@ -403,9 +455,12 @@ $(".levelSpanShootout").html(levelSpanShootout[langID]);
 
 
 function playerCreate(){
-var name;
+var name;	//, name2;
 name=$("#createPlayerName").val();
-alert("Yeni oyuncu kaydi isim "+ name);
+//name2=mysql_real_escape_string (name);
+//alert("Yeni oyuncu kaydi isim "+ name+ "- Güvenli isism="+name2 );
+//
+//return false;
 if(name!=""){
 gamePlayerCreate(name);
 listPagePlayersUserInfoDB();	//Yeni olusturulanla birlikte oyuncular yeniden listeleniyor
@@ -421,21 +476,48 @@ listPagePlayersUserInfoDB();	//Silinen disindaki oyuncular yeniden listeleniyor
 
 
 function playerSelect(id){
+alert(id);
 //Oyuncunun seçilip oyun seçimi sayfasina yönlendirme yapiliyor
 gamePlayerID=id;
 
-//
-//Eksik
-//veritabanina baglanip, id'si verilen oyuncunun levelleri sayfalara islenecek
-//
+$("#pageGameModesFreeMode").removeClass("ui-disabled");
+$("#pageGameModesFindOut").removeClass("ui-disabled");
+$("#pageGameModesMathris").removeClass("ui-disabled");
+$("#pageGameModesMathrix").removeClass("ui-disabled");
+$("#pageGameModesShootOut").removeClass("ui-disabled");
+
+
+$("#pageGameModesFreeMode").addClass("ui-disabled");
+$("#pageGameModesFindOut").addClass("ui-disabled");
+$("#pageGameModesMathris").addClass("ui-disabled");
+$("#pageGameModesMathrix").addClass("ui-disabled");
+$("#pageGameModesShootOut").addClass("ui-disabled");
+
+//if(pFindout[gamePlayerID]>0){
+if(pFreemodeE[gamePlayerID]>0) $("#pageGameModesFreeMode").removeClass("ui-disabled");
+if(pFindoutE[gamePlayerID]>0) $("#pageGameModesFindOut").removeClass("ui-disabled");
+if(pMathrisE[gamePlayerID]>0) $("#pageGameModesMathris").removeClass("ui-disabled");
+if(pMathrixE[gamePlayerID]>0) $("#pageGameModesMathrix").removeClass("ui-disabled");
+if(pShootoutE[gamePlayerID]>0) $("#pageGameModesShootOut").removeClass("ui-disabled");
+//$("#pageGameModesContent").trigger("create");
+//}
+
+//$(document).on("pageinit", "#pageGameModes", function() {
+//if(pFreemodeE[gamePlayerID]>0) $("#pageGameModesFreeMode").button('enable').button('refresh');
+//if(pFindoutE[gamePlayerID]>2) $("#pageGameModesFindOut").button('enable');
+//if(pMathrisE[gamePlayerID]>2) $("#pageGameModesMathris").button('enable');
+//if(pMathrixE[gamePlayerID]>2) $("#pageGameModesMathrix").button('enable');
+//if(pShootoutE[gamePlayerID]>2) $("#pageGameModesShootOut").button('enable');
+//});
+
 
 $.mobile.changePage( $("#pageGameModes") , { transition: "slide"} );
 }
 
-$("#pagePlayers").live('pagebeforechange', function(event){
-//alert("cem");
-//$("#langSelect").val("tr");
-//
+
+
+$("#pagePlayers").live('pagebeforeshow', function(event){
+listPagePlayersUserInfoDBSuccess();
 });
 
 /* PagePlayers kodu sonu */
@@ -443,13 +525,343 @@ $("#pagePlayers").live('pagebeforechange', function(event){
 
 
 
+$("#pageFreeModeLevel").live("pagebeforeshow", function() {
+freeModeLevels();
+});
+
+
+$("#pageFindOutLevel").live("pagebeforeshow", function() {
+var maxLevelsNo=3;
+var level;
+if(lastSelFindOutDif[gamePlayerID]==3){
+level=pFindOutH[gamePlayerID];
+}
+else if(lastSelFindOutDif[gamePlayerID]==2){
+level=pFindOutM[gamePlayerID];
+}
+else{
+level=pFindOutE[gamePlayerID];
+}
+
+gamesModesLevels("pageFindOutLevel", level, maxLevelsNo)
+});
+
+$("#pageMathrisLevel").live("pagebeforeshow", function() {
+var maxLevelsNo=3;
+var level;
+if(lastSelFindOutDif[gamePlayerID]==3){
+level=pFindOutH[gamePlayerID];
+}
+else if(lastSelFindOutDif[gamePlayerID]==2){
+level=pFindOutM[gamePlayerID];
+}
+else{
+level=pFindOutE[gamePlayerID];
+}
+gamesModesLevels("pageMathrisLevel", level, maxLevelsNo)
+});
+
+$("#pageMathrixLevel").live("pagebeforeshow", function() {
+var maxLevelsNo=3;
+var level;
+if(lastSelFindOutDif[gamePlayerID]==3){
+level=pFindOutH[gamePlayerID];
+}
+else if(lastSelFindOutDif[gamePlayerID]==2){
+level=pFindOutM[gamePlayerID];
+}
+else{
+level=pFindOutE[gamePlayerID];
+}
+gamesModesLevels("pageMathrixLevel", level, maxLevelsNo)
+});
+
+$("#pageShootOutLevel").live("pagebeforeshow", function() {
+var maxLevelsNo=3;
+var level;
+if(lastSelFindOutDif[gamePlayerID]==3){
+level=pFindOutH[gamePlayerID];
+}
+else if(lastSelFindOutDif[gamePlayerID]==2){
+level=pFindOutM[gamePlayerID];
+}
+else{
+level=pFindOutE[gamePlayerID];
+}
+gamesModesLevels("pageShootOutLevel", level, maxLevelsNo)
+});
+
+
+function freeModeLevels(){
+//
+//Ayarlar sifirlaniyor
+//
+//alert("sirifrlama yapilacak");
+//$(".labelHard").find(".ui-btn-text").html("zooor");
+
+if(1==1){
+//Difficulty; easy eanbled ve checked, digerleri disabled
+//$("#freeModeModerate").attr("checked",true).checkboxradio("refresh");
+$("#freeModeEasy").attr("checked",false).checkboxradio('enable').checkboxradio("refresh");
+$("#freeModeModerate").attr("checked",false).checkboxradio('disable').checkboxradio("refresh");
+$("#freeModeHard").attr("checked",false).checkboxradio('disable').checkboxradio("refresh");
+
+
+//$("#pageFreeModeLevel").find("#freeModeEasy").trigger("click").checkboxradio("refresh");
+alert("sifirlama tamam2");
+//$("#pageFreeModeLevel").find("#freeModeModerate").checkboxradio('disable').checkboxradio("refresh");
+//$("#pageFreeModeLevel").find("#freeModeHard").checkboxradio('disable').checkboxradio("refresh");
+
+
+//Islermler; sadece toplama enable ve checked, digerler disabled ve checked degil
+$("#pageFreeModeLevel").find("#oAdd").checkboxradio("enable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#oSub").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#oMul").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#oDiv").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+
+//Sayilar; sadece tamsayilar enable ve checked, digerler disabled ve checked degil
+$("#pageFreeModeLevel").find("#nInt").checkboxradio("enable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#nDec").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#nRat").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#nExp").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#nRoo").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+
+//Hane sayisi; sadece tek haneliler enable ve checked, digerler disabled ve checked degil
+$("#pageFreeModeLevel").find("#digit1").checkboxradio("enable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#digit2").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#digit3").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#digit4").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#digit5").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+
+//Islem sayisi; sadece bir islem enable ve checked, digerler disabled ve checked degil
+$("#pageFreeModeLevel").find("#oCount1").checkboxradio("enable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#oCount2").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#oCount3").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#oCount4").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#oCount5").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+
+//Isaret; sadece esitlik enable ve checked, digerler disabled ve checked degil
+$("#pageFreeModeLevel").find("#eSign0").checkboxradio("enable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#eSign1").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#eSign2").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#eSign3").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#eSign4").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#pageFreeModeLevel").find("#eSign5").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+}
+
+//Oyuncunun seviyesine göre seçenekler açilacak
+//var x;
+var level, op, num, dig, oc, sign;
+level=pFreemodeE[gamePlayerID];		//lastSelFMDif[gamePlayerID]==1
+op=lastSelFMEOp[gamePlayerID];
+num=lastSelFMENum[gamePlayerID];
+dig=lastSelFMEDig[gamePlayerID];
+oc=lastSelFMEOC[gamePlayerID];
+sign=lastSelFMES[gamePlayerID];
+
+if(lastSelFMDif[gamePlayerID]==2){
+level=pFreemodeM[gamePlayerID];
+op=lastSelFMMOp[gamePlayerID];
+num=lastSelFMMNum[gamePlayerID];
+dig=lastSelFMMDig[gamePlayerID];
+oc=lastSelFMMOC[gamePlayerID];
+sign=lastSelFMMS[gamePlayerID];
+}
+else if(lastSelFMDif[gamePlayerID]==3){
+level=pFreemodeH[gamePlayerID];
+op=lastSelFMHOp[gamePlayerID];
+num=lastSelFMHNum[gamePlayerID];
+dig=lastSelFMHDig[gamePlayerID];
+oc=lastSelFMHOC[gamePlayerID];
+sign=lastSelFMHS[gamePlayerID];
+}
+
+switch (level){
+case 6:
+
+case 5:
+
+case 4:
+
+case 3:
+
+case 2:
+$("#freeModeEasy").checkboxradio('enable').checkboxradio("refresh");
+$("#oAdd").checkboxradio("enable").checkboxradio('refresh');
+}
+
+
+
+}
 
 
 
 
+function gamesModesLevels(mode, level, maxLevel){
+//mode: hangi oyun modu için yapilacagi, sayfa adi gelecek (pageMathrisLevel) gibi
+//level: oyuncunun kaçinci level'de oldugu. Böylece enable edilecek leveller belirlenecek
+//maxLevel: seçilen mode'un toplam kaç level oldugu. Böylece disable edilecek leveller belirlenecek
+
+$("#"+mode).find("#easy").trigger("click").checkboxradio("refresh");
+$("#"+mode).find("#moderate").checkboxradio('disable').checkboxradio("refresh");
+$("#"+mode).find("#hard").checkboxradio('disable').checkboxradio("refresh");
+
+if(level>1){
+$("#"+mode).find("#moderate").checkboxradio('enable').checkboxradio("refresh");	
+}
+if(level>2){
+$("#"+mode).find("#hard").checkboxradio('enable').checkboxradio("refresh");
+}
 
 
 
+for (i=2;i<maxLevel+1;i++){
+$("#"+mode).find("#level"+i.toString()).removeClass("ui-disabled");	//Varsa, kaldirmis olacak
+$("#"+mode).find("#level"+i.toString()).addClass("ui-disabled");
+}
+for (i=2;i<level+1;i++){
+$("#"+mode).find("#level"+i.toString()).removeClass("ui-disabled");
+}
+}
+
+
+
+function difficultyClick(mod, v){
+
+if(mod=="fmdiffiulty" && v!=lastSelFMDif[gamePlayerID]){
+playerDifUpdate(mod, v)
+}
+else if(mod=="findoutdifficulty" && v!=lastSelFindOutDif[gamePlayerID]){
+playerDifUpdate(mod, v)
+}
+else if(mod=="mathrisdifficulty" && v!=lastSelMathrisDif[gamePlayerID]){
+playerDifUpdate(mod, v)
+}
+else if(mod=="mathrixdifficulty" && v!=lastSelMathrixDif[gamePlayerID]){
+playerDifUpdate(mod, v)
+}
+else if(mod=="shootoutdifficulty" && v!=lastSelShootOutDif[gamePlayerID]){
+playerDifUpdate(mod, v)
+}
+
+}
+
+function goster (){
+//seçili radio dügmesinin degerini ögrenme
+
+$("#pageFreeModeLevel .labelEasy").removeClass("ui-radio-off ui-radio-on ui-focus ui-btn-active");
+//$("#pageFreeModeLevel .labelEasy").attr("checked", false);
+$("#pageFreeModeLevel .labelEasy").removeAttr("checked");
+$("#pageFreeModeLevel .labelModerate").removeClass("ui-radio-off ui-radio-on ui-focus ui-btn-active");
+//$("#pageFreeModeLevel .labelModerate").attr("checked", false);
+//$("#pageFreeModeLevel .labelModerate").removeAttr("checked");
+$("#pageFreeModeLevel .labelHard").removeClass("ui-radio-off ui-radio-on ui-focus ui-btn-active");
+//$("#pageFreeModeLevel .labelHard").attr("checked", true);
+//$("#pageFreeModeLevel .labelHard").removeAttr("checked");
+
+
+
+//$("#pageFreeModeLevel").find("input[name=gDifficulty]:checked").each(function() {
+//alert($(this).val());
+//if($(this).val()==2){
+//alert ("val=2");
+//$("#freeModeEasy").parent().trigger("click");
+//.trigger("click");.find(".ui-btn-text")
+//$(this).trigger("click").checkboxradio("refresh");	
+//}
+//});
+
+	$("#pageFreeModeLevel").find("input[name=gDifficulty]:checked").each(function() {															
+    alert("checked = "+$(this).val());
+	alert($(this).attr("id"));
+    });
+	alert("cemmm");
+//$("#pageFreeModeLevel .labelModerate").addClass("ui-radio-on ui-focus ui-btn-active");
+
+//$("#pageFreeModeLevel [name=gDifficulty]").removeAttr("checked");
+//$("#pageFreeModeLevel .labelModerate").addClass("ui-radio-on ui-btn-active");
+$("#freeModeModerate").attr("checked",true).checkboxradio("refresh");
+$("#freeModeModerate").attr("checked",false).checkboxradio("refresh");
+
+//$("#pageFreeModeLevel .labelModerate").attr("checked", "checked");
+//$("#pageFreeModeLevel .labelModerate").trigger("click");
+
+//$("#pageFreeModeLevel .labelModerate").prop("checked", true);
+
+//$("#pageFreeModeLevel [name=gDifficulty]").trigger("change");
+//$("#oAdd").checkboxradio("enable").attr("checked",true).checkboxradio('refresh');
+
+//$("#pageFreeModeLevel").find("#oSub").checkboxradio("enable").attr("checked",false).checkboxradio('refresh');
+
+//$("#pageFreeModeLevel").find("#oSub").removeClass("ui-disable");
+//$("#pageFreeModeLevel").find("#oSub").trigger("click");
+
+//$("#pageFreeModeLevel .labelModerate").parent().parent().trigger("click");	//hatali
+//$("#pageFreeModeLevel .labelModerate").find(".ui-btn").trigger("click");
+alert("cem");
+}
+
+
+function bas (){
+//radio button disable kaldirma
+	//$("#freeModeHard").parent().removeClass("ui-disabled");
+	//$("#freeModeHard").removeAttr("disabled");
+	
+$("#freeModeModerate").checkboxradio('enable').checkboxradio("refresh");
+$("#freeModeHard").checkboxradio('enable').checkboxradio("refresh");
+//$("input[type='radio']:first").attr("checked",true).checkboxradio("refresh");
+
+//radio button yazi degistirme
+//$(".labelHard").find(".ui-btn-text").html("zooor");
+
+//$("#oSub").button("enable").trigger("click").button('refresh');
+//$("#oMul").button("enable").button('refresh');
+//$("#oDiv").button("enable").button('refresh');
+
+
+$("#oSub").checkboxradio("enable").attr("checked",true).checkboxradio('refresh');
+$("#oMul").checkboxradio("enable").checkboxradio('refresh');
+$("#oDiv").checkboxradio("enable").checkboxradio('refresh');
+
+
+}
+
+function bas2 (){
+//radio button disable yapma
+
+$("#freeModeEasy").trigger("click").checkboxradio("refresh");
+//$("#freeModeEasy").checkboxradio("refresh");
+$("#freeModeHard").checkboxradio('disable').checkboxradio("refresh");
+$("#freeModeModerate").checkboxradio('disable').checkboxradio("refresh");
+
+//$("#freeModeEasy").parent().trigger("click");
+//$("#freeModeEasy").child().trigger("click");
+//$("#freeModeEasy").child().child().trigger("click");
+//$("#freeModeEasy").child().child().child().trigger("click");
+
+//$("input[type='radio']").checkboxradio('enable');
+//
+//$("#freeModeEasy").find("labelEasy").trigger("click");
+//	$("#freeModeHard").parent().addClass("ui-disabled");
+//	$("#freeModeHard").attr("disabled", "disabled");
+	//Seçiliyse kaldirmak için
+//	$("#freeModeHard").removeAttr("checked");
+	
+//	$("#freeModeHard").find(".labelHard").removeClass("ui-btn-active");
+//	$("#freeModeHard").find(".labelHard").addClass("ui-radio-off");
+$("#pageFreeModeLevelContent").trigger("create");
+
+
+$("#oAdd").checkboxradio("enable").attr("checked",true).checkboxradio('refresh');
+$("#oSub").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#oMul").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#oDiv").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+	
+}
+
+function bas3(){
+	freeModeLevels();
+}
 
 
 
@@ -462,19 +874,19 @@ $("#pagePlayers").live('pagebeforechange', function(event){
 /* pageGameModes kodu baslangici */
 function gameModeSelect(mode){
 gameMode=mode;
-if (mode==0){
+if (gameMode==0){
 $.mobile.changePage( $("#pageFreeModeLevel") , { transition: "slide"} );
 }
-else if (mode==1){
+else if (gameMode==1){
 $.mobile.changePage( $("#pageFindOutLevel") , { transition: "slide"} );
 }
-else if (mode==2){
+else if (gameMode==2){
 $.mobile.changePage( $("#pageMathrisLevel") , { transition: "slide"} );
 }
-else if (mode==3){
+else if (gameMode==3){
 $.mobile.changePage( $("#pageMathrixLevel") , { transition: "slide"} );
 }
-else if (mode==4){
+else if (gameMode==4){
 $.mobile.changePage( $("#pageShootOutLevel") , { transition: "slide"} );
 }
 return false;
