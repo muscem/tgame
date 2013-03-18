@@ -33,10 +33,12 @@ $.mobile.changePage( $("#pagePlayerRename") , { transition: "slide"} );
 }
 
 $("#pagePlayerRename").live('pagebeforeshow', function(event){
-$("#pagePlayerRenameContent").find("#pagePlayerRenameButton").attr("onclick","gamePlayerRename("+gamePlayerID+");");
+$("#pagePlayerRenameContent").find("#pagePlayerRenameButton").attr("onclick","gamePlayerRenameDB("+gamePlayerID+");");
 $("#pagePlayerRenameContent").find("#pagePlayerRenamePlayerName").html(pName[gamePlayerID]);
 $("#pagePlayerRenameContent").find("#newname").val("");
 });
+
+
 
 
 function openPagePlayerDelete(id){
@@ -45,15 +47,21 @@ $.mobile.changePage( $("#pagePlayerDelete") , { transition: "slide"} );
 }
 
 $("#pagePlayerDelete").live('pagebeforeshow', function(event){
-$("#pagePlayerDeleteContent").find("#pagePlayerDeleteButton").attr("onclick","gamePlayerDelete("+gamePlayerID+");");
+$("#pagePlayerDeleteContent").find("#pagePlayerDeleteButton").attr("onclick","gamePlayerDeleteDB("+gamePlayerID+");");
 $("#pagePlayerDeleteContent").find("#pagePlayerDeletePlayerName").html(pName[gamePlayerID]);
 });
+
+
+
 
 
 function openPagePlayerCreate(){
 $.mobile.changePage( $("#pagePlayerCreate") , { transition: "slide"} );
 $("#pagePlayerCreateContent").find("#createPlayerName").val("");
 }
+
+
+
 
 
 
@@ -456,25 +464,25 @@ $(".levelSpanShootout").html(levelSpanShootout[langID]);
 
 
 
-function playerCreate(){
-var name;	//, name2;
-name=$("#createPlayerName").val();
-//name2=mysql_real_escape_string (name);
-//alert("Yeni oyuncu kaydi isim "+ name+ "- Güvenli isism="+name2 );
-//
-//return false;
-if(name!=""){
-gamePlayerCreate(name);
-listPagePlayersUserInfoDB();	//Yeni olusturulanla birlikte oyuncular yeniden listeleniyor
-//langChangeSelect();
-}
-}
+//function playerCreate(){
+//var name;	//, name2;
+//name=$("#createPlayerName").val();
+////name2=mysql_real_escape_string (name);
+////alert("Yeni oyuncu kaydi isim "+ name+ "- Güvenli isism="+name2 );
+////
+////return false;
+//if(name!=""){
+//gamePlayerCreate(name);
+//listPagePlayersUserInfoDB();	//Yeni olusturulanla birlikte oyuncular yeniden listeleniyor
+////langChangeSelect();
+//}
+//}
 
-function playerDelete(id){
-gamePlayerDelete(id);
-listPagePlayersUserInfoDB();	//Silinen disindaki oyuncular yeniden listeleniyor
-//langChangeSelect();
-}
+//function playerDelete(id){
+//gamePlayerDelete(id);
+//listPagePlayersUserInfoDB();	//Silinen disindaki oyuncular yeniden listeleniyor
+////langChangeSelect();
+//}
 
 
 function playerSelect(id){
@@ -519,7 +527,7 @@ $.mobile.changePage( $("#pageGameModes") , { transition: "slide"} );
 
 
 $("#pagePlayers").live('pagebeforeshow', function(event){
-listPagePlayersUserInfoDBSuccess();
+listPagePlayersUserInfoDB();
 });
 
 /* PagePlayers kodu sonu */
