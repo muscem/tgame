@@ -201,7 +201,8 @@ alert("tablolar oluşturuldu");
 	if(name!=""){
 	db.transaction(function (tx){
 	tx.executeSql("INSERT INTO players (name, plfreemode, plfindout, plmathris, plmathrix, plshootout, freemodediffiulty, findoutdifficulty, mathrisdifficulty, mathrixdifficulty, shootoutdifficulty, fmoperation, fmnumbers, fmdigit, fmocount, fmsign) VALUES ('"+name+"', '1|0|0', '1|0|0', '1|0|0', '1|0|0', '1|0|0', 1, 1, 1, 1, 1, '1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0')");
-					
+	alert("Yeni oyuncu kaydedildi");
+	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
 	}, errorCB, successCB);
 	}
 	}
@@ -369,6 +370,7 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 			}
 		}
 		else if(len==0){
+			alert("Veritabanında kayıtlı oyuncu bulunamadı. Yeni oluşturulacak");
 		//eğer bütün oyuncular silinmiş ise
 		//seçili dilde "Yeni Oyuncu" adında oyuncu oluşturulacak
 		if(gameLang=="de") gamePlayerCreate("Neue Spieler");

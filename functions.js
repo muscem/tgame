@@ -56,6 +56,8 @@ $("#pagePlayerCreateContent").find("#createPlayerName").val("");
 }
 
 
+
+
 //Veritabanina kayit sirasinda kullanilacak sorunlu karakterleri önlemek için
 //Inernetten buldum.
 function mysql_real_escape_string (str) {
