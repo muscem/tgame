@@ -93,9 +93,11 @@ document.addEventListener("deviceready", onDeviceReady, false);
     // Cordova is ready
     //
     function onDeviceReady() {
+		alert("veritabanı oluşturulacak");
         //Veritabanı açılıyor (yoksa yaratılacak)
 		db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
-		
+		alert("veritabanı oluşturuldu");
+		alert("Tablolar oluşturulacak");
 		//Oyunun ilk açılışı ise
 		//Veritabanına tablolar oluşturulacak
 		db.transaction(createTable, errorCB, createTableSuccess);
@@ -107,10 +109,12 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	//
     function createTable(tx) {
 		//Tablolar mevcut değilse oluşturulacak (oyun yüklendikten sonra ilk defa açılıyorsa).
-         tx.executeSql('CREATE TABLE IF NOT EXISTS game ('+
+alert("game tablosu oluşturulacak");
+		 tx.executeSql('CREATE TABLE IF NOT EXISTS game ('+
 					'id INTEGER PRIMARY KEY AUTOINCREMENT'+
 					', language VARCHAR(2))');
 		 
+alert("player tablosu oluşturulacak");			 
 		 tx.executeSql('CREATE TABLE IF NOT EXISTS players ('+
 					'id INTEGER PRIMARY KEY AUTOINCREMENT'+
 					', name VARCHAR(50)'+
@@ -118,18 +122,19 @@ document.addEventListener("deviceready", onDeviceReady, false);
 					', plfindout VARCHAR(11)'+		//player level
 					', plmathris VARCHAR(11)'+		//player level
 					', plmathrix VARCHAR(11)'+		//player level
-					', plshootout VARCHAR(11)'+	//player level
-					', freemodediffiulty INTEGER'+			//Free mode last selected difficulty
-					', findoutdifficulty INTEGER'+		//Find out last selected difficulty
-					', mathrisdifficulty INTEGER'+		//Mathris last selected difficulty
-					', mathrixdifficulty INTEGER'+		//Mathrix mode last selected difficulty
+					', plshootout VARCHAR(11)'+		//player level
+					', freemodediffiulty INTEGER'+	//Free mode last selected difficulty
+					', findoutdifficulty INTEGER'+	//Find out last selected difficulty
+					', mathrisdifficulty INTEGER'+	//Mathris last selected difficulty
+					', mathrixdifficulty INTEGER'+	//Mathrix mode last selected difficulty
 					', shootoutdifficulty INTEGER'+	//Shoo out mode last selected difficulty
-					', fmoperation VARCHAR(23)'+		//Free mode last selected easy operation
+					', fmoperation VARCHAR(23)'+	//Free mode last selected easy operation
 					', fmnumbers VARCHAR(29)'+		//Free mode last selected easy number
-					', fmdigit VARCHAR(29)'+			//Free mode last selected easy digit
+					', fmdigit VARCHAR(29)'+		//Free mode last selected easy digit
 					', fmocount VARCHAR(29)'+		//Free mode last selected easy op. c.
-					', fmsign VARCHAR(35) )');			//Free mode last selected esy sign
-					
+					', fmsign VARCHAR(35) )');		//Free mode last selected esy sign
+
+alert("tablolar oluşturuldu");	
 		
 		}
 
