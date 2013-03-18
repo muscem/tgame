@@ -263,7 +263,7 @@ alert("tablolar oluşturuldu");
 		alert("leveller listelenecek2");
 		deg=results.rows.item(i).plfreemode.split("|");
 		alert("leveller listelenecek3");
-		for(var j=1;j<deg.length+1;j++){	//deg.length=3
+		for(var j=1;j<4;j++){	//deg.length=3
 		pLevels[id][1][j]=deg[j-1];
 		}
 		
@@ -272,57 +272,57 @@ alert("tablolar oluşturuldu");
 		alert("leveller listelenecek5");
 		deg=results.rows.item(i).plfindout.split("|");
 		alert("leveller listelenecek6");
-		for(var j=1;j<deg.length+1;j++){	//deg.length=3
+		for(var j=1;j<4;j++){	//deg.length=3
 		pLevels[id][2][j]=deg[j-1];
 		}
 		
 		alert("leveller listelenecek7");
 		deg.length=0;
 		deg=results.rows.item(i).plmathris.split("|");
-		for(var j=1;j<deg.length+1;j++){	//deg.length=3
+		for(var j=1;j<4;j++){	//deg.length=3
 		pLevels[id][3][j]=deg[j-1];
 		}
 		
 		deg.length=0;
 		deg=results.rows.item(i).plmathrix.split("|");
-		for(var j=1;j<deg.length+1;j++){	//deg.length=3
+		for(var j=1;j<4;j++){	//deg.length=3
 		pLevels[id][4][j]=deg[j-1];
 		}
 		
 		deg.length=0;
 		deg=results.rows.item(i).plshootout.split("|");
-		for(var j=1;j<deg.length+1;j++){	//deg.length=3
+		for(var j=1;j<4;j++){	//deg.length=3
 		pLevels[id][5][j]=deg[j-1];
 		}
 		
 		alert("free mode seçimler listelenecek");
 		deg.length=0;
 		deg=results.rows.item(i).fmoperation.split("|");
-		for(var j=1;j<deg.length+1;j++){	//deg.length=12
+		for(var j=1;j<13;j++){	//deg.length=12
 		lastSelFMOp[id][1][j]=deg[j-1];
 		}
 		
 		deg.length=0;
 		deg=results.rows.item(i).fmnumbers.split("|");
-		for(var j=1;j<deg.length+1;j++){	//deg.length=15
+		for(var j=1;j<16;j++){	//deg.length=15
 		lastSelFMNum[id][1][j]=deg[j-1];
 		}
 		
 		deg.length=0;
 		deg=results.rows.item(i).fmdigit.split("|");
-		for(var j=1;j<deg.length+1;j++){	//deg.length=15
+		for(var j=1;j<16;j++){	//deg.length=15
 		lastSelFMDig[id][1][j]=deg[j-1];
 		}
 		
 		deg.length=0;
 		deg=results.rows.item(i).fmocount.split("|");
-		for(var j=1;j<deg.length+1;j++){	//deg.length=15
+		for(var j=1;j<16;j++){	//deg.length=15
 		lastSelFMOC[id][1][j]=deg[j-1];
 		}
 		
 		deg.length=0;
 		deg=results.rows.item(i).fmsign.split("|");
-		for(var j=1;j<deg.length+1;j++){	//deg.length=18
+		for(var j=1;j<19;j++){	//deg.length=18
 		lastSelFMS[id][1][j]=deg[j-1];
 		}
 		alert("dif listelenecek");
