@@ -241,8 +241,10 @@ alert("tablolar oluşturuldu");
 	
 
 	function gamePlayerCreateDB(name){
+	var nameFrom="";
 	if(name==""){
 	name=$("#pagePlayerCreateContent").find("#createPlayerName").val();
+	nameFrom="form";
 	}
 	alert("name= "+name);
 
@@ -250,8 +252,12 @@ alert("tablolar oluşturuldu");
 	db.transaction(function (tx){
 	tx.executeSql("INSERT INTO players (name, plfreemode, plfindout, plmathris, plmathrix, plshootout, freemodedifficulty, findoutdifficulty, mathrisdifficulty, mathrixdifficulty, shootoutdifficulty, fmoperation, fmnumbers, fmdigit, fmocount, fmsign) VALUES ('"+name+"', '1|0|0', '1|0|0', '1|0|0', '1|0|0', '1|0|0', 1, 1, 1, 1, 1, '1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0')");
 	alert("Yeni oyuncu kaydedildi");
-	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
-	}, errorCB, successCB);
+	}, errorCB, function (){
+	if(nameFrom="form"){
+	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );	
+	}
+	}
+	);
 	}
 	}
 
@@ -470,7 +476,7 @@ alert("htmlcode yazıldı");
 	
 	db.transaction(function(tx){
 							
-	tx.executeSql("SELECT * FROM player WHERE id='"+id+"'", [], function (tx, results){
+	tx.executeSql("SELECT * FROM players WHERE id='"+id+"'", [], function (tx, results){
 	var len = results.rows.length;
 	if(len==0 || len>1){
 	alert("Hata oldu. Daha önceden olmayan bir oyuncu sanıldı");
@@ -492,7 +498,7 @@ alert("htmlcode yazıldı");
 	
 	
 	function playerDifUpdate(mod, v){
-	tx.executeSql("UPDATE player SET "+mod+" = '" + v + "' WHERE id = '" + gamePlayerID + "'");
+	tx.executeSql("UPDATE players SET "+mod+" = '" + v + "' WHERE id = '" + gamePlayerID + "'");
 	}
 /* Veritananı bağlantı kodları sonu */
 
