@@ -230,16 +230,24 @@ alert("tablolar oluşturuldu");
 		var len = results.rows.length;
 		
 		//Player'a ait değişkenler sıfırlanıyor
-		pId.length=0;
-		pName.length=0;
-		pLevels.length=0;
-		lastSelFMOp.length=0;
-		lastSelFMNum.length=0;
-		lastSelFMDig.length=0;
-		lastSelFMOC.length=0;
-		lastSelFMS.length=0;
-		lastSelDif.length=0;		
-
+		//pId.length=0;
+//		pName.length=0;
+//		pLevels.length=0;
+//		lastSelFMOp.length=0;
+//		lastSelFMNum.length=0;
+//		lastSelFMDig.length=0;
+//		lastSelFMOC.length=0;
+//		lastSelFMS.length=0;
+//		lastSelDif.length=0;		
+		pId=[];
+		pName=[];
+		pLevels=[[[]]];
+		lastSelFMOp=[[[]]];
+		lastSelFMNum=[[[]]];
+		lastSelFMDig=[[[]]];
+		lastSelFMOC=[[[]]];
+		lastSelFMS=[[[]]];
+		lastSelDif=[[]];
 
 
 
@@ -253,7 +261,7 @@ alert("tablolar oluşturuldu");
 		id=pId[i];
 		pName[id]=results.rows.item(i).name;
 		
-		alert("id ve isim alındı. id= "+id+" name= "+name);
+		alert("id ve isim alındı. id= "+id+" name= "+pName[id]);
 		var a=results.rows.item(i).plfreemode;
 		var b=[];
 		b=a.split("|");
