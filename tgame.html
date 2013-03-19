@@ -49,7 +49,7 @@ var lastSelDif=[[]];	//freemode diffiulty	 lastSelFMDif[gamePlayerID][mode]=dif
 
 
 //(seçilen son durum)
-var lastSelFMOp=[[[]]];		//son seçilen operation	lastSelFMOp[gamePlayerID][operation]= 0 or 1
+var lastSelFMOp=[[[]]];		//son seçilen operation	lastSelFMOp[gamePlayerID][Dif][operation]= 0 or 1
 var lastSelFMNum=[[[]]];	// 0: not selected
 var lastSelFMDig=[[[]]];	// 1: selected
 var lastSelFMOC=[[[]]];		
@@ -272,84 +272,153 @@ alert("tablolar oluşturuldu");
 		
 		alert("leveller listelenecek");
 		var deg=[];
+		var mod=[[]];
+		var dif=[[]];
+		
 		alert("leveller listelenecek2");
 		deg=results.rows.item(i).plfreemode.split("|");
-		alert("deg sayısı = "+deg.length);
-		alert("deg 0 ="+deg[0]);
-		alert("deg 1 ="+deg[1]);
-		alert("deg 2 ="+deg[2]);
-		alert("leveller listelenecek3");
-		for(var j=1;j<4;j++){	//deg.length=3
-		alert("for'dan sonra");
-		alert("j= "+j+" deg [j-1] = "+deg[j-1]);
-		pLevels[id][1][j]=deg[j-1];
-		alert("pLevels"+pLevels[id][1][j])
-		}
-		
-		alert("leveller listelenecek4");
-		deg.length=0;
-		alert("leveller listelenecek5");
+		mod[1]=deg;
+		deg=[];
 		deg=results.rows.item(i).plfindout.split("|");
-		alert("leveller listelenecek6");
-		for(var j=1;j<4;j++){	//deg.length=3
-		pLevels[id][2][j]=deg[j-1];
-		}
-		
-		alert("leveller listelenecek7");
-		deg.length=0;
+		mod[2]=deg;
+		deg=[];
 		deg=results.rows.item(i).plmathris.split("|");
-		for(var j=1;j<4;j++){	//deg.length=3
-		pLevels[id][3][j]=deg[j-1];
-		}
-		
-		deg.length=0;
+		mod[3]=deg;
+		deg=[];
 		deg=results.rows.item(i).plmathrix.split("|");
-		for(var j=1;j<4;j++){	//deg.length=3
-		pLevels[id][4][j]=deg[j-1];
-		}
-		
-		deg.length=0;
+		mod[4]=deg;
+		deg=[];
 		deg=results.rows.item(i).plshootout.split("|");
-		for(var j=1;j<4;j++){	//deg.length=3
-		pLevels[id][5][j]=deg[j-1];
-		}
+		mod[5]=deg;
+		pLevels[id]=mod;
 		
+		
+//		pLevels[id][1]=deg;
+//		alert("deg sayısı = "+deg.length);
+//		alert("deg 0 ="+deg[0]);
+//		alert("deg 1 ="+deg[1]);
+//		alert("deg 2 ="+deg[2]);
+//		alert("leveller listelenecek3");
+//		for(var j=1;j<4;j++){	//deg.length=3
+//		alert("for'dan sonra");
+//		alert("j= "+j+" deg [j-1] = "+deg[j-1]);
+//		pLevels[id][1][j]=deg[j-1];
+//		alert("pLevels"+pLevels[id][1][j])
+//		}
+//		
+//		alert("leveller listelenecek4");
+//		deg.length=0;
+//		alert("leveller listelenecek5");
+//		deg=results.rows.item(i).plfindout.split("|");
+//		alert("leveller listelenecek6");
+//		for(var j=1;j<4;j++){	//deg.length=3
+//		pLevels[id][2][j]=deg[j-1];
+//		}
+//		
+//		alert("leveller listelenecek7");
+//		deg.length=0;
+//		deg=results.rows.item(i).plmathris.split("|");
+//		for(var j=1;j<4;j++){	//deg.length=3
+//		pLevels[id][3][j]=deg[j-1];
+//		}
+//		
+//		deg.length=0;
+//		deg=results.rows.item(i).plmathrix.split("|");
+//		for(var j=1;j<4;j++){	//deg.length=3
+//		pLevels[id][4][j]=deg[j-1];
+//		}
+//		
+//		deg.length=0;
+//		deg=results.rows.item(i).plshootout.split("|");
+//		for(var j=1;j<4;j++){	//deg.length=3
+//		pLevels[id][5][j]=deg[j-1];
+//		}
+
 		alert("free mode seçimler listelenecek");
-		deg.length=0;
+		deg=[];
+		dif=[];
 		deg=results.rows.item(i).fmoperation.split("|");
-		for(var j=1;j<13;j++){	//deg.length=12
-		lastSelFMOp[id][1][j]=deg[j-1];
-		}
+		dif[0]=[deg[0],deg[1],deg[2],deg[3]];
+		dif[1]=[deg[4],deg[5],deg[6],deg[7]];
+		dif[2]=[deg[8],deg[9],deg[10],deg[11]];
+		lastSelFMOp[id]=dif;
 		
-		deg.length=0;
+		deg=[];
+		dif=[[]];
 		deg=results.rows.item(i).fmnumbers.split("|");
-		for(var j=1;j<16;j++){	//deg.length=15
-		lastSelFMNum[id][1][j]=deg[j-1];
-		}
+		dif[0]=[deg[0],deg[1],deg[2],deg[3]];
+		dif[1]=[deg[4],deg[5],deg[6],deg[7]];
+		dif[2]=[deg[8],deg[9],deg[10],deg[11]];
+		lastSelFMNum[id]=dif;
 		
-		deg.length=0;
+		deg=[];
+		dif=[[]];
 		deg=results.rows.item(i).fmdigit.split("|");
-		for(var j=1;j<16;j++){	//deg.length=15
-		lastSelFMDig[id][1][j]=deg[j-1];
-		}
+		dif[0]=[deg[0],deg[1],deg[2],deg[3]];
+		dif[1]=[deg[4],deg[5],deg[6],deg[7]];
+		dif[2]=[deg[8],deg[9],deg[10],deg[11]];
+		lastSelFMDig[id]=dif;
 		
-		deg.length=0;
+		deg=[];
+		dif=[[]];
 		deg=results.rows.item(i).fmocount.split("|");
-		for(var j=1;j<16;j++){	//deg.length=15
-		lastSelFMOC[id][1][j]=deg[j-1];
-		}
+		dif[0]=[deg[0],deg[1],deg[2],deg[3]];
+		dif[1]=[deg[4],deg[5],deg[6],deg[7]];
+		dif[2]=[deg[8],deg[9],deg[10],deg[11]];
+		lastSelFMOC[id]=dif;
 		
-		deg.length=0;
+		deg=[];
+		dif=[[]];
 		deg=results.rows.item(i).fmsign.split("|");
-		for(var j=1;j<19;j++){	//deg.length=18
-		lastSelFMS[id][1][j]=deg[j-1];
-		}
+		dif[0]=[deg[0],deg[1],deg[2],deg[3]];
+		dif[1]=[deg[4],deg[5],deg[6],deg[7]];
+		dif[2]=[deg[8],deg[9],deg[10],deg[11]];
+		lastSelFMS[id]=dif;
+		
+
+//		deg.length=0;
+//		deg=results.rows.item(i).fmoperation.split("|");
+//		for(var j=1;j<13;j++){	//deg.length=12
+//		lastSelFMOp[id][1][j]=deg[j-1];
+//		}
+//		
+//		deg.length=0;
+//		deg=results.rows.item(i).fmnumbers.split("|");
+//		for(var j=1;j<16;j++){	//deg.length=15
+//		lastSelFMNum[id][1][j]=deg[j-1];
+//		}
+//		
+//		deg.length=0;
+//		deg=results.rows.item(i).fmdigit.split("|");
+//		for(var j=1;j<16;j++){	//deg.length=15
+//		lastSelFMDig[id][1][j]=deg[j-1];
+//		}
+//		
+//		deg.length=0;
+//		deg=results.rows.item(i).fmocount.split("|");
+//		for(var j=1;j<16;j++){	//deg.length=15
+//		lastSelFMOC[id][1][j]=deg[j-1];
+//		}
+//		
+//		deg.length=0;
+//		deg=results.rows.item(i).fmsign.split("|");
+//		for(var j=1;j<19;j++){	//deg.length=18
+//		lastSelFMS[id][1][j]=deg[j-1];
+//		}
 		alert("dif listelenecek");
-		lastSelDif[id][1]=results.rows.item(i).freemodedifficulty;
-		lastSelDif[id][2]=results.rows.item(i).findoutdifficulty;
-		lastSelDif[id][3]=results.rows.item(i).mathrisdifficulty;
-		lastSelDif[id][4]=results.rows.item(i).mathrixdifficulty;
-		lastSelDif[id][5]=results.rows.item(i).shootoutdifficulty;
+		deg=[];
+		deg[1]=results.rows.item(i).freemodedifficulty;
+		deg[2]=results.rows.item(i).findoutdifficulty;
+		deg[3]=results.rows.item(i).mathrisdifficulty;
+		deg[4]=results.rows.item(i).mathrixdifficulty;
+		deg[5]=results.rows.item(i).shootoutdifficulty;
+		lastSelDif[id]=deg;
+		
+//		lastSelDif[id][1]=results.rows.item(i).freemodedifficulty;
+//		lastSelDif[id][2]=results.rows.item(i).findoutdifficulty;
+//		lastSelDif[id][3]=results.rows.item(i).mathrisdifficulty;
+//		lastSelDif[id][4]=results.rows.item(i).mathrixdifficulty;
+//		lastSelDif[id][5]=results.rows.item(i).shootoutdifficulty;
 		alert("listeleme bitti");
 
 htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
