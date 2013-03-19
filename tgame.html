@@ -94,12 +94,12 @@ document.addEventListener("deviceready", onDeviceReady, false);
     // Cordova is ready
     //
     function onDeviceReady() {
-		alert("veritabanı oluşturulacak");
+		//alert("veritabanı oluşturulacak");
 		dbOK=1;
         //Veritabanı açılıyor (yoksa yaratılacak)
 		db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
 		//alert("veritabanı oluşturuldu");
-		alert("Tablolar oluşturulacak");
+		//alert("Tablolar oluşturulacak");
 		//Oyunun ilk açılışı ise
 		//Veritabanına tablolar oluşturulacak
 		db.transaction(createTable, errorCB, createTableSuccess);
@@ -111,7 +111,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	//
     function createTable(tx) {
 		//Tablolar mevcut değilse oluşturulacak (oyun yüklendikten sonra ilk defa açılıyorsa).
-alert("game tablosu oluşturulacak");
+//alert("game tablosu oluşturulacak");
 		 tx.executeSql('CREATE TABLE IF NOT EXISTS game ('+
 					'id INTEGER PRIMARY KEY AUTOINCREMENT'+
 					', language VARCHAR(2))');
@@ -252,7 +252,7 @@ alert("tablolar oluşturuldu");
 
 
 		
-		alert("Kayıtlı oyuncu sayısı ="+len);
+//		alert("Kayıtlı oyuncu sayısı ="+len);
 		var htmlCode="";
 		var id;
 		if(len>0){
@@ -261,35 +261,35 @@ alert("tablolar oluşturuldu");
 		id=pId[i];
 		pName[id]=results.rows.item(i).name;
 		
-		alert("id ve isim alındı. id= "+id+" name= "+pName[id]);
+//		alert("id ve isim alındı. id= "+id+" name= "+pName[id]);
 		var a=results.rows.item(i).plfreemode;
 		var b=[];
 		b=a.split("|");
-		alert("deg (b) sayısı = "+b.length);
-		alert("deg (b) 0 ="+b[0]);
-		alert("deg (b) 1 ="+b[1]);
-		alert("deg (b) 2 ="+b[2]);
-		
-		alert("leveller listelenecek");
+//		alert("deg (b) sayısı = "+b.length);
+//		alert("deg (b) 0 ="+b[0]);
+//		alert("deg (b) 1 ="+b[1]);
+//		alert("deg (b) 2 ="+b[2]);
+//		
+//		alert("leveller listelenecek");
 		var deg=[];
 		var mod=[[]];
 		var dif=[[]];
 		
-		alert("leveller listelenecek2");
+//		alert("leveller listelenecek2");
 		deg=results.rows.item(i).plfreemode.split("|");
-		mod[1]=deg;
+		mod[0]=deg;
 		deg=[];
 		deg=results.rows.item(i).plfindout.split("|");
-		mod[2]=deg;
+		mod[1]=deg;
 		deg=[];
 		deg=results.rows.item(i).plmathris.split("|");
-		mod[3]=deg;
+		mod[2]=deg;
 		deg=[];
 		deg=results.rows.item(i).plmathrix.split("|");
-		mod[4]=deg;
+		mod[3]=deg;
 		deg=[];
 		deg=results.rows.item(i).plshootout.split("|");
-		mod[5]=deg;
+		mod[4]=deg;
 		pLevels[id]=mod;
 		
 		
@@ -334,7 +334,7 @@ alert("tablolar oluşturuldu");
 //		pLevels[id][5][j]=deg[j-1];
 //		}
 
-		alert("free mode seçimler listelenecek");
+//		alert("free mode seçimler listelenecek");
 		deg=[];
 		dif=[];
 		deg=results.rows.item(i).fmoperation.split("|");
@@ -405,13 +405,13 @@ alert("tablolar oluşturuldu");
 //		for(var j=1;j<19;j++){	//deg.length=18
 //		lastSelFMS[id][1][j]=deg[j-1];
 //		}
-		alert("dif listelenecek");
+//		alert("dif listelenecek");
 		deg=[];
-		deg[1]=results.rows.item(i).freemodedifficulty;
-		deg[2]=results.rows.item(i).findoutdifficulty;
-		deg[3]=results.rows.item(i).mathrisdifficulty;
-		deg[4]=results.rows.item(i).mathrixdifficulty;
-		deg[5]=results.rows.item(i).shootoutdifficulty;
+		deg[0]=results.rows.item(i).freemodedifficulty;
+		deg[1]=results.rows.item(i).findoutdifficulty;
+		deg[2]=results.rows.item(i).mathrisdifficulty;
+		deg[3]=results.rows.item(i).mathrixdifficulty;
+		deg[4]=results.rows.item(i).shootoutdifficulty;
 		lastSelDif[id]=deg;
 		
 //		lastSelDif[id][1]=results.rows.item(i).freemodedifficulty;
@@ -419,7 +419,7 @@ alert("tablolar oluşturuldu");
 //		lastSelDif[id][3]=results.rows.item(i).mathrisdifficulty;
 //		lastSelDif[id][4]=results.rows.item(i).mathrixdifficulty;
 //		lastSelDif[id][5]=results.rows.item(i).shootoutdifficulty;
-		alert("listeleme bitti");
+//		alert("listeleme bitti");
 
 htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 '<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="star" data-theme="d" onclick="playerSelect(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+pName[id]+'</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a>'+
@@ -433,37 +433,37 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 '<tr>'+
 '<td class="td1"><span class="levelSpanFreemode">Free Mode</span></td>'+
 '<td>:</td>'+
-'<td><span class="playerLevelSpanFreemodeE">'+pLevels[id][1][1]+'</span></td>'+
-'<td><span class="playerLevelSpanFreemodeM">'+pLevels[id][1][2]+'</span></td>'+
-'<td><span class="playerLevelSpanFreemodeH">'+pLevels[id][1][3]+'</span></td>'+
+'<td><span class="playerLevelSpanFreemodeE">'+pLevels[id][0][0]+'</span></td>'+
+'<td><span class="playerLevelSpanFreemodeM">'+pLevels[id][0][1]+'</span></td>'+
+'<td><span class="playerLevelSpanFreemodeH">'+pLevels[id][0][2]+'</span></td>'+
 '</tr>'+
 '<tr>'+
 '<td class="td1"><span class="levelSpanFindout">Find Out</span></td>'+
 '<td>:</td>'+
-'<td><span class="playerLevelSpanFindoutE">'+pLevels[id][2][1]+'</span></td>'+
-'<td><span class="playerLevelSpanFindoutM">'+pLevels[id][2][2]+'</span></td>'+
-'<td><span class="playerLevelSpanFindoutH">'+pLevels[id][2][3]+'</span></td>'+
+'<td><span class="playerLevelSpanFindoutE">'+pLevels[id][1][0]+'</span></td>'+
+'<td><span class="playerLevelSpanFindoutM">'+pLevels[id][1][1]+'</span></td>'+
+'<td><span class="playerLevelSpanFindoutH">'+pLevels[id][1][2]+'</span></td>'+
 '</tr>'+
 '<tr>'+
 '<td class="td1"><span class="levelSpanMathris">Mathris</span></td>'+
 '<td>:</td>'+
-'<td><span class="playerLevelSpanMathrisE">'+pLevels[id][3][1]+'</span></td>'+
-'<td><span class="playerLevelSpanMathrisM">'+pLevels[id][3][2]+'</span></td>'+
-'<td><span class="playerLevelSpanMathrisH">'+pLevels[id][3][3]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrisE">'+pLevels[id][2][0]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrisM">'+pLevels[id][2][1]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrisH">'+pLevels[id][2][2]+'</span></td>'+
 '</tr>'+
 '<tr>'+
 '<td class="td1"><span class="levelSpanMathrix">Mathrix</span></td>'+
 '<td>:</td>'+
-'<td><span class="playerLevelSpanMathrixE">'+pLevels[id][4][1]+'</span></td>'+
-'<td><span class="playerLevelSpanMathrixM">'+pLevels[id][4][2]+'</span></td>'+
-'<td><span class="playerLevelSpanMathrixH">'+pLevels[id][4][3]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrixE">'+pLevels[id][3][0]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrixM">'+pLevels[id][3][1]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrixH">'+pLevels[id][3][2]+'</span></td>'+
 '</tr>'+
 '<tr>'+
 '<td class="td1"><span class="levelSpanShootout">Shoot Out</span></td>'+
 '<td>:</td>'+
-'<td><span class="playerLevelSpanShootoutE">'+pLevels[id][5][1]+'</span></td>'+
-'<td><span class="playerLevelSpanShootoutM">'+pLevels[id][5][2]+'</span></td>'+
-'<td><span class="playerLevelSpanShootoutH">'+pLevels[id][5][3]+'</span></td>'+
+'<td><span class="playerLevelSpanShootoutE">'+pLevels[id][4][0]+'</span></td>'+
+'<td><span class="playerLevelSpanShootoutM">'+pLevels[id][4][1]+'</span></td>'+
+'<td><span class="playerLevelSpanShootoutH">'+pLevels[id][4][2]+'</span></td>'+
 '</tr>'+
 '</tbody></table>'+
 '<p align="center">'+
