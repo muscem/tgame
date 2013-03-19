@@ -475,22 +475,26 @@ alert("htmlcode yazıldı");
 	alert("oyuncu adı değiştiriliyor id="+id+" name ="+name);
 	
 	db.transaction(function(tx){
-							
+	alert("rename1");
 	tx.executeSql("SELECT * FROM players WHERE id='"+id+"'", [], function (tx, results){
+		alert("rename2");
 	var len = results.rows.length;
+		alert("rename3");
 	if(len==0 || len>1){
 	alert("Hata oldu. Daha önceden olmayan bir oyuncu sanıldı");
 	}
 	else{
+			alert("rename4");
 	tx.executeSql("UPDATE players SET name = '" + name + "' WHERE id = '" + id + "'");
 	}
-	
+		alert("rename5");
 	}, errorCB);
 	
 	}, errorCB,  function(){
 	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
 	}
 	);
+		alert("rename6");
 	}
 	
 	
