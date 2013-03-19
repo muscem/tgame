@@ -109,7 +109,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	
     // Populate the database 
 	//
-    function createTable(tx) {
+    function createTable(tx){
 		//Tablolar mevcut değilse oluşturulacak (oyun yüklendikten sonra ilk defa açılıyorsa).
 //alert("game tablosu oluşturulacak");
 		 tx.executeSql('CREATE TABLE IF NOT EXISTS game ('+
@@ -146,10 +146,46 @@ alert("tablolar oluşturuldu");
 	//alert("Veritabanı kullanılabilir durumda");
 	
 	alert("dil kontrol edilecek");
-	db.transaction(getLangDB, errorCB, successCB);
+	db.transaction(getLangDB, errorCB, getLangDBSuccess);
 	}
 
-
+	function getLangDB(tx){
+		alert("dil kontrol ediliyor");
+		//Oyunun daha önce açılıp, dil seçimi yapılıp yapılmadığı bulunuyor.
+		//Yapılmadıysa dil seçim sayfasına,
+		//aksi halde oyuncu seçim sayfasın yönlendirme yapılıyor.
+		tx.executeSql('SELECT * FROM game', [], function(tx, results) {
+		var len = results.rows.length;
+		alert("bulunan dil sayısı len= "+len);
+		if(len==1){
+		gameLang=results.rows.item(0).language;
+		alert("dil="+gameLang);
+		//$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );	
+		//Dil daha önceden seçilmişse, oyuncu kaydıda yapılmış olabilir. Kontrol ediliyor
+		//alert("oyuncu bilgileri kontrol edilecek");
+		//db.transaction(listPagePlayersUserInfoDB, errorCB, listPagePlayersUserInfoDBSuccess);
+		}
+		else if(len>1){
+		//Yanlışlıkla birden fazla kayıt yapılırsa (programlama hatasıyla)
+		alert("Birden fazla dil kaydı olmuş. Hata!");
+		tx.executeSql('DELETE FROM game');
+		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );	
+		}
+		else{
+		alert("dil yok=");
+		//Dil seçim sayfası açılacak
+		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );		
+		}
+	}, errorCB);
+	}
+	
+	
+	function getLangDBSuccess(){
+	if (gameLang!=""){
+	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+	}
+	}
+	
 // Önemsiz callback'ler
     function errorCB(err) {
 		//Veritabanına bağlanmakta sorun yaşanması durumu
@@ -178,6 +214,8 @@ alert("tablolar oluşturuldu");
 	if(len==0 || len>1){
 	alert("Daha öncesinde dil yok. Yeni kayıt yapılacak "+gameLang);
 	tx.executeSql("INSERT INTO game (language) VALUES ('"+gameLang+"')");
+	
+	//Daha önce dil kaydı yapılmadığına göre oyuncu da kayıtlı değildir. Çünkü dil olmaması durumu, oyun ilk yüklendiğinde olacak sadece
 		if(gameLang=="de") gamePlayerCreateDB("Neue Spieler");
 		if(gameLang=="en") gamePlayerCreateDB("New player");
 		if(gameLang=="es") gamePlayerCreateDB("Nuevo Jugador");
@@ -196,7 +234,7 @@ alert("tablolar oluşturuldu");
 	
 	}, errorCB);
 	
-	}, errorCB, successCB);
+	}, errorCB, getLangDBSuccess);
 	
 	}
 	
@@ -217,12 +255,6 @@ alert("tablolar oluşturuldu");
 	}
 	}
 
-//		function dbVarConvert(varchar, id){
-//		var t=[];
-//		t.length=0;
-//		t=varchar.split("|");
-//		return t;
-//		}
 
 
 	function listPagePlayersUserInfoDB(){
@@ -237,15 +269,6 @@ alert("tablolar oluşturuldu");
 		var len = results.rows.length;
 		
 		//Player'a ait değişkenler sıfırlanıyor
-		//pId.length=0;
-//		pName.length=0;
-//		pLevels.length=0;
-//		lastSelFMOp.length=0;
-//		lastSelFMNum.length=0;
-//		lastSelFMDig.length=0;
-//		lastSelFMOC.length=0;
-//		lastSelFMS.length=0;
-//		lastSelDif.length=0;		
 		pId=[];
 		pName=[];
 		pLevels=[[[]]];
@@ -268,21 +291,11 @@ alert("tablolar oluşturuldu");
 		id=pId[i];
 		pName[id]=results.rows.item(i).name;
 		
-//		alert("id ve isim alındı. id= "+id+" name= "+pName[id]);
-		var a=results.rows.item(i).plfreemode;
-		var b=[];
-		b=a.split("|");
-//		alert("deg (b) sayısı = "+b.length);
-//		alert("deg (b) 0 ="+b[0]);
-//		alert("deg (b) 1 ="+b[1]);
-//		alert("deg (b) 2 ="+b[2]);
-//		
-//		alert("leveller listelenecek");
+
 		var deg=[];
 		var mod=[[]];
 		var dif=[[]];
 		
-//		alert("leveller listelenecek2");
 		deg=results.rows.item(i).plfreemode.split("|");
 		mod[0]=deg;
 		deg=[];
@@ -300,48 +313,6 @@ alert("tablolar oluşturuldu");
 		pLevels[id]=mod;
 		
 		
-//		pLevels[id][1]=deg;
-//		alert("deg sayısı = "+deg.length);
-//		alert("deg 0 ="+deg[0]);
-//		alert("deg 1 ="+deg[1]);
-//		alert("deg 2 ="+deg[2]);
-//		alert("leveller listelenecek3");
-//		for(var j=1;j<4;j++){	//deg.length=3
-//		alert("for'dan sonra");
-//		alert("j= "+j+" deg [j-1] = "+deg[j-1]);
-//		pLevels[id][1][j]=deg[j-1];
-//		alert("pLevels"+pLevels[id][1][j])
-//		}
-//		
-//		alert("leveller listelenecek4");
-//		deg.length=0;
-//		alert("leveller listelenecek5");
-//		deg=results.rows.item(i).plfindout.split("|");
-//		alert("leveller listelenecek6");
-//		for(var j=1;j<4;j++){	//deg.length=3
-//		pLevels[id][2][j]=deg[j-1];
-//		}
-//		
-//		alert("leveller listelenecek7");
-//		deg.length=0;
-//		deg=results.rows.item(i).plmathris.split("|");
-//		for(var j=1;j<4;j++){	//deg.length=3
-//		pLevels[id][3][j]=deg[j-1];
-//		}
-//		
-//		deg.length=0;
-//		deg=results.rows.item(i).plmathrix.split("|");
-//		for(var j=1;j<4;j++){	//deg.length=3
-//		pLevels[id][4][j]=deg[j-1];
-//		}
-//		
-//		deg.length=0;
-//		deg=results.rows.item(i).plshootout.split("|");
-//		for(var j=1;j<4;j++){	//deg.length=3
-//		pLevels[id][5][j]=deg[j-1];
-//		}
-
-//		alert("free mode seçimler listelenecek");
 		deg=[];
 		dif=[];
 		deg=results.rows.item(i).fmoperation.split("|");
@@ -383,36 +354,6 @@ alert("tablolar oluşturuldu");
 		lastSelFMS[id]=dif;
 		
 
-//		deg.length=0;
-//		deg=results.rows.item(i).fmoperation.split("|");
-//		for(var j=1;j<13;j++){	//deg.length=12
-//		lastSelFMOp[id][1][j]=deg[j-1];
-//		}
-//		
-//		deg.length=0;
-//		deg=results.rows.item(i).fmnumbers.split("|");
-//		for(var j=1;j<16;j++){	//deg.length=15
-//		lastSelFMNum[id][1][j]=deg[j-1];
-//		}
-//		
-//		deg.length=0;
-//		deg=results.rows.item(i).fmdigit.split("|");
-//		for(var j=1;j<16;j++){	//deg.length=15
-//		lastSelFMDig[id][1][j]=deg[j-1];
-//		}
-//		
-//		deg.length=0;
-//		deg=results.rows.item(i).fmocount.split("|");
-//		for(var j=1;j<16;j++){	//deg.length=15
-//		lastSelFMOC[id][1][j]=deg[j-1];
-//		}
-//		
-//		deg.length=0;
-//		deg=results.rows.item(i).fmsign.split("|");
-//		for(var j=1;j<19;j++){	//deg.length=18
-//		lastSelFMS[id][1][j]=deg[j-1];
-//		}
-//		alert("dif listelenecek");
 		deg=[];
 		deg[0]=results.rows.item(i).freemodedifficulty;
 		deg[1]=results.rows.item(i).findoutdifficulty;
@@ -421,12 +362,6 @@ alert("tablolar oluşturuldu");
 		deg[4]=results.rows.item(i).shootoutdifficulty;
 		lastSelDif[id]=deg;
 		
-//		lastSelDif[id][1]=results.rows.item(i).freemodedifficulty;
-//		lastSelDif[id][2]=results.rows.item(i).findoutdifficulty;
-//		lastSelDif[id][3]=results.rows.item(i).mathrisdifficulty;
-//		lastSelDif[id][4]=results.rows.item(i).mathrixdifficulty;
-//		lastSelDif[id][5]=results.rows.item(i).shootoutdifficulty;
-//		alert("listeleme bitti");
 
 htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 '<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="star" data-theme="d" onclick="playerSelect(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+pName[id]+'</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a>'+
@@ -509,56 +444,29 @@ alert("htmlcode yazıldı");
 	}
 	
 
-	function getLangDB(tx) {
-		alert("dil kontrol ediliyor");
-		//Oyunun daha önce açılıp, dil seçimi yapılıp yapılmadığı bulunuyor.
-		//Yapılmadıysa dil seçim sayfasına,
-		//aksi halde oyuncu seçim sayfasın yönlendirme yapılıyor.
-		tx.executeSql('SELECT * FROM game', [], function(tx, results) {
-		var len = results.rows.length;
-		alert("bulunan dil sayısı len= "+len);
-		if(len==1){
-		gameLang=results.rows.item(0).language;
-		alert("dil="+gameLang);
-		$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );	
-		//Dil daha önceden seçilmişse, oyuncu kaydıda yapılmış olabilir. Kontrol ediliyor
-		//alert("oyuncu bilgileri kontrol edilecek");
-		//db.transaction(listPagePlayersUserInfoDB, errorCB, listPagePlayersUserInfoDBSuccess);
-		}
-		else if(len>1){
-		//Yanlışlıkla birden fazla kayıt yapılırsa (programlama hatasıyla)
-		alert("Birden fazla dil kaydı olmuş. Hata!");
-		tx.executeSql('DELETE FROM game');
-		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );	
-		}
-		else{
-		alert("dil yok=");
-		//Dil seçim sayfası açılacak
-		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );		
-		}
-	}, errorCB);
-	}
-
-	function listPagePlayersUserInfoDBSuccess(){
-	//Oyuncu veritabanı başarıyla kontrol edildikten sonra, pagePlayers sayfası açılıyor
-	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
-	}
+	
+	
+	
+//	function listPagePlayersUserInfoDBSuccess(){
+//	//Oyuncu veritabanı başarıyla kontrol edildikten sonra, pagePlayers sayfası açılıyor
+//	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+//	}
 	
 	function gamePlayerDeleteDB(id){
 	alert("oyuncu siliniyor")
 	//Veritabanından bir oyuncu silen kod
 	db.transaction(function(tx){
 	tx.executeSql("DELETE FROM players WHERE id='"+id+"'");
-	}, errorCB);
-	
-	
+	}, errorCB, function(){
 	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+	}
+	);
 	}
 	
 	function gamePlayerRenameDB(id){
 	var name;
 	name=$("#pagePlayerRenameContent").find("#newname").val();
-	//alert("oyuncu adı değiştiriliyor id="+id+" name ="+name);
+	alert("oyuncu adı değiştiriliyor id="+id+" name ="+name);
 	
 	db.transaction(function(tx){
 							
@@ -568,13 +476,15 @@ alert("htmlcode yazıldı");
 	alert("Hata oldu. Daha önceden olmayan bir oyuncu sanıldı");
 	}
 	else{
-	tx.executeSql("UPDATE player SET name = '" + name + "' WHERE id = '" + id + "'");
+	tx.executeSql("UPDATE players SET name = '" + name + "' WHERE id = '" + id + "'");
 	}
 	
 	}, errorCB);
 	
-	}, errorCB, successCB);
-	
+	}, errorCB,  function(){
+	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+	}
+	);
 	}
 	
 	
