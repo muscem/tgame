@@ -178,6 +178,13 @@ alert("tablolar oluşturuldu");
 	if(len==0 || len>1){
 	alert("Daha öncesinde dil yok. Yeni kayıt yapılacak "+gameLang);
 	tx.executeSql("INSERT INTO game (language) VALUES ('"+gameLang+"')");
+		if(gameLang=="de") gamePlayerCreateDB("Neue Spieler");
+		if(gameLang=="en") gamePlayerCreateDB("New player");
+		if(gameLang=="es") gamePlayerCreateDB("Nuevo Jugador");
+		if(gameLang=="fr") gamePlayerCreateDB("Nouveau Joueur");
+		if(gameLang=="it") gamePlayerCreateDB("Nuovo Giocatore");
+		if(gameLang=="tr") gamePlayerCreateDB("Yeni Oyuncu");
+		
 	}
 	else{
 	var dbLangId=results.rows.item(0).id;	
@@ -476,18 +483,18 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 alert("htmlcode yazıldı");
 			}
 		}
-		else if(len==0){
-			alert("Veritabanında kayıtlı oyuncu bulunamadı. Yeni oluşturulacak");
-		//eğer bütün oyuncular silinmiş ise
-		//seçili dilde "Yeni Oyuncu" adında oyuncu oluşturulacak
-		if(gameLang=="de") gamePlayerCreateDB("Neue Spieler");
-		if(gameLang=="en") gamePlayerCreateDB("New player");
-		if(gameLang=="es") gamePlayerCreateDB("Nuevo Jugador");
-		if(gameLang=="fr") gamePlayerCreateDB("Nouveau Joueur");
-		if(gameLang=="it") gamePlayerCreateDB("Nuovo Giocatore");
-		if(gameLang=="tr") gamePlayerCreateDB("Yeni Oyuncu");
-		
-		}
+		//else if(len==0){
+//			alert("Veritabanında kayıtlı oyuncu bulunamadı. Yeni oluşturulacak");
+//		//eğer bütün oyuncular silinmiş ise
+//		//seçili dilde "Yeni Oyuncu" adında oyuncu oluşturulacak
+//		if(gameLang=="de") gamePlayerCreateDB("Neue Spieler");
+//		if(gameLang=="en") gamePlayerCreateDB("New player");
+//		if(gameLang=="es") gamePlayerCreateDB("Nuevo Jugador");
+//		if(gameLang=="fr") gamePlayerCreateDB("Nouveau Joueur");
+//		if(gameLang=="it") gamePlayerCreateDB("Nuovo Giocatore");
+//		if(gameLang=="tr") gamePlayerCreateDB("Yeni Oyuncu");
+//		
+//		}
 		//htmlcode sayfaya aktarılıyor
 		$("#pagePlayersList").html(htmlCode);
 		$("#pagePlayersList").trigger( "create" );
@@ -545,17 +552,17 @@ alert("htmlcode yazıldı");
 	}, errorCB);
 	
 	
-	listPagePlayersUserInfoDB();
+	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
 	}
 	
 	function gamePlayerRenameDB(id){
 	var name;
-	//name=$("#pagePlayerRenameContent").find("#newname").val();
+	name=$("#pagePlayerRenameContent").find("#newname").val();
 	//alert("oyuncu adı değiştiriliyor id="+id+" name ="+name);
 	
 	db.transaction(function(tx){
 							
-	tx.executeSql('SELECT * FROM player', [], function (tx, results){
+	tx.executeSql("SELECT * FROM player WHERE id='"+id+"'", [], function (tx, results){
 	var len = results.rows.length;
 	if(len==0 || len>1){
 	alert("Hata oldu. Daha önceden olmayan bir oyuncu sanıldı");

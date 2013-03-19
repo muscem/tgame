@@ -358,7 +358,7 @@ gameLang=lang;
 $("#langSelect").val(gameLang);
 $("#langSelect").trigger("change");  //Bunun içinde gameLanguageChanged() çalistiriliyor
 
-$.mobile.changePage( $("#pagePlayers") );
+$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
 }
 /* pageLang kodu sonu */
 
@@ -371,7 +371,7 @@ lang=$("#langSelect").val();
 if(lang!=""){
 gameLang=lang;
 gameLangChange();	//tarayicida çalismayi önler
-gameLanguageChanged();
+//gameLanguageChanged();
 }
 //gameLangChange(lang);		//Tarayicida çalismayi önler
 
