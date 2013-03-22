@@ -538,7 +538,7 @@ function langChangeSelect() {
 
 var lang;
 lang=$("#langSelect").val();
-//alert(lang);
+alert(lang);
 if(lang!=""){
 gameLang=lang;
 
