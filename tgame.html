@@ -21,15 +21,16 @@ var dbOK=0;		//Bilgisayarda kullanamk için gerekli. Sonra sil.
 
 //Oyunun her yerinde kullanılacak bazı değişkenler
 //Veritabanından alınan bilgiler (p = player)
-var gameLang="";			//Oyun dili
+var gameLang="tr";			//Oyun dili
 var gamePlayerID=0;		//Oyuncu id
 
 //Oyuncunun seçimleri
 var gameMode;				//Oyun modu
 var gameOperation=[[]];			//Oyun işlem türü
-var gameOCount=[[]];				//Oyuns işlem sayısı
+var gameOCount=[[]];				//Oyun işlem sayısı
 var gameDigit=[[]];				//Oyun hane sayısı
 var gameNumber=[[]];				//Oyun sayı türü
+var gameSign=[[]];				//Oyun sayı türü	//Sonradan ekledim bölümlerde yok.
 var gameDifficulty;			//Oyun zorluğu 1-2-3
 var gamelevel;				//Oyun seviyesi
 
@@ -47,20 +48,34 @@ var lastSelDif=[[]];	//freemode diffiulty	 lastSelFMDif[gamePlayerID][mode]=dif
 //mode= 1-Free mode	2-Find out	3-Matris	4-Mathrix	5-Shoot out
 //dif= 1-easy, 2-moderate, 3-hard
 
+//
+
 
 //(seçilen son durum)
 var lastSelFMOp=[[[]]];		//son seçilen operation	lastSelFMOp[gamePlayerID][Dif][operation]= 0 or 1
 var lastSelFMNum=[[[]]];	// 0: not selected
 var lastSelFMDig=[[[]]];	// 1: selected
 var lastSelFMOC=[[[]]];		
-var lastSelFMS=[[[]]];		
+var lastSelFMS=[[[]]];	
 
+
+//gamePlayerID=0 veritabanindan gelemeyecek bir sayi. Bu yüzden deneme kisisi (guest) için ayridim.
+pId[0]=0;
+pName[0]=["cem"];	
+lastSelDif[0]=[0,0,0,0,0];	//[1,0,0,0,0]	[2,0,0,0,0]
+lastSelFMOp[0]=[[1,0,0,0],[1,0,0,0],[1,0,0,0]];
+lastSelFMNum[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
+lastSelFMDig[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
+lastSelFMOC[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
+lastSelFMS[0]=[[1,0,0,0,0,0],[1,0,0,0,0,0],[1,0,0,0,0,0]];
+pLevels[0]=[[1,0,0],[3,0,0],[5,3,2],[7,4,3],[10,9,8]];
 
 /*
 pId[0]=0; 		//id
 pName[0]="Oyuncuuu 1";
 
-//gamePlayerID=0 veritabanindan gelemeyecek bir sayi. Bu yüzden deneme kisisi (guest) için ayridim.	
+//gamePlayerID=0 veritabanindan gelemeyecek bir sayi. Bu yüzden deneme kisisi (guest) için ayridim.
+
 for(var i1=1;i1<6;i1++){
 for(var i2=1;i2<4;i2++){
 pLevels[0][i1][i2]=1;
@@ -250,7 +265,7 @@ alert("tablolar oluşturuldu");
 
 	if(name!=""){
 	db.transaction(function (tx){
-	tx.executeSql("INSERT INTO players (name, plfreemode, plfindout, plmathris, plmathrix, plshootout, freemodedifficulty, findoutdifficulty, mathrisdifficulty, mathrixdifficulty, shootoutdifficulty, fmoperation, fmnumbers, fmdigit, fmocount, fmsign) VALUES ('"+name+"', '1|0|0', '1|0|0', '1|0|0', '1|0|0', '1|0|0', 1, 1, 1, 1, 1, '1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0')");
+	tx.executeSql("INSERT INTO players (name, plfreemode, plfindout, plmathris, plmathrix, plshootout, freemodedifficulty, findoutdifficulty, mathrisdifficulty, mathrixdifficulty, shootoutdifficulty, fmoperation, fmnumbers, fmdigit, fmocount, fmsign) VALUES ('"+name+"', '1|0|0', '1|0|0', '1|0|0', '1|0|0', '1|0|0', 0, 0, 0, 0, 0, '1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0')");
 	alert("Yeni oyuncu kaydedildi");
 	}, errorCB, function (){
 	if(nameFrom="form"){
@@ -264,7 +279,7 @@ alert("tablolar oluşturuldu");
 
 
 	function listPagePlayersUserInfoDB(){
-	alert("oyuncu bilgileri listeleniyor");
+	//alert("oyuncu bilgileri listeleniyor");
 	if(dbOK==1){
 		
 	//Kayıtlı oyuncu varsa,
@@ -447,10 +462,78 @@ alert("htmlcode yazıldı");
 	}, errorCB, successCB);
 	
 	}//if(dbOK==1){
+		else{	//veritabanı olmadığı zamanlarda çalışacak, bilgisayarda yani
+		 bilgi_liste();
+		}
 	}
 	
-
 	
+//veritabanı olmadığı zamanlarda çalışacak, bilgisayarda yani	
+function bilgi_liste(){
+	//alert("veritabanı olmadan oyuncular listelenecek");
+var htmlCode="";	
+	for(var id=0;id<1;id++){
+
+htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="star" data-theme="d" onclick="playerSelect(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+pName[id]+'</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a>'+
+'<table class="playerTable" cellpadding="0" cellspacing="0">'+
+'<tbody><tr>'+
+'<th colspan="2"><span class="levelSpanMode">Modes</span></th>'+
+'<th><span class="levelSpanDifE">Easy</span></th>'+
+'<th><span class="levelSpanDifM">Moderate</span></th>'+
+'<th><span class="levelSpanDifH">Hard</span></th>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanFreemode">Free Mode</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanFreemodeE">'+pLevels[id][0][0]+'</span></td>'+
+'<td><span class="playerLevelSpanFreemodeM">'+pLevels[id][0][1]+'</span></td>'+
+'<td><span class="playerLevelSpanFreemodeH">'+pLevels[id][0][2]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanFindout">Find Out</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanFindoutE">'+pLevels[id][1][0]+'</span></td>'+
+'<td><span class="playerLevelSpanFindoutM">'+pLevels[id][1][1]+'</span></td>'+
+'<td><span class="playerLevelSpanFindoutH">'+pLevels[id][1][2]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanMathris">Mathris</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanMathrisE">'+pLevels[id][2][0]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrisM">'+pLevels[id][2][1]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrisH">'+pLevels[id][2][2]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanMathrix">Mathrix</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanMathrixE">'+pLevels[id][3][0]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrixM">'+pLevels[id][3][1]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrixH">'+pLevels[id][3][2]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanShootout">Shoot Out</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanShootoutE">'+pLevels[id][4][0]+'</span></td>'+
+'<td><span class="playerLevelSpanShootoutM">'+pLevels[id][4][1]+'</span></td>'+
+'<td><span class="playerLevelSpanShootoutH">'+pLevels[id][4][2]+'</span></td>'+
+'</tr>'+
+'</tbody></table>'+
+'<p align="center">'+
+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="refresh" data-theme="d" data-inline="true" onclick="openPagePlayerRename(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text"><span class="playerRenameSpan">Rename</span></span><span class="ui-icon ui-icon-refresh ui-icon-shadow">&nbsp;</span></span></a>'+
+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="delete" data-theme="d" data-inline="true" onclick="openPagePlayerDelete(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text"><span class="playerDeleteSpan">Delete</span></span><span class="ui-icon ui-icon-delete ui-icon-shadow">&nbsp;</span></span></a>'+
+'</p>'+
+'</div>'+
+'</div>';
+
+//alert("htmlcode yazıldı");
+
+		}
+		//htmlcode sayfaya aktarılıyor
+		$("#pagePlayersList").html(htmlCode);
+		$("#pagePlayersList").trigger( "create" );
+		//alert("herşey sayfaya yüklendi");
+}
 	
 	
 //	function listPagePlayersUserInfoDBSuccess(){
@@ -459,7 +542,7 @@ alert("htmlcode yazıldı");
 //	}
 	
 	function gamePlayerDeleteDB(id){
-	alert("oyuncu siliniyor")
+	//alert("oyuncu siliniyor")
 	//Veritabanından bir oyuncu silen kod
 	db.transaction(function(tx){
 	tx.executeSql("DELETE FROM players WHERE id='"+id+"'");
@@ -472,37 +555,36 @@ alert("htmlcode yazıldı");
 	function gamePlayerRenameDB(id){
 	var name;
 	name=$("#pagePlayerRenameContent").find("#newname").val();
-	alert("oyuncu adı değiştiriliyor id="+id+" name ="+name);
+	//alert("oyuncu adı değiştiriliyor id="+id+" name ="+name);
 	
 	db.transaction(function(tx){
-	alert("rename1");
+
 	tx.executeSql("SELECT * FROM players WHERE id='"+id+"'", [], function (tx, results){
-		alert("rename2");
+
 	var len = results.rows.length;
-		alert("rename3");
+
 	if(len==0 || len>1){
 	alert("Hata oldu. Daha önceden olmayan bir oyuncu sanıldı");
 	}
 	else{
-			alert("rename4");
+
 	tx.executeSql("UPDATE players SET name = '" + name + "' WHERE id = '" + id + "'");
 	}
-		alert("rename5");
+
 	}, errorCB);
 	
 	}, errorCB,  function(){
 	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
 	}
 	);
-		alert("rename6");
 	}
 	
 	
 	
 	
 	
-	function playerDifUpdate(mod, v){
-	tx.executeSql("UPDATE players SET "+mod+" = '" + v + "' WHERE id = '" + gamePlayerID + "'");
+	function playerDBUpdate(mode, v){	//v=value int veya char
+	tx.executeSql("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID + "'");
 	}
 /* Veritananı bağlantı kodları sonu */
 
@@ -586,7 +668,7 @@ Explanations of games.
 </div><!-- /header -->
 
 <div data-role="content" id="pageGameSettingsContent" align="center">
-<label for="langSelect" class="select" style="margin-top:20px; font-weight:bold"><h2 id="langLabel">Language :</h2></label>
+<label for="langSelect" class="select" style="margin-top:20px; font-weight:bold"><h2 id="langLabelH">Language :</h2></label>
 <select name="langSelect" id="langSelect" onChange="langChangeSelect();">
    <option value="de">Deutsch</option>
    <option value="en" selected>English</option>
@@ -620,7 +702,7 @@ Explanations of games.
 <input type="text" name="newname" id="newname" value="" data-theme="d" />
 <p align="center">
 <button type="button" onClick="closePageToPlayers();" data-theme="d" data-inline="true" ><span class="playerCancelSpan">Cancel</span></button>
-<button type="button" id="pagePlayerRenameButton" onClick="" data-theme="d" data-inline="true" >Rename</button>
+<button type="button" id="pagePlayerRenameButton" onClick="" data-theme="d" data-inline="true" ><span class="playerRenameSpan">Rename</span></button>
 </p>
 </div>
 </form>
@@ -643,7 +725,7 @@ Explanations of games.
 <div style="padding:10px 10px;" align="left">
 <h2 id="pagePlayerDeletePlayerH" align="center">Delete Player</h2>
 <h3 id="pagePlayerDeletePlayerName" align="center">Oyuncu 1</h3>
-<label id="labelDelete" style="font-weight:bold;">Are you sure to delete player?</label>
+<label id="labelDelete" style="font-weight:bold;">Do you want to delete player?</label>
 <br>
 <p align="center"><button type="button" onClick="closePageToPlayers();" data-theme="d" data-inline="true" ><span class="playerCancelSpan">Cancel</span></button>
 <button type="button" id="pagePlayerDeleteButton" onClick="" data-theme="d" data-inline="true" >Delete</button>
@@ -653,6 +735,11 @@ Explanations of games.
 </div>
 
 </div><!-- /page -->
+
+
+
+
+
 
 <!-- /Sayfa başlangıcı -->
 <div data-role="page" id="pagePlayerCreate">
@@ -665,8 +752,8 @@ Explanations of games.
 <div data-role="content" id="pagePlayerCreateContent" align="center">
 <form>
 <div style="padding:10px 10px;" align="left">
-<h2 id="pagePlayerDeletePlayerH" align="center">Create Player</h2>
-<label id="labelDelete" style="font-weight:bold;">Name :</label>
+<h2 id="pagePlayerCreatePlayerH" align="center">Create Player</h2>
+<label id="labelName" style="font-weight:bold;">Name :</label>
 <input type="text" name="createnewname" id="createPlayerName" value="" data-theme="d" />
 <p align="center"><button type="button" onClick="closePageToPlayers();" data-theme="d" data-inline="true" ><span class="playerCancelSpan">Cancel</span></button>
 <button type="button" id="pagePlayerCreateButton" onClick="gamePlayerCreateDB('');" data-theme="d" data-inline="true" ><span class="playerCancelSpan">Create</span></button>
@@ -677,6 +764,8 @@ Explanations of games.
 </div>
 
 </div><!-- /page -->
+
+
 
 
 
@@ -750,9 +839,9 @@ Explanations of games.
 </table>
 
 <p align="center">
-<a href="#" data-role="button" data-icon="refresh" data-theme="d" data-iconpos="left" data-mini="true" onClick="openPagePlayerRename('0');" data-inline="true" ><span id="playerRenameSpan">Rename</span></a>
+<a href="#" data-role="button" data-icon="refresh" data-theme="d" data-iconpos="left" data-mini="true" onClick="openPagePlayerRename('0');" data-inline="true" ><span class="playerRenameSpan">Rename</span></a>
 
-<a href="#" data-role="button" data-icon="refresh" data-theme="d" data-iconpos="left" data-mini="true" onClick="openPagePlayerDelete('0');" data-inline="true" ><span id="playerDeleteSpan">Delete</span></a>
+<a href="#" data-role="button" data-icon="refresh" data-theme="d" data-iconpos="left" data-mini="true" onClick="openPagePlayerDelete('0');" data-inline="true" ><span class="playerDeleteSpan">Delete</span></a>
 
 
 </p>
@@ -765,7 +854,7 @@ Explanations of games.
 <hr>  
 <br>
 
-<a href="#" data-role="button" data-theme="d" onClick="openPagePlayerCreate();" ><span id="playerCreateSpan">Create</span></a>
+<a href="#" data-role="button" data-theme="d" onClick="openPagePlayerCreate();" ><span class="playerCreateSpan">Create</span></a>
 
 </div> 
 
@@ -838,60 +927,58 @@ Explanations of modes.
 </div><!-- /header -->
 
 <div data-role="content" id="pageFreeModeLevelContent" align="center">
-
+<h1 align="center">Free Mode</h1>
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
-<input type="radio" name="gDifficulty" id="freeModeEasy" onClick="difficultyClick('fmdiffiulty', 1);" />
+<input type="radio" name="gDifficulty" id="freeModeEasy" onClick="changeDifficulty(0, 0);" />
 <label class="labelEasy" for="freeModeEasy">Kolay</label>
 
-<input type="radio" name="gDifficulty" id="freeModeModerate" onClick="difficultyClick('fmdiffiulty', 2);" />
+<input type="radio" name="gDifficulty" id="freeModeModerate" onClick="changeDifficulty(0, 1);" />
 <label class="labelModerate" for="freeModeModerate">Normal</label>
 
-<input type="radio" name="gDifficulty" id="freeModeHard" onClick="difficultyClick('fmdiffiulty', 3);" />
+<input type="radio" name="gDifficulty" id="freeModeHard" onClick="changeDifficulty(0, 2);" />
 <label class="labelHard" for="freeModeHard">Zor</label>
 
 </fieldset>
 
-<a href="#" onClick="goster();" data-role="button" data-theme="d">Göster</a>
-        
 <hr>
 <br>
 
 <h3>İşlemler (Operations)</h3>
 
-<label><input type="checkbox" name="operation" id="oAdd" data-mini="true" /><span id="spanOAdd">Toplama</span></label>
-<label><input type="checkbox" name="operation" id="oSub" data-mini="true" disabled /><span id="spanOSub">Çıkarma</span></label>
-<label><input type="checkbox" name="operation" id="oMul" data-mini="true" disabled /><span id="spanOMul">Çarpma</span></label>
-<label><input type="checkbox" name="operation" id="oDiv" data-mini="true" disabled /><span id="spanODiv">Bölme</span></label>
+<label><input type="checkbox" name="operation" id="oAdd" data-mini="true" onClick="changeOpt(0,0);" /><span id="spanOAdd">Toplama</span></label>
+<label><input type="checkbox" name="operation" id="oSub" data-mini="true" onClick="changeOpt(0,1);" disabled /><span id="spanOSub">Çıkarma</span></label>
+<label><input type="checkbox" name="operation" id="oMul" data-mini="true" onClick="changeOpt(0,2);" disabled /><span id="spanOMul">Çarpma</span></label>
+<label><input type="checkbox" name="operation" id="oDiv" data-mini="true" onClick="changeOpt(0,3);" disabled /><span id="spanODiv">Bölme</span></label>
 
 <hr>
 <br>
 
 <h3>Sayılar (Numbers)</h3>
-<label><input type="checkbox" name="number" id="nInt" data-mini="true" /><span id="spanNInt">Tam Sayılar</span></label>
+<label><input type="checkbox" name="number" id="nInt" data-mini="true" onClick="changeOpt(1,0);" /><span id="spanNInt">Tam Sayılar</span></label>
 
-<label><input type="checkbox" name="number" id="nDec" data-mini="true" disabled /><span id="spanNDec">Ondalık Sayılar</span></label>
+<label><input type="checkbox" name="number" id="nDec" data-mini="true" onClick="changeOpt(1,1);" disabled /><span id="spanNDec">Ondalık Sayılar</span></label>
 
-<label><input type="checkbox" name="number" id="nRat" data-mini="true" disabled /><span id="spanNRat">Kesirli Sayılar</span></label>
+<label><input type="checkbox" name="number" id="nRat" data-mini="true" onClick="changeOpt(1,2);" disabled /><span id="spanNRat">Kesirli Sayılar</span></label>
 
-<label><input type="checkbox" name="number" id="nExp" data-mini="true" disabled /><span id="spanNExp">Üslü Sayılar</span></label>
+<label><input type="checkbox" name="number" id="nExp" data-mini="true" onClick="changeOpt(1,3);" disabled /><span id="spanNExp">Üslü Sayılar</span></label>
 
-<label><input type="checkbox" name="number" id="nRoo" data-mini="true" disabled /><span id="spanNRoo">Köklü Sayılar</span></label>
+<label><input type="checkbox" name="number" id="nRoo" data-mini="true" onClick="changeOpt(1,4);" disabled /><span id="spanNRoo">Köklü Sayılar</span></label>
 
 <hr>
 <br>
 
 <h3>Hane Sayısı (Digit)</h3>
 
-<label><input type="checkbox" name="digit" id="digit1" data-mini="true" /><span id="spanDigit1">X</span></label>
+<label><input type="checkbox" name="digit" id="digit1" data-mini="true" onClick="changeOpt(2,0);" /><span id="spanDigit1">X</span></label>
 
-<label><input type="checkbox" name="digit" id="digit2" data-mini="true" disabled /><span id="spanDigit2">XX</span></label>
+<label><input type="checkbox" name="digit" id="digit2" data-mini="true" onClick="changeOpt(2,1);" disabled /><span id="spanDigit2">XX</span></label>
 
-<label><input type="checkbox" name="digit" id="digit3" data-mini="true" disabled /><span id="spanDigit3">XXX</span></label>
+<label><input type="checkbox" name="digit" id="digit3" data-mini="true" onClick="changeOpt(2,2);" disabled /><span id="spanDigit3">XXX</span></label>
 
-<label><input type="checkbox" name="digit" id="digit4" data-mini="true" disabled /><span id="spanDigit4">XXXX</span></label>
+<label><input type="checkbox" name="digit" id="digit4" data-mini="true" onClick="changeOpt(2,3);" disabled /><span id="spanDigit4">XXXX</span></label>
 
-<label><input type="checkbox" name="digit" id="digit5" data-mini="true" disabled /><span id="spanDigit5">XXXXX</span></label>
+<label><input type="checkbox" name="digit" id="digit5" data-mini="true" onClick="changeOpt(2,4);" disabled /><span id="spanDigit5">XXXXX</span></label>
 
 
 <hr>
@@ -899,19 +986,19 @@ Explanations of modes.
 
 <h3>İşlem sayısı (Operation count)</h3>
 
-<label><input type="checkbox" name="oCount" id="oCount1" data-mini="true" /><span id="spanCount1">
+<label><input type="checkbox" name="oCount" id="oCount1" data-mini="true" onClick="changeOpt(3,0);" /><span id="spanCount1">
 X ? X</span></label>
 
-<label><input type="checkbox" name="oCount" id="oCount2" data-mini="true" disabled /><span id="spanCount2">
+<label><input type="checkbox" name="oCount" id="oCount2" data-mini="true" onClick="changeOpt(3,1);" disabled /><span id="spanCount2">
 X ? X ? X</span></label>
 
-<label><input type="checkbox" name="oCount" id="oCount3" data-mini="true" disabled /><span id="spanCount3">
+<label><input type="checkbox" name="oCount" id="oCount3" data-mini="true" onClick="changeOpt(3,2);" disabled /><span id="spanCount3">
 X ? X ? X ? X</span></label>
 
-<label><input type="checkbox" name="oCount" id="oCount4" data-mini="true" disabled /><span id="spanCount4">
+<label><input type="checkbox" name="oCount" id="oCount4" data-mini="true" onClick="changeOpt(3,3);" disabled /><span id="spanCount4">
 X ? X ? X ? X ? X</span></label>
 
-<label><input type="checkbox" name="oCount" id="oCount5" data-mini="true" disabled /><span id="spanCount5">
+<label><input type="checkbox" name="oCount" id="oCount5" data-mini="true" onClick="changeOpt(3,4);" disabled /><span id="spanCount5">
 X ? X ? X ? X ? X ? X</span></label>
 
 <hr>
@@ -919,27 +1006,30 @@ X ? X ? X ? X ? X ? X</span></label>
 
 <h3>İşaret</h3>
 
-<label><input type="checkbox" name="eSign" id="eSign0" data-mini="true" /><span id="spanESign0">=</span></label>
+<label><input type="checkbox" name="eSign" id="eSign0" data-mini="true" onClick="changeOpt(4,0);" /><span id="spanESign0">=</span></label>
 
-<label><input type="checkbox" name="eSign" id="eSign1" data-mini="true" disabled /><span id="spanESign1">&ne;</span></label>
+<label><input type="checkbox" name="eSign" id="eSign1" data-mini="true" onClick="changeOpt(4,1);" disabled /><span id="spanESign1">&ne;</span></label>
 
-<label><input type="checkbox" name="eSign" id="eSign2" data-mini="true" disabled /><span id="spanESign2">&gt;</span></label>
+<label><input type="checkbox" name="eSign" id="eSign2" data-mini="true" onClick="changeOpt(4,2);" disabled /><span id="spanESign2">&gt;</span></label>
 
-<label><input type="checkbox" name="eSign" id="eSign3" data-mini="true" disabled /><span id="spanESign3">&ge;</span></label>
+<label><input type="checkbox" name="eSign" id="eSign3" data-mini="true" onClick="changeOpt(4,3);" disabled /><span id="spanESign3">&ge;</span></label>
 
-<label><input type="checkbox" name="eSign" id="eSign4" data-mini="true" disabled /><span id="spanESign4">&lt;</span></label>
+<label><input type="checkbox" name="eSign" id="eSign4" data-mini="true" onClick="changeOpt(4,4);" disabled /><span id="spanESign4">&lt;</span></label>
 
-<label><input type="checkbox" name="eSign" id="eSign5" data-mini="true" disabled /><span id="spanESign5">&le;</span></label>
+<label><input type="checkbox" name="eSign" id="eSign5" data-mini="true" onClick="changeOpt(4,5);" disabled /><span id="spanESign5">&le;</span></label>
 
 <hr>
 <br>
-<a href="#" onClick="playFreeMode();" data-role="button" data-theme="d">Play</a>
+<a href="#" onClick="playFreeMode(0);" data-role="button" data-theme="d">Play</a>
 
 </div><!-- /content -->
  
 </div><!-- /page -->
 
 
+<!--<h1>TEBRİKLER</h1>
+<h3>Oyunu başarıyla bitirdiniz.</h3>
+<a href="#pageFreeModeLevel" data-role="button" data-theme="d">Tamam</a>-->
 
 
 
@@ -961,6 +1051,14 @@ X ? X ? X ? X ? X ? X</span></label>
 Question</div>
 
 </div>
+
+
+<div data-role="popup" data-theme="b" data id="popupFreeModePlay" class="ui-content">
+<p><h1 align="center" id="popupFreeModePlayH1">TEBRİKLER</h1>
+<h3 id="popupFreeModePlayH3">Oyunu başarıyla bitirdiniz.</h3>
+<a href="#pageFreeModeLevel" data-role="button" data-theme="d"><span id="popupFreeModePlaySpan">Tamam</span></a></p>
+</div>
+
 
 <div data-role="footer" data-theme="b" data-position="fixed" align="center">
 <a href="#" id="playFreeModeWrong" onClick="" data-icon="delete" data-theme="b" data-iconpos="left" style="width:48%">Yanlış</a>
@@ -993,22 +1091,23 @@ Question</div>
 </div><!-- /header -->
 
 <div data-role="content" id="pageFindOutLevelContent" align="center">
-
+<h1>Find Out</h1>
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
-<input type="radio" name="gDifficulty" id="easy" value="1" onClick="difficultyClick('findoutdifficulty', 1);" />
-<label class="labelEasy" for="easy">Kolay</label>
-<input type="radio" name="gDifficulty" id="moderate" value="2" onClick="difficultyClick('findoutdifficulty', 2);"/>
-<label class="labelModerate" for="moderate">Normal</label>
-<input type="radio" name="gDifficulty" id="hard" value="3" onClick="difficultyClick('findoutdifficulty', 3);" />
-<label class="labelHard" for="hard">Zor</label>
+<input type="radio" name="gDifficulty" id="easyFindOut" onClick="changeDifficulty(1, 0);" />
+<label class="labelEasy" for="easyFindOut">Kolay</label>
+<input type="radio" name="gDifficulty" id="moderateFindOut" onClick="changeDifficulty(1, 1);"/>
+<label class="labelModerate" for="moderateFindOut">Normal</label>
+<input type="radio" name="gDifficulty" id="hardFindOut" onClick="changeDifficulty(1, 2);" />
+<label class="labelHard" for="hardFindOut">Zor</label>
 </fieldset>
 
 
-<br>
-<h3>Level</h3>
-<a href="#" onClick="playFindOut(1)" data-role="button" data-theme="d" id="level1" >1</a>
-<a href="#" onClick="playFindOut(2)" data-role="button" data-theme="d" id="level2" >2</a>
-<a href="#" onClick="playFindOut(3)" data-role="button" data-theme="d" id="level3" >3</a>
+<hr>
+<div id="pageFindOutLevels">
+<a href="#" onClick="playFindOut(1,0)" data-role="button" data-theme="d" id="level1" >1</a>
+<a href="#" onClick="playFindOut(2,0)" data-role="button" data-theme="d" id="level2" >2</a>
+<a href="#" onClick="playFindOut(3,0)" data-role="button" data-theme="d" id="level3" >3</a>
+</div>
 
 </div><!-- /content -->
 
@@ -1036,7 +1135,12 @@ Question</div>
 <!--<img class="pageFreeModePlayImage" src="background.png">-->
 <div id="pageFindOutPlayQuestion" class="ui-bar ui-bar-d ui-corner-all pageFindOutPlayQuestion">
 </div>
+</div>
 
+<div data-role="popup" data-theme="b" data id="popupFindOutPlay" class="ui-content">
+<p><h1 align="center" id="popupFindOutPlayH1">TEBRİKLER</h1>
+<h3 id="popupFindOutPlayH3">Oyunu başarıyla bitirdiniz.</h3>
+<a href="#pageFindOutLevel" data-role="button" data-theme="d"><span id="popupFindOutPlaySpan">Tamam</span></a></p>
 </div>
 
 <div data-role="footer" data-theme="b" data-position="fixed" align="center">
@@ -1067,26 +1171,27 @@ Question</div>
 </div><!-- /header -->
 
 <div data-role="content" id="pageMathrisLevelContent" align="center">
-
+<h1>Mathris</h1>
 
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
-<input type="radio" name="gDifficulty" id="easy" value="1" onClick="difficultyClick('mathrisdifficulty', 1);" />
-<label class="labelEasy" for="easy">Kolay</label>
+<input type="radio" name="gDifficulty" id="easyMathris" onClick="changeDifficulty(2, 0);" />
+<label class="labelEasy" for="easyMathris">Kolay</label>
 
-<input type="radio" name="gDifficulty" id="moderate" value="2" onClick="difficultyClick('mathrisdifficulty', 2);" />
-<label class="labelModerate" for="moderate">Normal</label>
+<input type="radio" name="gDifficulty" id="moderateMathris" onClick="changeDifficulty(2, 1);" />
+<label class="labelModerate" for="moderateMathris">Normal</label>
 
-<input type="radio" name="gDifficulty" id="hard" value="3" onClick="difficultyClick('mathrisdifficulty', 3);" />
-<label class="labelHard" for="hard">Zor</label>
+<input type="radio" name="gDifficulty" id="hardMathris" onClick="changeDifficulty(2, 2);" />
+<label class="labelHard" for="hardMathris">Zor</label>
 
 </fieldset>
 
-<br>
-<h3>Level</h3>
+<hr>
+<div id="pageMathrisLevels">
 <a href="#" onClick="playMathris(1, null)" data-role="button" data-theme="d" id="level1" >1</a>
 <a href="#" onClick="playMathris(2,'')" data-role="button" data-theme="d" id="level2" >2</a>
 <a href="#" onClick="playMathris(3,'')" data-role="button" data-theme="d" id="level3" >3</a>
+</div>
 
 </div><!-- /content -->
 </div><!-- /page -->
@@ -1119,6 +1224,12 @@ Question</div>
 </div>
 </div>
 
+<div data-role="popup" data-theme="b" data id="popupMathrisPlay" class="ui-content">
+<p><h1 align="center" id="popupMathrisPlayH1">TEBRİKLER</h1>
+<h3 id="popupMathrisPlayH3">Oyunu başarıyla bitirdiniz.</h3>
+<a href="#pageMathrisLevel" data-role="button" data-theme="d"><span id="popupMathrisPlaySpan">Tamam</span></a></p>
+</div>
+
 </div><!-- /page -->
 
 
@@ -1137,26 +1248,27 @@ Question</div>
 </div><!-- /header -->
 
 <div data-role="content" id="pageMathrixLevelContent" align="center">
-
+<h1>Mathrix</h1>
 
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
-<input type="radio" name="gDifficulty" id="easy" value="1" onClick="difficultyClick('mathrixdifficulty', 1);" />
-<label class="labelEasy" for="easy">Kolay</label>
+<input type="radio" name="gDifficulty" id="easyMathrix" onClick="changeDifficulty(3, 0);" />
+<label class="labelEasy" for="easyMathrix">Kolay</label>
 
-<input type="radio" name="gDifficulty" id="moderate" value="2" onClick="difficultyClick('mathrixdifficulty', 2);" />
-<label class="labelModerate" for="moderate">Normal</label>
+<input type="radio" name="gDifficulty" id="moderateMathrix" onClick="changeDifficulty(3, 1);" />
+<label class="labelModerate" for="moderateMathrix">Normal</label>
 
-<input type="radio" name="gDifficulty" id="hard" value="3" onClick="difficultyClick('mathrixdifficulty', 3);" />
-<label class="labelHard" for="hard">Zor</label>
+<input type="radio" name="gDifficulty" id="hardMathrix" onClick="changeDifficulty(3, 2);" />
+<label class="labelHard" for="hardMathrix">Zor</label>
 
 </fieldset>
 
-<br>
-<h3>Level</h3>
+<hr>
+<div id="pageMathrixLevels">
 <a href="#" onClick="playMathrix(1)" data-role="button" data-theme="d" id="level1" >1</a>
 <a href="#" onClick="playMathrix(2)" data-role="button" data-theme="d" id="level2" >2</a>
 <a href="#" onClick="playMathrix(3)" data-role="button" data-theme="d" id="level3" >3</a>
+</div>
 
 </div><!-- /content -->
 </div><!-- /page -->
@@ -1193,6 +1305,12 @@ Question</div>
 
 </div>
 
+<div data-role="popup" data-theme="b" data id="popupMathrixPlay" class="ui-content">
+<p><h1 align="center" id="popupMathrixPlayH1">TEBRİKLER</h1>
+<h3 id="popupMathrixPlayH3">Oyunu başarıyla bitirdiniz.</h3>
+<a href="#pageMathrixLevel" data-role="button" data-theme="d"><span id="popupMathrixPlaySpan">Tamam</span></a></p>
+</div>
+
 </div><!-- /page -->
 
 
@@ -1214,26 +1332,27 @@ Question</div>
 </div><!-- /header -->
 
 <div data-role="content" id="pageShootOutLevelContent" align="center">
-
+<h1>Shoot Out</h1>
 
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
-<input type="radio" name="gDifficulty" id="easy" value="1" onClick="difficultyClick('shootoutdifficulty', 1);" />
-<label class="labelEasy" for="easy">Kolay</label>
+<input type="radio" name="gDifficulty" id="easyShootOut" onClick="changeDifficulty(4, 0);" />
+<label class="labelEasy" for="easyShootOut">Kolay</label>
 
-<input type="radio" name="gDifficulty" id="moderate" value="2" onClick="difficultyClick('shootoutdifficulty', 2);" />
-<label class="labelModerate" for="moderate">Normal</label>
+<input type="radio" name="gDifficulty" id="moderateShootOut" onClick="changeDifficulty(4, 1);" />
+<label class="labelModerate" for="moderateShootOut">Normal</label>
 
-<input type="radio" name="gDifficulty" id="hard" value="3" onClick="difficultyClick('shootoutdifficulty', 3);" />
-<label class="labelHard" for="hard">Zor</label>
+<input type="radio" name="gDifficulty" id="hardShootOut" onClick="changeDifficulty(4, 2);" />
+<label class="labelHard" for="hardShootOut">Zor</label>
 
 </fieldset>
 
-<br>
-<h3>Level</h3>
+<hr>
+<div id="pageShootOutLevels">
 <a href="#" onClick="playShootOut(1)" data-role="button" data-theme="d" id="level1" >1</a>
 <a href="#" onClick="playShootOut(2)" data-role="button" data-theme="d" id="level2" >2</a>
 <a href="#" onClick="playShootOut(3)" data-role="button" data-theme="d" id="level3" >3</a>
+</div>
 
 </div><!-- /content -->
 </div><!-- /page -->
@@ -1261,6 +1380,12 @@ Question</div>
 
 </div>
 
+</div>
+
+<div data-role="popup" data-theme="b" data id="popupShootOutPlay" class="ui-content">
+<p><h1 align="center" id="popupShootOutPlayH1">TEBRİKLER</h1>
+<h3 id="popupShootOutPlayH3">Oyunu başarıyla bitirdiniz.</h3>
+<a href="#pageShootOutLevel" data-role="button" data-theme="d"><span id="popupShootOutPlaySpan">Tamam</span></a></p>
 </div>
 
 </div><!-- /page -->
