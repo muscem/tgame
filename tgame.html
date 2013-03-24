@@ -32,7 +32,7 @@ var gameDigit=[[]];				//Oyun hane sayısı
 var gameNumber=[[]];				//Oyun sayı türü
 var gameSign=[[]];				//Oyun sayı türü	//Sonradan ekledim bölümlerde yok.
 var gameDifficulty;			//Oyun zorluğu 1-2-3
-var gamelevel;				//Oyun seviyesi
+var gameLevel;				//Oyun seviyesi
 
 
 
@@ -68,7 +68,7 @@ lastSelFMNum[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
 lastSelFMDig[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
 lastSelFMOC[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
 lastSelFMS[0]=[[1,0,0,0,0,0],[1,0,0,0,0,0],[1,0,0,0,0,0]];
-pLevels[0]=[[1,0,0],[3,0,0],[5,3,2],[7,4,3],[10,9,8]];
+pLevels[0]=[[5,5,5],[3,0,0],[5,3,2],[7,4,3],[10,9,8]];
 
 /*
 pId[0]=0; 		//id
@@ -1053,7 +1053,7 @@ Question</div>
 </div>
 
 
-<div data-role="popup" data-theme="b" data id="popupFreeModePlay" class="ui-content">
+<div data-role="popup" data-theme="b" id="popupFreeModePlay" class="ui-content">
 <p><h1 align="center" id="popupFreeModePlayH1">TEBRİKLER</h1>
 <h3 id="popupFreeModePlayH3">Oyunu başarıyla bitirdiniz.</h3>
 <a href="#pageFreeModeLevel" data-role="button" data-theme="d"><span id="popupFreeModePlaySpan">Tamam</span></a></p>
@@ -1137,7 +1137,7 @@ Question</div>
 </div>
 </div>
 
-<div data-role="popup" data-theme="b" data id="popupFindOutPlay" class="ui-content">
+<div data-role="popup" data-theme="b" id="popupFindOutPlay" class="ui-content">
 <p><h1 align="center" id="popupFindOutPlayH1">TEBRİKLER</h1>
 <h3 id="popupFindOutPlayH3">Oyunu başarıyla bitirdiniz.</h3>
 <a href="#pageFindOutLevel" data-role="button" data-theme="d"><span id="popupFindOutPlaySpan">Tamam</span></a></p>
@@ -1224,7 +1224,7 @@ Question</div>
 </div>
 </div>
 
-<div data-role="popup" data-theme="b" data id="popupMathrisPlay" class="ui-content">
+<div data-role="popup" data-theme="b" id="popupMathrisPlay" class="ui-content">
 <p><h1 align="center" id="popupMathrisPlayH1">TEBRİKLER</h1>
 <h3 id="popupMathrisPlayH3">Oyunu başarıyla bitirdiniz.</h3>
 <a href="#pageMathrisLevel" data-role="button" data-theme="d"><span id="popupMathrisPlaySpan">Tamam</span></a></p>
@@ -1293,7 +1293,7 @@ Question</div>
 </div>
 
 
-<div id="pageMathrixPlayQuestionsView" style="margin:0px; padding:0px 0px; height:300px; overflow:hidden">
+<div id="pageMathrixPlayQuestionsView" style="margin:0px; padding:0px 0px; overflow:hidden;">
 
 <div id="pageMathrixPlayQuestions" style="margin:0px; padding:0px 5px; position:relative;">
 
@@ -1305,10 +1305,16 @@ Question</div>
 
 </div>
 
-<div data-role="popup" data-theme="b" data id="popupMathrixPlay" class="ui-content">
-<p><h1 align="center" id="popupMathrixPlayH1">TEBRİKLER</h1>
-<h3 id="popupMathrixPlayH3">Oyunu başarıyla bitirdiniz.</h3>
-<a href="#pageMathrixLevel" data-role="button" data-theme="d"><span id="popupMathrixPlaySpan">Tamam</span></a></p>
+<div data-role="popup" data-theme="b" id="popup1MathrixPlay" class="ui-content">
+<p><h1 align="center" id="popup1MathrixPlayH1">TEBRİKLER</h1>
+<h3 id="popup1MathrixPlayH3">Oyunu başarıyla bitirdiniz.</h3>
+<a href="#pageMathrixLevel" data-role="button" data-theme="d"><span id="popup1MathrixPlaySpan">Tamam</span></a></p>
+</div>
+
+<div data-role="popup" data-theme="b" id="popup2MathrixPlay" class="ui-content">
+<p><h1 align="center" id="popup2MathrixPlayH1">YETERSİZ PUAN</h1>
+<h3 id="popup2MathrixPlayH3">Bir sonraki aşamaya geçmek için gerekli puanı toplayamadınız.</h3>
+<a href="#pageMathrixLevel" data-role="button" data-theme="d"><span id="popup2MathrixPlaySpan">Tamam</span></a></p>
 </div>
 
 </div><!-- /page -->
@@ -1374,7 +1380,7 @@ Question</div>
 
 <input type="range" name="pageShootOutPlaySlider" id="pageShootOutPlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
 
-<div id="pageShootOutPlayQuestions" style="margin:0px; padding:0px 0px; height:300px; overflow:hidden; border-color:#006; background-color:#09F">
+<div id="pageShootOutPlayQuestions" style="margin:0px; padding:0px 0px; height:300px; background-color:#09F;">
 
 <!--Sorular buraya gelecek-->
 
@@ -1382,7 +1388,7 @@ Question</div>
 
 </div>
 
-<div data-role="popup" data-theme="b" data id="popupShootOutPlay" class="ui-content">
+<div data-role="popup" data-theme="b" id="popupShootOutPlay" class="ui-content">
 <p><h1 align="center" id="popupShootOutPlayH1">TEBRİKLER</h1>
 <h3 id="popupShootOutPlayH3">Oyunu başarıyla bitirdiniz.</h3>
 <a href="#pageShootOutLevel" data-role="button" data-theme="d"><span id="popupShootOutPlaySpan">Tamam</span></a></p>
