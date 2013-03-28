@@ -33,7 +33,7 @@ var gameNumber=[[]];				//Oyun sayı türü
 var gameSign=[[]];				//Oyun sayı türü	//Sonradan ekledim bölümlerde yok.
 var gameDifficulty;			//Oyun zorluğu 1-2-3
 var gameLevel;				//Oyun seviyesi
-
+var gameCountDown;			//Oyun sayacı
 
 
 //Oyuncu bilgileri
@@ -1213,15 +1213,15 @@ Question</div>
 
 <input type="range" name="pageShootOutPlaySlider" id="pageMathrisPlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
 
-<div id="pageMathrisPlayQuestions2" style="margin:0px; padding:0px 0px; height:800px; overflow:hidden; background-color:#35F">
+<!--<div id="pageMathrisPlayQuestions2" style="margin:0px; padding:0px 0px; height:800px; background-color:#35F">-->
 
 
-<div id="pageMathrisPlayQuestions" style="margin:0px; padding:0px 0px; height:750px; overflow:hidden; border-color:#006; background-color:#09F; position:relative;">
+<div id="pageMathrisPlayQuestions" style="margin:0px; padding:0px 0px; height:450px; border-color:#006; background-color:#09F;"><!--overflow:hidden-->
 
 <!--Sorular buraya gelecek-->
 
 </div>
-</div>
+<!--</div>-->
 </div>
 
 <div data-role="popup" data-theme="b" id="popupMathrisPlay" class="ui-content">
@@ -1377,9 +1377,14 @@ Question</div>
 </div><!-- /header -->
 
 <div data-role="content" id="pageShootOutPlayContent" >
-
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr><td>
 <input type="range" name="pageShootOutPlaySlider" id="pageShootOutPlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
-
+</td>
+<td width="70" align="center" bgcolor="#999999">
+<span id="pageShootOutPlayTimeSpan" class="time1">600</span>
+</td>
+</tr></table>
 <div id="pageShootOutPlayQuestions" style="margin:0px; padding:0px 0px; height:300px; background-color:#09F;">
 
 <!--Sorular buraya gelecek-->

@@ -854,6 +854,10 @@ gamesModesLevels(3, "Mathrix");
 
 
 $("#pageShootOutLevel").live("pagebeforeshow", function(e, data) {
+clearInterval(gameCountDown);
+$("#pageShootOutPlayTimeSpan").removeClass("time1");
+$("#pageShootOutPlayTimeSpan").removeClass("time2");
+$("#pageShootOutPlayTimeSpan").addClass("time1");
 gamesModesLevels(4, "ShootOut");
 });
 
@@ -1924,24 +1928,36 @@ $("#pageMathrixPlaySlider").slider('refresh');
 //alert("cem");
 //});
 function playShootOutRearrange(){
-var w0, w1, w2, h0, h1, h2;
+var w0, w1, w2, w3, w4, w5, h0, h1, h2, t1, t2;
 
 $("#pageShootOutPlayQuestions").find(".ui-bar").each(function(){
-															  
-w0=$("#pageShootOutPlayQuestions").width();
-w1=$(this).width();
-w2=(($("#pageShootOutPlayQuestions").offset().left+Math.floor(Math.random()*(w0-w1-10)))*100/$(window).width()).toString();
 
+w0=$(window).width();
+w1=$("#pageShootOutPlayQuestions").width();
+w2=$(this).width();
+w3=w1*100/w0;
+w4=w2*100/w0
 
-if(w1<w0){
-$(this).css("left",w2+"%");
+//w2=(($("#pageShootOutPlayQuestions").offset().left+Math.floor(Math.random()*(w0-w1-10)))*100/$(window).width()).toString();
+
+w2=($("#pageShootOutPlayQuestions").offset().left+(Math.random()*(100-((w1*100)/w0)))).toString();
+w5=100-w3+Math.random()*(100-2*(100-w3)-w4);
+//alert(w0+" - "+w1+" - "+w2+" - "+w3+" - "+w4+" - "+w5);
+if(w2<w1){
+$(this).css("left",w5+"%");
 }
 
-h0=$("#pageShootOutPlayQuestions").height();
-h1=$(this).height();
-h2=($("#pageShootOutPlayQuestions").offset().top+Math.floor(Math.random()*(h0-h1))).toString();
+h0=$(window).height();
+t1=$("#pageShootOutPlayQuestions").offset().top;
+h1=h0-t1-h0*3/100;	//1=alttaki bosluk= %1 ekran yüksekligi
+h2=$(this).height();
 
-$(this).css("top",h2+"px");
+
+t2=(h0/100)*(t1*100/h0+Math.random()*(100-t1*100/h0-3-h2*100/h0));
+//h2=($("#pageShootOutPlayQuestions").offset().top+Math.floor(Math.random()*(h0-h1))).toString();
+//alert(h0+" - "+h1+" - "+h2+" - "+t1+" - "+t2)
+$("#pageShootOutPlayQuestions").css("height",h1+"px");
+$(this).css("top",t2+"px");
 //alert(w0+"-"+w1+"-"+h0+"-"+h1+"-"+$(this).attr("id"));
 //alert($(this).html());
 });
@@ -2020,7 +2036,7 @@ var result3 =""; //result3; bütün sorulari barindiran degisken
 
 
 
-for(iQuestion=0;iQuestion<3;iQuestion++){
+for(iQuestion=0;iQuestion<2;iQuestion++){
 
 result =creatEquation(iRand); 
 result2=createResult(result[1]);
@@ -2075,8 +2091,20 @@ $("#pageShootOutPlayQuestions").append(result[0]).trigger("create");
 
 }
 //alert($("#pageShootOutPlayQuestions").html());
-
-
+var time=30;
+$("#pageShootOutPlayTimeSpan").html(time);
+gameCountDown=self.setInterval(function(){
+time--;
+$("#pageShootOutPlayTimeSpan").html(time);
+if(time<10){
+$("#pageShootOutPlayTimeSpan").removeClass("time1");
+$("#pageShootOutPlayTimeSpan").addClass("time2");
+}
+if(time<1){
+clearInterval(gameCountDown);
+playShootOutFinish();
+}
+},1000);
 
 });
 
@@ -2091,6 +2119,43 @@ if(points<0) points=0;
 if(points>100) points=100;
 $("#pageShootOutPlaySlider").val(points.toString());
 $("#pageShootOutPlaySlider").slider('refresh');
+
+var n=0;
+var n2=0;
+$('#pageShootOutPlayQuestions').find(".ui-bar").each(function(){
+n++;
+})
+$('#pageShootOutPlayQuestions').find(".ui-disabled").each(function(){
+n2++;
+})
+if(n2>=n){
+playShootOutFinish();
+}
+//alert(n+" - "+n2);
+
+}
+
+function playShootOutFinish(){
+var points, gameDifficulty, scoreForLevelUp;
+points=Number($("#pageShootOutPlaySlider").val());
+
+gameDifficulty=lastSelDif[gamePlayerID][4];
+scoreForLevelUp=90;		//gameDifficulty=2
+if (gameDifficulty==0) scoreForLevelUp=50;
+if (gameDifficulty==0) scoreForLevelUp=75;
+
+if(points>scoreForLevelUp){
+
+if(pLevels[gamePlayerID][4][gameDifficulty]==gameLevel){
+changeLevel(1, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]+1));
+}
+//difficulty degistirme kodlari da gelecek buraya
+$("#popupShootOutPlay").popup("open");
+
+}
+else{
+$("#popupShootOutPlay").popup("open");
+}
 
 }
 /* pageShootOutPlay kodu sonu */
@@ -2117,47 +2182,44 @@ $("#pageShootOutPlaySlider").slider('refresh');
 
 
 
-
+var mathrisSetInt;
 
 /* pageMathrisPlay kodu baslangici */
 function playMathris(level,score){
-var mathrisBlock=[[]];
+var moveTime=100;	//moveTime: Her adimida beklenecek süre
+var moveStep=10;	//moveStep : Her adimda kayacak miktar.
+var qGap=10;		//questionGap: Her soru arasindaki mesafe
+
 $.mobile.changePage( $("#pageMathrisPlay") , { transition: "slide"} );
 
-if(score==0){
+//if(score==0){
 gameLevel=level;
 $("#pageMathrisPlaySlider").val(score.toString());
 $("#pageMathrisPlaySlider").slider('refresh');
-}
+$("#pageMathrisPlayQuestions").html("");
+//}
 
 gameLevelsConfig();	//Oyunlarin, seviyeye bagli olarak ayarlari belirleniyor
 gameDifficulty=lastSelDif[gamePlayerID][2];
+playMathrisNewQuestion(qGap);
 
+mathrisSetInt=setInterval(function (){mathrisQuestionMove(qGap, moveStep)},moveTime);
 
+}
+
+function playMathrisNewQuestion(qGap){
 var qID;
+var qNo=[];
 if($("#pageMathrisPlayQuestions").children().length>0){
 qID=$("#pageMathrisPlayQuestions div:last-child").attr("id");
-//alert("qID =" +qID);
 qNo=qID.split("pageMathrisPlayQuestion");
 iQuestion=Number(qNo[1])+1;
 }
 else{
+qNo[1]=1;
 iQuestion=0;
 $("#pageMathrisPlayQuestions").html("");
 }
-
-
-
-//if(iQuestion==null){
-//iQuestion=0;
-//$("#pageMathrisPlayQuestions").html("");
-//}
-//else if(iQuestion==""){
-//iQuestion=iQuestion+1;
-//alert("iQuestion else if ="+iQuestion)
-//}
-
-
 
 
 //iRand ile Denklem olusturmakta kullanilacak seçeneklerin bulundugu yer belirlenecek
@@ -2166,10 +2228,6 @@ var iRand=Math.floor(Math.random()*gameDigit.length);
 var result= [];	//result[0]; Esitligin html kodu	result[1]; Esitligin hesaplanan sonucu
 var result2; //result2; Esitligin hesaplanan sonucundan farkli (veya farksiz) gösterilecek sonuç
 var result3; //result3; bütün sorulari barindiran degisken
-//if (result3==null) result3="";
-
-
-//for(iQuestion=0;iQuestion<2;iQuestion++){
 
 result =creatEquation(iRand); 
 result2=createResult(result[1]);
@@ -2214,234 +2272,261 @@ eqSign[1]="&le;";
 eqRes=(-1)*point;
 if(result[1]<=result2) eqRes=point;
 }
-//alert("iq="+iQuestion);
 
-// style="width:100%;"
-result[0]='<div id="pageMathrisPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrisQuestion ui-bar2 moving" style="position:absolute; clear:none; float:none; width:100%;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\',\''+level+'\')"></td><td><table align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+eqRes+'\',\''+level+'\')"></td></tr></tbody></table></div>';
+
+result[0]='<div id="pageMathrisPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrisQuestion ui-bar2 moving" style="position:absolute; clear:none; float:none; width:96%;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\',\''+gameLevel+'\')"></td><td><table align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+eqRes+'\',\''+gameLevel+'\')"></td></tr></tbody></table></div>';
 
 result3=$("#pageMathrisPlayQuestions").html()+result[0];
-//alert("-"+$("#pageMathrisPlayQuestions").html()+"-");
 $("#pageMathrisPlayQuestions").html(result3);
+var qLen=$("#pageMathrisPlayQuestions").children().length;
+
+if(qLen>1){
+var t0,t1, h1;
+t0=$("#pageMathrisPlayQuestions div:nth-child("+(qLen-1)+")").offset().top;
+t1=$("#pageMathrisPlayQuestions div:nth-child("+qLen+")").offset().top;
+h1=$("#pageMathrisPlayQuestions div:nth-child("+qLen+")").outerHeight();
+if((t0-h1-qGap)<t1){
+	alert("cem");
+window.clearInterval(mathrisSetInt);
+}
+}
+
+
+}
+
+
+//silinecek
+function playMathris2(level,score){
+
 mathrisQuestionMove(level, iQuestion);
 
-
-
-
-
-
-
-
-//alert("-"+$("#pageMathrisPlayQuestions").html()+"-");
-
-/*w[1]=$("#pageMathrisPlayQuestion"+iQuestion).width();
-w2=(($("#pageMathrisPlayQuestions").offset().left+Math.floor(Math.random()*(w[0]-w[1]-10)))*100/$(window).width()).toString();
-if(w[1]<w[0]){
-//$("#pageShootOutPlayQuestion"+iQuestion).css("left","100px");
-//$("#pageMathrisPlayQuestion"+iQuestion).css("left",w2+"%");
-}*/
-
-
-
-/*var w=[];
-var w2;
-w[0]=$("#pageMathrisPlayQuestions").width();*/
-
-//var h=[];
-//var h2;
-//
-//h[0]=$("#pageMathrisPlayQuestions").height();
-//
-//
-////h[1]=$("#pageMathrisPlayQuestion"+iQuestion).height()*(-1);
-//h[1]=$("#pageMathrisPlayQuestion"+iQuestion).outerHeight();
-//h2=($("#pageMathrisPlayQuestions").offset().top+Math.floor(Math.random()*(h[0]-h[1]))).toString();
-////h2=(iQuestion==1)?-10:-100;
-//h2=$("#pageMathrisPlayQuestions").height()-$("#pageMathrisPlayQuestion"+iQuestion).height();
-////h2=-10;
-////if(h[1]<h[0]){
-////$("#pageShootOutPlayQuestion"+iQuestion).css("top","100px");
-//$("#pageMathrisPlayQuestion"+iQuestion).css("top","-"+h[1]+"px");
-////}
-////$("#id"+iQuestion).html("i ="+iQuestion+" t ="+h2+" l ="+w2+" ");
-////alert("iQuestion="+iQuestion+" h[0] ="+h[0]+" h[1] ="+h[1]+" w[0] ="+w[0]+" w[1] ="+w[1]+" h2 ="+h2+" w2 ="+w2);
-////alert($("#pageMathrisPlayQuestion"+iQuestion).height());
-////alert($("#pageMathrisPlayQuestion"+iQuestion).outerHeight());
-//var iLen=$("#pageMathrisPlayQuestions").children().length;	//mathrisBlock.length; olmadi
-////alert($("#pageMathrisPlayQuestions").children().length);
-//mathrisBlock[iLen]=[iQuestion, 0];
-////[id degeri, yanlis cevap verilip verilmedigi (0 veya 1)]
-////0: Hiç cevap verilmedigi
-////1: Yanlis cevap verildigi
-//
-//
-//var mathrisSetInt;
-////alert("cem");
-//
-//mathrisSetInt=setInterval(function(){
-//var t2, t3;
-//t3=0;
-//
-//var iLen=$("#pageMathrisPlayQuestions").children().length;	
-//for(i=1;i<iLen+1;i++){
-//t3=t3+$("#pageMathrisPlayQuestions div:nth-child("+i+")").outerHeight();
-//}
-///*-$("#pageMathrisPlayQuestion"+iQuestion).outerHeight()*/
-//t3=$("#pageMathrisPlayQuestions").outerHeight()+$("#pageMathrisPlayQuestions").offset().top-t3-3;
-//
-//t2=$("#pageMathrisPlayQuestion"+iQuestion).offset().top;
-//
-//if(t2>=t3){
-//window.clearInterval(mathrisSetInt);
-//playMathris(level, iQuestion+1)
-//return false;
-//}
-//else{
-//$("#pageMathrisPlayQuestion"+iQuestion).css("top","+=1px");
-//}
-//					   },10);
-/*$("#pageMathrisPlayQuestion"+iQuestion).animate({
-top: h2
-}, 5000, 'linear', function() {
-// Animation complete.
-
-});*/
-//}
-
-
-}
-
-//Kullanilmiyor
-function questionMove(moveStep, moveTime, t, t2, qGap, i){
-//alert(moveStep+" - "+moveTime+" - "+t+" - "+t2+" - "+qGap+" - "+i);
-//alert("i = "+i);
-i=i-1;
-if(t>t2+moveStep){
-$("#pageMathrisPlayQuestion"+iQuestion).css("top","+="+moveStep+"px");
-}
-else if(t>t2+qGap){
-t=t2+qGap;
-$("#pageMathrisPlayQuestion"+iQuestion).css("top", t+"px");
-}
-else{
-window.clearInterval(mathrisSetInt[i]);
-}
 }
 
 
-function qMNew(level){
+
+function qMNew(qGap){
 var qMLen;
 qMLen=$("#pageMathrisPlayQuestions").children(".moving").length;
 if(qMLen==0){
-playMathris(level);
+playMathrisNewQuestion(qGap);//playMathris(level);
 }
 }
 
 
+function mathrisQuestionMove(qGap, moveStep){
+var t0,t1, h1;
+//alert("cem");
+var qLen=$("#pageMathrisPlayQuestions").children().length;	
+t0=$("#pageMathrisPlayQuestions").outerHeight()+$("#pageMathrisPlayQuestions").offset().top;
 
-function mathrisQuestionMove(level, iQuestion){
-var moveStep=50;	//moveStep : Her adimda kayacak miktar.
-var moveTime=10;	//moveTime: Her adimida beklenecek süre
+
+for(var i=1;i<qLen+1;i++){
+	
+//var qclass=$("#pageMathrisPlayQuestions div:nth-child("+i+")").attr("class");
+//if(qClass.indexOf("moving")>0){
+h1=$("#pageMathrisPlayQuestions div:nth-child("+i+")").outerHeight();
+t1=$("#pageMathrisPlayQuestions div:nth-child("+i+")").offset().top
+
+if(i>1) t0=$("#pageMathrisPlayQuestions div:nth-child("+(i-1)+")").offset().top;
+
+if((t0-qGap)>(t1+moveStep+h1)){
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").css("top", "+="+moveStep+"px");
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("moving");
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").addClass("moving");
+}
+else{
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").css( "top", (t0-qGap-h1).toString+"px"  );
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("moving");
+if(i==qLen) qMNew(qGap);
+
+}
+//}
+
+
+}
+
+}
+
+//silinecek
+function mathrisQuestionMove2(level, iQuestion){
+var moveStep=10;	//moveStep : Her adimda kayacak miktar.
 var qGap=10;		//questionGap: Her soru arasindaki mesafe
 var mathrisSetInt=[];
 var t,t2;
 
 var qLen=$("#pageMathrisPlayQuestions").children().length;	
-//alert("qLen= "+qLen+" i= "+i);
-for(i=1;i<qLen+1;i++){
-t=0; //top
-for(i2=1;i2<i+1;i2++){	//Önceki sorularin yükseklikleri hesaplaniyor.
-if(t==""){
-t=$("#pageMathrisPlayQuestions div:nth-child("+i2+")").outerHeight();
+t=$("#pageMathrisPlayQuestions").height();//+$("#pageMathrisPlayQuestions").offset().top;
+
+
+for(var i=1;i<qLen+1;i++){
+t2=$("#pageMathrisPlayQuestions div:nth-child("+i+")").outerHeight();
+alert("cem "+qLen+" - "+t+" - "+i);
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").animate({
+top: (t-qGap-t2)
+}, {
+duration: 10000,
+easing: "linear",
+step: function( now, fx ){
+////
+//
+t2=$("#pageMathrisPlayQuestions div:nth-child("+i+")").offset().top;
+//
+if(i>1) t=$("#pageMathrisPlayQuestions div:nth-child("+(i-1)+")").offset().top;
+//alert(i+" - "+t+" - "+t2);
+if(t2>t/2){
+alert("cem");
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").stop();
 }
 else{
-t=t+$("#pageMathrisPlayQuestions div:nth-child("+i2+")").outerHeight()+qGap;
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").css( "top", now );
 }
-}
-t2=$("#pageMathrisPlayQuestions").outerHeight();
-//alert("t= "+t+" -t2= "+t2);
-if(t>t2){
-return false;
-//Ekran doldu, oyunun sonu.
+////
+////
+alert("ce  mmm");
 }
 
-//i. sorunun olmasi gereken "top" degeri hesaplaniyor
-t=$("#pageMathrisPlayQuestions").outerHeight()+$("#pageMathrisPlayQuestions").offset().top-t;
-//t=$("#pageMathrisPlayQuestions").outerHeight()+$("#pageMathrisPlayQuestions").offset().top-t-qGap;
+});
 
-//i. sorunun su anki "top" degeri
-t2=$("#pageMathrisPlayQuestions div:nth-child("+i+")").offset().top+qGap;
-
-
-//moveStep>qGap olma durumu düsünüldü
-if(t>=t2+moveStep){
-
-mathrisSetInt[i]=setInterval(function (){
-var t3, t4;
-
-qLen=$("#pageMathrisPlayQuestions").children().length;
-
-for(i3=1;i3<qLen+1;i3++){
-t3=0;	
-for(i4=1;i4<i3+1;i4++){	//Önceki sorularin yükseklikleri hesaplaniyor.
-if(t3==""){
-t3=$("#pageMathrisPlayQuestions div:nth-child("+i4+")").outerHeight();
-}
-else{
-t3=t3+$("#pageMathrisPlayQuestions div:nth-child("+i4+")").outerHeight()+qGap;
-}
-}
-t4=$("#pageMathrisPlayQuestions").outerHeight();
-
-if((t3>=t4+moveStep)){
-//alert("oyun bitti");
-return false;
-//Ekran doldu, oyunun sonu.
 }
 
-//i3. sorunun olmasi gereken "top" degeri hesaplaniyor
-t3=$("#pageMathrisPlayQuestions").outerHeight()+$("#pageMathrisPlayQuestions").offset().top-t3;
 
-//i3. sorunun su anki "top" degeri
-t4=$("#pageMathrisPlayQuestions div:nth-child("+i3+")").offset().top+qGap;
+//if(qLen==1){
 
 
-//moveStep>qGap olma durumu düsünüldü
-if(t3>=t4+moveStep){
-$("#pageMathrisPlayQuestions div:nth-child("+i3+")").css("top","+="+moveStep+"px");
-}
-//else if(t3>t4){
-////alert("elseif");
-//$("#pageMathrisPlayQuestions div:nth-child("+i3+")").css("top", t3.toString+"px");
+
+
+
+
+//
+//
+//var qLen=$("#pageMathrisPlayQuestions").children().length;	
+//
+//if(qLen==1){
+//t=$("#pageMathrisPlayQuestions").height();
+//}
+//else{
+//t=$("#pageMathrisPlayQuestions div:nth-child("+(qLen-1)+")").offset().top;
+//}
+//t2=$("#pageMathrisPlayQuestions div:nth-child("+(qLen)+")").offset().top;
+//
+//$("#pageMathrisPlayQuestions div:nth-child("+(qLen)+")").css("top","+="+moveStep+"px");
+//
+////}
+////else{
+////t=$("#pageMathrisPlayQuestions div:nth-child("+(qLen-1)+")").offset().top;
+////}
+//t2=$("#pageMathrisPlayQuestions div:nth-child("+(qLen)+")").offset().top;
+//if(t2+qGap+moveStep<t){
+//
+////animate
+//
+//
+//
+//}
+//else{
+//$("#pageMathrisPlayQuestions div:nth-child("+(qLen)+")").css("top",(t2+qGap)+"px");
+//}
+//
+//
+//
+//
+//
+//for(i=1;i<qLen+1;i++){
+//t=0; //top
+//for(i2=1;i2<i+1;i2++){	//Önceki sorularin yükseklikleri hesaplaniyor.
+//if(t==0){
+//t=$("#pageMathrisPlayQuestions div:nth-child("+i2+")").outerHeight();
+//}
+//else{
+//t=t+$("#pageMathrisPlayQuestions div:nth-child("+i2+")").outerHeight()+qGap;
+//}
+//}
+//t2=$("#pageMathrisPlayQuestions").outerHeight();
+////alert("t= "+t+" -t2= "+t2);
+//if(t>=t2){
+//return false;
+////Ekran doldu, oyunun sonu.
+//}
+//
+////i. sorunun olmasi gereken "top" degeri hesaplaniyor
+//t=$("#pageMathrisPlayQuestions").outerHeight()+$("#pageMathrisPlayQuestions").offset().top-t;
+////t=$("#pageMathrisPlayQuestions").outerHeight()+$("#pageMathrisPlayQuestions").offset().top-t-qGap;
+//
+////i. sorunun su anki "top" degeri
+//t2=$("#pageMathrisPlayQuestions div:nth-child("+i+")").offset().top;//+qGap;
+//
+//
+////moveStep>qGap olma durumu düsünüldü
+//if(t>=t2+moveStep){
+//
+//mathrisSetInt[i]=setInterval(function (){
+//var t3, t4;
+//
+//qLen=$("#pageMathrisPlayQuestions").children().length;
+//
+//for(i3=1;i3<qLen+1;i3++){
+//t3=0;	
+//for(i4=1;i4<i3+1;i4++){	//Önceki sorularin yükseklikleri hesaplaniyor.
+//if(t3==0){
+//t3=$("#pageMathrisPlayQuestions div:nth-child("+i4+")").outerHeight();
+//}
+//else{
+//t3=t3+$("#pageMathrisPlayQuestions div:nth-child("+i4+")").outerHeight()+qGap;
+//}
+//}
+//t4=$("#pageMathrisPlayQuestions").outerHeight();
+//
+//if((t3+qGap>=t4)){	//if((t3>=t4+moveStep)){
+////alert("oyun bitti");
+//return false;
+////Ekran doldu, oyunun sonu.
+//}
+//
+////i3. sorunun olmasi gereken "top" degeri hesaplaniyor
+//t3=$("#pageMathrisPlayQuestions").outerHeight()+$("#pageMathrisPlayQuestions").offset().top-t3;
+//
+////i3. sorunun su anki "top" degeri
+//t4=$("#pageMathrisPlayQuestions div:nth-child("+i3+")").offset().top;//+qGap;
+//
+//
+////moveStep>qGap olma durumu düsünüldü
+//if(t3>=t4+moveStep){
+//$("#pageMathrisPlayQuestions div:nth-child("+i3+")").css("top","+="+moveStep+"px");
+//}
+//else if(t3>=t4){
+//$("#pageMathrisPlayQuestions div:nth-child("+i3+")").css("top",t3+"px");
+//////alert("elseif");
+////$("#pageMathrisPlayQuestions div:nth-child("+i3+")").css("top", t3.toString+"px");
+////$("#pageMathrisPlayQuestions div:nth-child("+i3+")").removeClass("moving");
+////window.clearInterval(mathrisSetInt[i3]);
+////qMNew(level, iQuestion);
+//}
+//else{
+////alert("else");
+//$("#pageMathrisPlayQuestions div:nth-child("+i3+")").css("top", t3+"px");
 //$("#pageMathrisPlayQuestions div:nth-child("+i3+")").removeClass("moving");
 //window.clearInterval(mathrisSetInt[i3]);
 //qMNew(level, iQuestion);
 //}
-else{
-//alert("else");
-$("#pageMathrisPlayQuestions div:nth-child("+i3+")").css("top", (t3+qGap).toString+"px");
-$("#pageMathrisPlayQuestions div:nth-child("+i3+")").removeClass("moving");
-window.clearInterval(mathrisSetInt[i3]);
-qMNew(level, iQuestion);
-}
-}
-}, moveTime);
-
-
-}
-/*else if(t>t2){
-$("#pageMathrisPlayQuestions div:nth-child("+i+")").css("top", t.toString+"px");
-$("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("moving");
-window.clearInterval(mathrisSetInt[i]);
-qMNew(level, iQuestion);
-}*/
-else{
-$("#pageMathrisPlayQuestions div:nth-child("+i+")").css("top", (t+qGap).toString+"px");
-$("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("moving");
-window.clearInterval(mathrisSetInt[i]);
-qMNew(level, iQuestion);
-}
-
-}
+//}
+//}, moveTime);
+//
+//
+//}
+//else if(t>t2){
+//$("#pageMathrisPlayQuestions div:nth-child("+i+")").css("top", t+"px");
+//$("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("moving");
+//window.clearInterval(mathrisSetInt[i]);
+//qMNew(level, iQuestion);
+//}
+//else{
+//$("#pageMathrisPlayQuestions div:nth-child("+i+")").css("top", t+"px");
+//$("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("moving");
+//window.clearInterval(mathrisSetInt[i]);
+//qMNew(level, iQuestion);
+//}
+//
+//}
 
 //alert("cem");
 }
@@ -2462,7 +2547,7 @@ else{	//Cevap dogru ise
 //alert("dogru");
 $("#pageMathrisPlayQuestion"+qNum).remove();
 qMNew(level);
-//mathrisBlock içindende silinmesi lazim
+
 
 }
 
