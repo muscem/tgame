@@ -2186,7 +2186,7 @@ var mathrisSetInt;
 
 /* pageMathrisPlay kodu baslangici */
 function playMathris(level,score){
-var moveTime=100;	//moveTime: Her adimida beklenecek süre
+var moveTime=200;	//moveTime: Her adimida beklenecek süre
 var moveStep=10;	//moveStep : Her adimda kayacak miktar.
 var qGap=10;		//questionGap: Her soru arasindaki mesafe
 
@@ -2202,9 +2202,10 @@ $("#pageMathrisPlayQuestions").html("");
 gameLevelsConfig();	//Oyunlarin, seviyeye bagli olarak ayarlari belirleniyor
 gameDifficulty=lastSelDif[gamePlayerID][2];
 playMathrisNewQuestion(qGap);
-
+//alert("cem1");
 mathrisSetInt=setInterval(function (){mathrisQuestionMove(qGap, moveStep)},moveTime);
-
+//mathrisSetInt=setInterval(mathrisQuestionMove(),moveTime);
+//alert("cem2");
 }
 
 function playMathrisNewQuestion(qGap){
@@ -2286,7 +2287,9 @@ t0=$("#pageMathrisPlayQuestions div:nth-child("+(qLen-1)+")").offset().top;
 t1=$("#pageMathrisPlayQuestions div:nth-child("+qLen+")").offset().top;
 h1=$("#pageMathrisPlayQuestions div:nth-child("+qLen+")").outerHeight();
 if((t0-h1-qGap)<t1){
-	alert("cem");
+	//alert("cem");
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").css( "top", "50px"  );
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("moving");
 window.clearInterval(mathrisSetInt);
 }
 }
@@ -2314,8 +2317,10 @@ playMathrisNewQuestion(qGap);//playMathris(level);
 
 
 function mathrisQuestionMove(qGap, moveStep){
+//var moveTime=100;	//moveTime: Her adimida beklenecek süre
+//var moveStep=10;	//moveStep : Her adimda kayacak miktar.
 var t0,t1, h1;
-//alert("cem");
+
 var qLen=$("#pageMathrisPlayQuestions").children().length;	
 t0=$("#pageMathrisPlayQuestions").outerHeight()+$("#pageMathrisPlayQuestions").offset().top;
 
@@ -2330,11 +2335,17 @@ t1=$("#pageMathrisPlayQuestions div:nth-child("+i+")").offset().top
 if(i>1) t0=$("#pageMathrisPlayQuestions div:nth-child("+(i-1)+")").offset().top;
 
 if((t0-qGap)>(t1+moveStep+h1)){
-$("#pageMathrisPlayQuestions div:nth-child("+i+")").css("top", "+="+moveStep+"px");
+
+//alert("cem3 = "+i+" - "+t0+" - "+t1+" - "+qGap+" - "+moveStep+" - "+h1);
+t1=t1+moveStep;
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").css("top", t1+"px");//"+moveStep+"
 $("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("moving");
 $("#pageMathrisPlayQuestions div:nth-child("+i+")").addClass("moving");
+t0=$("#pageMathrisPlayQuestions div:nth-child("+i+")").offset().top;
+//alert("cem4 ="+$("#pageMathrisPlayQuestions div:nth-child("+i+")").attr("id")+" - "+t0);
 }
 else{
+	//alert("cem5");
 $("#pageMathrisPlayQuestions div:nth-child("+i+")").css( "top", (t0-qGap-h1).toString+"px"  );
 $("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("moving");
 if(i==qLen) qMNew(qGap);
