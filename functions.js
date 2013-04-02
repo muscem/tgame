@@ -3,7 +3,66 @@
 * Fonksiyonlar, sayfalarin açilis sirasina göre dizilidir
 */
 
+//Oyunlarin levellerinin ayarlari. Ilk 7 bölüm tamam, deneme amaçli olarak.
+function gameLevelsConfig(){
+	
+gameOperation=[[]];			//Oyun islem türü
+gameNumber=[[]];				//Oyun sayi türü
+gameDigit=[[]];				//Oyun hane sayisi
+gameOCount=[[]];				//Oyun islem sayisi
+gameSign=[[]];				//Oyun sayi türü	//Sonradan ekledim bölümlerde yok.
 
+if(gameLevel==1){
+gameOperation=[[0]];	//[[1,2],[1,2,3],[1]];
+gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
+gameDigit=[[0]];
+gameOCount=[[0]];
+gameSign=[[0]];
+}
+else if(gameLevel==2){
+gameOperation=[[1]];	//[[1,2],[1,2,3],[1]];
+gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
+gameDigit=[[0]];
+gameOCount=[[0]];
+gameSign=[[0]];
+}
+else if(gameLevel==3){
+gameOperation=[[0,1]];	//[[1,2],[1,2,3],[1]];
+gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
+gameDigit=[[0]];
+gameOCount=[[0]];
+gameSign=[[0]];
+}
+else if(gameLevel==4){
+gameOperation=[[2]];	//[[1,2],[1,2,3],[1]];
+gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
+gameDigit=[[0]];
+gameOCount=[[0]];
+gameSign=[[0]];
+}
+else if(gameLevel==5){
+gameOperation=[[3]];	//[[1,2],[1,2,3],[1]];
+gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
+gameDigit=[[0]];
+gameOCount=[[0]];
+gameSign=[[0]];
+}
+else if(gameLevel==6){
+gameOperation=[[2,3]];	//[[1,2],[1,2,3],[1]];
+gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
+gameDigit=[[0]];
+gameOCount=[[0]];
+gameSign=[[0]];
+}
+else if(gameLevel==7){
+gameOperation=[[0,1,2,3]];	//[[1,2],[1,2,3],[1]];
+gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
+gameDigit=[[0]];
+gameOCount=[[0]];
+gameSign=[[0]];
+}
+
+}
 
 
 
@@ -504,6 +563,44 @@ result=result-iDiff;
 return result;
 }
 
+
+function findMax(vala, vale){
+//Serinin en büyük degerini buluyor.
+//vale=0 ise en küçük, vale=1 ise en büyük deger
+var valb=vala.toString().split(",");
+if(vale==0) var valc=valb.sort();
+if(vale==1) var valc=valb.sort(function(a,b){return b-a});
+var vald=valc[0];
+
+//var valc=valb.sort();
+//var vald=valc[valc.length-1];
+return vald;
+}
+
+function timeCal(time){
+//alert("cem1");
+//coefNum; sayilar - islemler katsayi tablosu coefNeum[sayi türü][islem türü]
+//sayi türü 0-4, islem türü 0-3 
+var coefNum=[[1,1,1.5,2],[1,1,1.5,2],[1.5,1.5,1.5,1.5],[2.5,2.5,2.5,2.5],[3,3,3,3]];
+
+//coefDigit; hane sayisi - islemler katsayi tablosu coefDigit[hane sayisi][islem türü]
+//hane sayisi 0-4, islem türü 0-3
+var coefDigit=[[1,1,1,1],[2.1,2.1,2.8,2.9],[3.1,3.1,3.8,3.9],[4.1,4.1,4.8,4.9],[5.1,5.1,5.8,5.9]];
+
+var time2;
+var maxOp, maxDig, maxNum, maxOC;
+
+maxOp=findMax(gameOperation,1);
+//alert("cem2");
+maxDig=findMax(gameDigit,1);
+maxNum=findMax(gameNumber,1);
+maxOC=findMax(gameOCount,1);
+
+time2=(1+maxOC*0.9)*(time*coefNum[maxNum][maxOp]*coefDigit[maxDig][maxOp]);
+//alert("time2= "+time2);
+//alert(maxOp+" - "+maxDig+" - "+maxNum+" - "+maxOC+" - "+coefNum[maxNum][maxOp]+" - "+coefDigit[maxDig][maxOp]);
+return time2;
+}
 //Bir sayfaya ait olmayan kodlar sonu
 
 
@@ -557,6 +654,9 @@ var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik I
 langID=findlangID();
 
 var langLabelH=["Sprache", "Language", "Idioma", "Langue", "Lingua", "Dil"];
+var gameSettingsH1=["Spiel-Einstellungen", "Game Settings", "Configuraci&oacute;n Del Juego", "Param&eacute;tres De Jeu", "Impostazioni Di Gioco", "Oyun Ayarlar&#305;"];
+
+$("#gameSettingsH1").html(gameSettingsH1[langID]);
 $("#langLabelH").text(langLabelH[langID]);
 
 }
@@ -568,8 +668,6 @@ $("#langLabelH").text(langLabelH[langID]);
 
 
 /* pagePlayerRename kodu baslangici */
-
-
 $("#pagePlayerRename").live('pagebeforeshow', function(event){
 pageRenameLanguageChange();													   
 $("#pagePlayerRenameContent").find("#pagePlayerRenameButton").attr("onclick","gamePlayerRenameDB("+gamePlayerID+");");
@@ -616,47 +714,45 @@ var playerCancelSpan=["Kündigen", "Cancel", "Cancelar", "Annuler", "Annullare", 
 var playerDeleteSpan=["L&ouml;schen", "Delete", "Borrar", "Effacer", "Cancellare", "Sil"]
 
 $("#pagePlayerDeletePlayerH").html(pagePlayerDeletePlayerH[langID]);
-$(".playerCancelSpan").html(playerCancelSpan[langID]);
-$(".playerDeleteSpan").html(playerDeleteSpan[langID]);
+$("#labelDelete").html(labelDelete[langID]);
+$("#playerCancelSpan").html(playerCancelSpan[langID]);
+$("#playerDeleteSpan").html(playerDeleteSpan[langID]);
 
 }
 /* pagePlayerDelete kodu sonu */
 
 
+
+
 /* pagePlayerCreate kodu baslangici */
-$("#pagePlayerDelete").live('pagebeforeshow', function(event){
-pageCreateLanguageChange();
+$("#pagePlayerCreate").live('pagebeforeshow', function(event){
+pagePlayerCreateLanguageChange();
 });
 
 
-function pageCreateLanguageChange(){
+function pagePlayerCreateLanguageChange(){
 
 var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
 langID=findlangID();
 
 // diller 	[ 0=de, 1=en, 2=es, 3=fr, 4=it, 5=tr]
 //["", "", "", "", "", ""]
-var pagePlayerCreatePlayerH=["Spieler Erstellen", "Create Player", "crear jugador", "Cr&eacute;er Un Joueur", "Creare Un Giocatore", "Yeni Oyuncu Olustur"];
-var labelName=["Name", "Name", "Nombre", "Nom", "Nome", "&#304;sim"];
-var playerCancelSpan=["Kündigen", "Cancel", "Cancelar", "Annuler", "Annullare", "Vazge&ccedil;"];
-var playerCreateSpan=["Schaffen", "Create", "Crear", "Cr&eacute;er", "Creare", "Olu&#351;tur"];
+var pagePlayerCreatePlayerH=["Spieler Erstellen", "Create Player", "Crear Jugador", "Cr&eacute;er Un Joueur", "Creare Un Giocatore", "Yeni Oyuncu Olu&#351;tur"];
+var nameSpan=["Name", "Name", "Nombre", "Nom", "Nome", "&#304;sim"];
+var playerCreateCancelSpan=["Kündigen", "Cancel", "Cancelar", "Annuler", "Annullare", "Vazge&ccedil;"];
+var playerCreateCreateSpan=["Schaffen", "Create", "Crear", "Cr&eacute;er", "Creare", "Olu&#351;tur"];
 
 $("#pagePlayerCreatePlayerH").html(pagePlayerCreatePlayerH[langID]);
-$("#labelName").text(labelName[langID]);
-$(".playerCancelSpan").html(playerCancelSpan[langID]);
-$(".playerCreateSpan").html(playerCreateSpan[langID]);
+$("#nameSpan").html(nameSpan[langID]);
+$("#playerCreateCancelSpan").html(playerCreateCancelSpan[langID]);
+$("#playerCreateCreateSpan").html(playerCreateCreateSpan[langID]);
 
 }
 /* pagePlayerCreate kodu sonu */
 
 
 
-
-
 /* pagePlayers kodu baslangici */
-
-
-//pagePlayer sayfasinin dilini degistiren kod
 function openPagePlayerRename(id){
 gamePlayerID=id;
 $.mobile.changePage( $("#pagePlayerRename") , { transition: "slide"} );
@@ -671,7 +767,6 @@ function openPagePlayerCreate(){
 $.mobile.changePage( $("#pagePlayerCreate") , { transition: "slide"} );
 $("#pagePlayerCreateContent").find("#createPlayerName").val("");
 }
-
 
 function pagePlayersLanguageChange(){
 //Dil degisimi ile sayfada yazilar degisecek
@@ -736,30 +831,6 @@ $(".playerCreateSpan").html(playerCreateSpan[langID]);
 //$(".levelSpanShootout").html(levelSpanShootout[langID]);
 }
 
-
-
-
-//function playerCreate(){
-//var name;	//, name2;
-//name=$("#createPlayerName").val();
-////name2=mysql_real_escape_string (name);
-////alert("Yeni oyuncu kaydi isim "+ name+ "- Güvenli isism="+name2 );
-////
-////return false;
-//if(name!=""){
-//gamePlayerCreate(name);
-//listPagePlayersUserInfoDB();	//Yeni olusturulanla birlikte oyuncular yeniden listeleniyor
-////langChangeSelect();
-//}
-//}
-
-//function playerDelete(id){
-//gamePlayerDelete(id);
-//listPagePlayersUserInfoDB();	//Silinen disindaki oyuncular yeniden listeleniyor
-////langChangeSelect();
-//}
-
-
 function playerSelect(id){
 //alert(id);
 //Oyuncunun seçilip oyun seçimi sayfasina yönlendirme yapiliyor
@@ -787,10 +858,11 @@ $("#pagePlayers").live('pagebeforeshow', function(event){
 listPagePlayersUserInfoDB();
 pagePlayersLanguageChange();
 });
-
 /* PagePlayers kodu sonu */
 
 
+
+/* pageGameModes kodu baslangici */
 $("#pageGameModes").live("pagebeforeshow", function() {
 
 $("#pageGameModesFreeMode").removeClass("ui-disabled");
@@ -813,143 +885,33 @@ if(pLevels[gamePlayerID][4][0]>0) $("#pageGameModesShootOut").removeClass("ui-di
 
 });
 
+function gameModeSelect(mode){
+gameMode=mode;
+if (gameMode==0){
+$.mobile.changePage( $("#pageFreeModeLevel") , { transition: "slide"} );
+}
+else if (gameMode==1){
+$.mobile.changePage( $("#pageFindOutLevel") , { transition: "slide"} );
+}
+else if (gameMode==2){
+$.mobile.changePage( $("#pageMathrisLevel") , { transition: "slide"} );
+}
+else if (gameMode==3){
+$.mobile.changePage( $("#pageMathrixLevel") , { transition: "slide"} );
+}
+else if (gameMode==4){
+$.mobile.changePage( $("#pageShootOutLevel") , { transition: "slide"} );
+}
+return false;
+}
+/* pageGameModes kodu sonu */
 
+
+/* pageFreeModeLevel kodu baslangici */
 $("#pageFreeModeLevel").live("pagebeforeshow", function() {
+pageFreeModeLevelLanguageChange();
 freeModeLevels();
 });
-
-
-$("#pageFindOutLevel").live("pagebeforeshow", function() {
-//var level;
-//
-//alert("cem sayfa");
-//alert("dif="+lastSelDif[gamePlayerID][1]);
-//level=pLevels[gamePlayerID][1][lastSelDif[gamePlayerID][1]];
-//alert("level="+level);
-
-//if(lastSelFindOutDif[gamePlayerID]==3){
-//level=pFindOutH[gamePlayerID];
-//}
-//else if(lastSelFindOutDif[gamePlayerID]==2){
-//level=pFindOutM[gamePlayerID];
-//}
-//else{
-//level=pFindOutE[gamePlayerID];
-//}
-gamesModesLevels(1, "FindOut");
-});
-
-
-
-$("#pageMathrisLevel").live("pagebeforeshow", function() {
-gamesModesLevels(2, "Mathris");
-});
-
-
-
-$("#pageMathrixLevel").live("pagebeforeshow", function() {
-gamesModesLevels(3, "Mathrix");
-});
-
-
-
-$("#pageShootOutLevel").live("pagebeforeshow", function(e, data) {
-clearInterval(gameCountDown);
-$("#pageShootOutPlayTimeSpan").removeClass("time1");
-$("#pageShootOutPlayTimeSpan").removeClass("time2");
-$("#pageShootOutPlayTimeSpan").addClass("time1");
-gamesModesLevels(4, "ShootOut");
-});
-
-
-
-
-
-
-
-
-
-function gamesModesLevels(mode1, mode2){
-//mode1: hangi oyun modu için yapilacagi, numarasa 1:find out, 2-mathris ...	
-//mode2: hangi oyun modu için yapilacagi, sayfa adi gelecek (FindOut, Mathris) gibi
-
-//maxLevel: seçilen mode'un toplam kaç level oldugu. Böylece disable edilecek leveller belirlenecek
-var maxLevel;
-if(mode1==1){
-maxLevel=100;
-}
-else if(mode1==2){
-maxLevel=5;
-}
-else if(mode1==3){
-maxLevel=8;
-}
-else if(mode1==4){
-maxLevel=10;
-}
-
-$("#easy"+mode2).attr("checked",false).checkboxradio('enable').checkboxradio("refresh");
-$("#moderate"+mode2).attr("checked",false).checkboxradio('disable').checkboxradio("refresh");
-$("#hard"+mode2).attr("checked",false).checkboxradio('disable').checkboxradio("refresh");
-
-
-if(pLevels[gamePlayerID][1][1]>0){
-$("#moderate"+mode2).checkboxradio('enable').checkboxradio("refresh");	
-}
-if(pLevels[gamePlayerID][1][2]>0){
-$("#hard"+mode2).checkboxradio('enable').checkboxradio("refresh");
-}
-
-var level;	//level
-var dif;	//last selected difficulty
-
-dif=lastSelDif[gamePlayerID][mode1];
-level=pLevels[gamePlayerID][mode1][dif];
-
-if(pLevels[gamePlayerID][mode1][1]>0) $("#moderate"+mode2).checkboxradio('enable').checkboxradio("refresh");
-if(pLevels[gamePlayerID][mode1][2]>0) $("#hard"+mode2).checkboxradio('enable').checkboxradio("refresh");
-
-
-if(dif==0){
-$("#easy"+mode2).attr("checked",true).checkboxradio("refresh");
-}
-else if(dif==1){
-$("#moderate"+mode2).attr("checked",true).checkboxradio("refresh");
-}
-else{	//dif=2
-$("#hard"+mode2).attr("checked",true).checkboxradio("refresh");
-}
-
-
-
-var levelHtml="";
-if (level>maxLevel){
-level=maxLevel;
-//Gerekirse,  level=maxLevel; ayarlamsi yapilacak ve veritabanna ve pLevels degiskenine islenecek
-//pLevels[gamePlayerID][mode1][dif]=level;
-}
-else{
-levelHtml='<a class="ui-btn ui-btn-up-d ui-shadow ui-btn-corner-all ui-disabled" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" onclick="play'+mode2+'('+(level+1)+',0)" data-role="button" data-theme="d"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+(level+1)+'</span></span></a>';
-}
-
-//for (i=2;i<maxLevel+1;i++){
-//$("#"+mode2).find("#level"+i.toString()).removeClass("ui-disabled");	//Varsa, kaldirmis olacak
-//$("#"+mode2).find("#level"+i.toString()).addClass("ui-disabled");
-//}
-
-
-for (i=level;i>0;i--){
-levelHtml=levelHtml+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" onclick="play'+mode2+'('+i+',0)" data-role="button" data-theme="d"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+i+'</span></span></a>';
-
-//$("#"+mode2).find("#level"+i.toString()).removeClass("ui-disabled");
-}
-$("#page"+mode2+"Levels").html(levelHtml);
-
-
-}
-
-
-
 
 function freeModeLevels(){
 //
@@ -1146,187 +1108,54 @@ if(lastSelFMS[gamePlayerID][dif][0]==1) $("#pageFreeModeLevel").find("#eSign0").
 
 }
 
+function pageFreeModeLevelLanguageChange(){
 
+var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
+langID=findlangID();
+//["", "", "", "", "", ""];
 
+var spanEasyFreeMode=["Leicht", "Easy", "F&aacute;cil", "Facile", "Facile", "Kolay"];
+var spanModerateFreeMode=["Moderieren", "Moderate", "Moderada", "Mod&eacute;r&eacute;", "Moderato", "Normal"];
+var spanHardFreeMode=["Schwer", "Hard", "Difficile", "Dur", "Difficile", "Zor"];
+var operationsH3=["Operationen", "Operations", "Operaciones", "Op&eacute;rations", "Operazioni", "&#304;&#351;lemler"];
+var spanOAdd=["Addition", "Addition", "adici&oacute;n", "Addition", "Addizione", "Toplama"];
+var spanOSub=["Subtraktion", "Subtraction", "Sustracci&oacute;n", "Soustraction", "Sottrazione", "&Ccedil;&#305;karma"];
+var spanOMul=["Multiplikation", "Multiplication", "Multiplicaci&oacute;n", "Multiplication", "Moltiplicazione", "&Ccedil;arpma"];
+var spanODiv=["Division", "Division", "Divisi&oacute;n", "Division", "Divisione", "B&ouml;lme"];
+var numbersH3=["Zahlen", "Numbers", "N&uacute;meros", "Num&eacute;ros", "Numeri", "Say&#305;lar"];
+var spanNInt=["Ganze Zahl", "Integers", "N&uacute;meros Enteros", "Entier Relatif", "Numero Intero", "Tam Say&#305;lar"];
+var spanNDec=["Rationale Zahl", "Rational Numbers", "N&uacute;mero Racional", "Nombre Rationnel", "Numero Razionale", "Ondal&#305;k Say&#305;lar"];
+var spanNRat=["Dezimal Zahl", "Decimal Numbers", "N&uacute;mero Decimales", "Nombre D&eacute;cimaux", "Numero Decimali", "Kesirli Say&#305;lar"];
+var spanNExp=["Exponentielle Zahl", "Exponential Numbers", "N&uacute;mero Exponenciales", "Nombres Exponentielles", "Numero Esponenziali", "&#220;sl&#252; Say&#305;lar"];
+var spanNRoo=["Wurzeln Zahl", "Root Numbers", "N&uacute;mero Raíz", "Nombre Racines", "Numero Radice", "K&#246;kl&#252; Say&#305;lar"];
+var digitsH3=["Stellen", "Digits", "D&iacute;gitos", "Chiffres", "Cifre", "Hane Say&#305;s&#305;"];
+var oCountH3=["Anzahl der Operationen", "Operation Count", "N&uacute;mero De Operaciones", "Nombre D'op&eacute;rations", "Numero Di Operazioni", "&#304;&#351;lem Say&#305;s&#305;"];
+var signH3=["Zeichen", "Sign", "Signo", "Signe", "Segno", "&#304;&#351;aret"];
+var playSpan=["Starten", "Start", "Comenzar", "Commencer", "Iniziare", "Ba&#351;la"];
+//var a=["", "", "", "", "", ""];
 
-//Silinecek
-function difficultyClick(mod, v){
-
-if(mod=="fmdiffiulty" && v!=lastSelFMDif[gamePlayerID]){
-playerDifUpdate(mod, v)
-}
-else if(mod=="findoutdifficulty" && v!=lastSelFindOutDif[gamePlayerID]){
-playerDifUpdate(mod, v)
-}
-else if(mod=="mathrisdifficulty" && v!=lastSelMathrisDif[gamePlayerID]){
-playerDifUpdate(mod, v)
-}
-else if(mod=="mathrixdifficulty" && v!=lastSelMathrixDif[gamePlayerID]){
-playerDifUpdate(mod, v)
-}
-else if(mod=="shootoutdifficulty" && v!=lastSelShootOutDif[gamePlayerID]){
-playerDifUpdate(mod, v)
-}
-
-}
-
-
-//silinecek
-function goster (){
-//seçili radio dügmesinin degerini ögrenme
-alert("cem1");
-//$("#freeModeEasy").click();
-$("#freeModeEasy").attr("checked",true).checkboxradio("refresh");
-
-
-//attr("checked",false).checkboxradio('enable').checkboxradio("refresh");
-
-
-//$("#pageFreeModeLevel .labelEasy").removeClass("ui-radio-off ui-radio-on ui-focus ui-btn-active");
-////$("#pageFreeModeLevel .labelEasy").attr("checked", false);
-//$("#pageFreeModeLevel .labelEasy").removeAttr("checked");
-//$("#pageFreeModeLevel .labelModerate").removeClass("ui-radio-off ui-radio-on ui-focus ui-btn-active");
-////$("#pageFreeModeLevel .labelModerate").attr("checked", false);
-////$("#pageFreeModeLevel .labelModerate").removeAttr("checked");
-//$("#pageFreeModeLevel .labelHard").removeClass("ui-radio-off ui-radio-on ui-focus ui-btn-active");
-//$("#pageFreeModeLevel .labelHard").attr("checked", true);
-//$("#pageFreeModeLevel .labelHard").removeAttr("checked");
-
-
-
-//$("#pageFreeModeLevel").find("input[name=gDifficulty]:checked").each(function() {
-//alert($(this).val());
-//if($(this).val()==2){
-//alert ("val=2");
-//$("#freeModeEasy").parent().trigger("click");
-//.trigger("click");.find(".ui-btn-text")
-//$(this).trigger("click").checkboxradio("refresh");	
-//}
-//});
-
-	$("#pageFreeModeLevel").find("input[name=gDifficulty]:checked").each(function() {															
-    alert("checked = "+$(this).val());
-	alert($(this).attr("id"));
-    });
-//	alert("cemmm");
-//$("#pageFreeModeLevel .labelModerate").addClass("ui-radio-on ui-focus ui-btn-active");
-
-//$("#pageFreeModeLevel [name=gDifficulty]").removeAttr("checked");
-//$("#pageFreeModeLevel .labelModerate").addClass("ui-radio-on ui-btn-active");
-//$("#freeModeModerate").attr("checked",true).checkboxradio("refresh");
-//$("#freeModeModerate").attr("checked",false).checkboxradio("refresh");
-
-//$("#pageFreeModeLevel .labelModerate").attr("checked", "checked");
-//$("#pageFreeModeLevel .labelModerate").trigger("click");
-
-//$("#pageFreeModeLevel .labelModerate").prop("checked", true);
-
-//$("#pageFreeModeLevel [name=gDifficulty]").trigger("change");
-//$("#oAdd").checkboxradio("enable").attr("checked",true).checkboxradio('refresh');
-
-//$("#pageFreeModeLevel").find("#oSub").checkboxradio("enable").attr("checked",false).checkboxradio('refresh');
-
-//$("#pageFreeModeLevel").find("#oSub").removeClass("ui-disable");
-//$("#pageFreeModeLevel").find("#oSub").trigger("click");
-
-//$("#pageFreeModeLevel .labelModerate").parent().parent().trigger("click");	//hatali
-//$("#pageFreeModeLevel .labelModerate").find(".ui-btn").trigger("click");
-alert("cem2");
-}
-
-//silinecek
-function bas (){
-//radio button disable kaldirma
-	//$("#freeModeHard").parent().removeClass("ui-disabled");
-	//$("#freeModeHard").removeAttr("disabled");
-	
-$("#freeModeModerate").checkboxradio('enable').checkboxradio("refresh");
-$("#freeModeHard").checkboxradio('enable').checkboxradio("refresh");
-//$("input[type='radio']:first").attr("checked",true).checkboxradio("refresh");
-
-//radio button yazi degistirme
-//$(".labelHard").find(".ui-btn-text").html("zooor");
-
-//$("#oSub").button("enable").trigger("click").button('refresh');
-//$("#oMul").button("enable").button('refresh');
-//$("#oDiv").button("enable").button('refresh');
-
-
-$("#oSub").checkboxradio("enable").attr("checked",true).checkboxradio('refresh');
-$("#oMul").checkboxradio("enable").checkboxradio('refresh');
-$("#oDiv").checkboxradio("enable").checkboxradio('refresh');
-
+$("#spanEasyFreeMode").html(spanEasyFreeMode[langID]);
+$("#spanModerateFreeMode").html(spanModerateFreeMode[langID]);
+$("#spanHardFreeMode").html(spanHardFreeMode[langID]);
+$("#operationsH3").html(operationsH3[langID]);
+$("#spanOAdd").html(spanOAdd[langID]);
+$("#spanOSub").html(spanOSub[langID]);
+$("#spanOMul").html(spanOMul[langID]);
+$("#spanODiv").html(spanODiv[langID]);
+$("#numbersH3").html(numbersH3[langID]);
+$("#spanNInt").html(spanNInt[langID]);
+$("#spanNDec").html(spanNDec[langID]);
+$("#spanNRat").html(spanNRat[langID]);
+$("#spanNExp").html(spanNExp[langID]);
+$("#spanNRoo").html(spanNRoo[langID]);
+$("#digitsH3").html(digitsH3[langID]);
+$("#oCountH3").html(oCountH3[langID]);
+$("#signH3").html(signH3[langID]);
+$("#playSpan").html(playSpan[langID]);
+//$("#").html([langID]);
 
 }
-
-//silinecek
-function bas2 (){
-//radio button disable yapma
-
-$("#freeModeEasy").trigger("click").checkboxradio("refresh");
-//$("#freeModeEasy").checkboxradio("refresh");
-$("#freeModeHard").checkboxradio('disable').checkboxradio("refresh");
-$("#freeModeModerate").checkboxradio('disable').checkboxradio("refresh");
-
-//$("#freeModeEasy").parent().trigger("click");
-//$("#freeModeEasy").child().trigger("click");
-//$("#freeModeEasy").child().child().trigger("click");
-//$("#freeModeEasy").child().child().child().trigger("click");
-
-//$("input[type='radio']").checkboxradio('enable');
-//
-//$("#freeModeEasy").find("labelEasy").trigger("click");
-//	$("#freeModeHard").parent().addClass("ui-disabled");
-//	$("#freeModeHard").attr("disabled", "disabled");
-	//Seçiliyse kaldirmak için
-//	$("#freeModeHard").removeAttr("checked");
-	
-//	$("#freeModeHard").find(".labelHard").removeClass("ui-btn-active");
-//	$("#freeModeHard").find(".labelHard").addClass("ui-radio-off");
-$("#pageFreeModeLevelContent").trigger("create");
-
-
-$("#oAdd").checkboxradio("enable").attr("checked",true).checkboxradio('refresh');
-$("#oSub").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
-$("#oMul").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
-$("#oDiv").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
-	
-}
-
-//silinecek
-function bas3(){
-	freeModeLevels();
-}
-
-
-
-
-
-
-
-
-
-/* pageGameModes kodu baslangici */
-function gameModeSelect(mode){
-gameMode=mode;
-if (gameMode==0){
-$.mobile.changePage( $("#pageFreeModeLevel") , { transition: "slide"} );
-}
-else if (gameMode==1){
-$.mobile.changePage( $("#pageFindOutLevel") , { transition: "slide"} );
-}
-else if (gameMode==2){
-$.mobile.changePage( $("#pageMathrisLevel") , { transition: "slide"} );
-}
-else if (gameMode==3){
-$.mobile.changePage( $("#pageMathrixLevel") , { transition: "slide"} );
-}
-else if (gameMode==4){
-$.mobile.changePage( $("#pageShootOutLevel") , { transition: "slide"} );
-}
-return false;
-}
-/* pageGameModes kodu sonu */
+/* pageFreeModeLevel kodu sonu */
 
 
 /* pageFreeModePlay kodu baslangici */
@@ -1523,16 +1352,48 @@ $("#pageFreeModePlayQuestion").css("top",h2+"%");
 
 }
 
+$("#pageFreeModePlay").live("pagebeforeshow", function() {
+pageFreeModePlayLanguageChange();
+});
 
+function pageFreeModePlayLanguageChange(){
+
+var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
+langID=findlangID();
+//["", "", "", "", "", ""];
+
+//var a=["", "", "", "", "", ""];
+var popupFreeModePlaySucH1=["Gl&#220;ckw&#220;nsche", "Congratulations", "Congratulaciones", "F&eacute;licitations", "Congratulazioni", "Tebrikler"];
+var popupFreeModePlaySucH3=["Sie wurde erfolgreich abgeschlossen.", "You completed successfuly.", "Ha completado con &eacute;xito.", "Vous avez termin&eacute; avec succ&eacute;s.", "Hai completato con successo.", "Ba&#351;ar&#305;yla tamamlad&#305;n&#305;z."];
+var popupFreeModePlaySucSpan=["Ok", "Ok", "Aceptar", "D'accord", "Bene", "Tamam"];
+var popupFreeModePlayUnSucH1=["Leider", "Sorry", "Arrepentido", "D&eacute;sol&eacute;", "Dispiacente", "Maalesef"];
+var popupFreeModePlayUnSucH3=["Sie konnten nicht erfolgreich abzuschlie&szlig;en.", "You could not complete succesfully.", "No se pudo completar con &eacute;xito.", "On ne pouvait pas terminer avec succ&eacute;s.", "Non &eacute; in grado di completare con successo.", "Ba&#351;ar&#305;yla tamamlayamad&#305;n&#305;z."];
+var popupFreeModePlayUnSucSpan=["Ok", "Ok", "Aceptar", "D'accord", "Bene", "Tamam"];
+
+//$("#").html([langID]);
+$("#popupFreeModePlaySucH1").html(popupFreeModePlaySucH1[langID]);
+$("#popupFreeModePlaySucH3").html(popupFreeModePlaySucH3[langID]);
+$("#popupFreeModePlaySucSpan").html(popupFreeModePlaySucSpan[langID]);
+$("#popupFreeModePlayUnSucH1").html(popupFreeModePlayUnSucH1[langID]);
+$("#popupFreeModePlayUnSucH3").html(popupFreeModePlayUnSucH3[langID]);
+$("#popupFreeModePlayUnSucSpan").html(popupFreeModePlayUnSucSpan[langID]);
+
+}
 
 function playFreeModeCal(point){
 var points;
 points=Number($("#pageFreeModePlaySlider").val());
+point=Number(point);
+if(point<0){
+if(gameDifficulty==1) point=point*2;
+if(gameDifficulty==2) point=point*3;
+}
 points=points+Number(point);
 if(points<0) points=0;
 if(points>100) points=100;
 $("#pageFreeModePlaySlider").val(points.toString());
 $("#pageFreeModePlaySlider").slider('refresh');
+
 if(points>=100){
 //level atlama kodu
 if(pLevels[gamePlayerID][0][gameDifficulty]==1 && lastSelFMOp[gamePlayerID][gameDifficulty][0]==1){
@@ -1546,12 +1407,12 @@ changeLevel(0, gameDifficulty, 4)
 }
 else if(pLevels[gamePlayerID][0][gameDifficulty]==4 && lastSelFMOp[gamePlayerID][gameDifficulty][0]==1){
 changeLevel(0, gameDifficulty, 5)
-if(gameDifficulty==0)	changeLevel(0, 1, 1);
-if(gameDifficulty==1)	changeLevel(0, 2, 1);
+//if(gameDifficulty==0)	changeLevel(0, 1, 1);
+//if(gameDifficulty==1)	changeLevel(0, 2, 1);
 }
 
 
-$( "#popupFreeModePlay" ).popup( "open" );
+$( "#popupFreeModePlaySuc" ).popup( "open" );
 }
 else{
 playFreeMode();
@@ -1560,69 +1421,86 @@ playFreeMode();
 /* pageFreeModePlay kodu sonu */
 
 
-//Oyunlarin levellerinin ayarlari. Ilk 7 bölüm tamam, deneme amaçli olarak.
-function gameLevelsConfig(){
-	
-gameOperation=[[]];			//Oyun islem türü
-gameNumber=[[]];				//Oyun sayi türü
-gameDigit=[[]];				//Oyun hane sayisi
-gameOCount=[[]];				//Oyun islem sayisi
-gameSign=[[]];				//Oyun sayi türü	//Sonradan ekledim bölümlerde yok.
 
-if(gameLevel==1){
-gameOperation=[[0]];	//[[1,2],[1,2,3],[1]];
-gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
-gameDigit=[[0]];
-gameOCount=[[0]];
-gameSign=[[0]];
-}
-else if(gameLevel==2){
-gameOperation=[[1]];	//[[1,2],[1,2,3],[1]];
-gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
-gameDigit=[[0]];
-gameOCount=[[0]];
-gameSign=[[0]];
-}
-else if(gameLevel==3){
-gameOperation=[[0,1]];	//[[1,2],[1,2,3],[1]];
-gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
-gameDigit=[[0]];
-gameOCount=[[0]];
-gameSign=[[0]];
-}
-else if(gameLevel==4){
-gameOperation=[[2]];	//[[1,2],[1,2,3],[1]];
-gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
-gameDigit=[[0]];
-gameOCount=[[0]];
-gameSign=[[0]];
-}
-else if(gameLevel==5){
-gameOperation=[[3]];	//[[1,2],[1,2,3],[1]];
-gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
-gameDigit=[[0]];
-gameOCount=[[0]];
-gameSign=[[0]];
-}
-else if(gameLevel==6){
-gameOperation=[[2,3]];	//[[1,2],[1,2,3],[1]];
-gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
-gameDigit=[[0]];
-gameOCount=[[0]];
-gameSign=[[0]];
-}
-else if(gameLevel==7){
-gameOperation=[[0,1,2,3]];	//[[1,2],[1,2,3],[1]];
-gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
-gameDigit=[[0]];
-gameOCount=[[0]];
-gameSign=[[0]];
-}
 
-}
+/* pageFindOutLevel kodu baslangici */
+$("#pageFindOutLevel").live("pagebeforeshow", function() {
+//var level;
+//
+//alert("cem sayfa");
+//alert("dif="+lastSelDif[gamePlayerID][1]);
+//level=pLevels[gamePlayerID][1][lastSelDif[gamePlayerID][1]];
+//alert("level="+level);
+
+//if(lastSelFindOutDif[gamePlayerID]==3){
+//level=pFindOutH[gamePlayerID];
+//}
+//else if(lastSelFindOutDif[gamePlayerID]==2){
+//level=pFindOutM[gamePlayerID];
+//}
+//else{
+//level=pFindOutE[gamePlayerID];
+//}
+clearInterval(gameCountDown);
+pageFindOutLevelLanguageChange();
+gamesModesLevels(1, "FindOut");
+});
+
+function pageFindOutLevelLanguageChange(){
+var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
+langID=findlangID();
+
+var spanEasyFindOut=["Leicht", "Easy", "F&aacute;cil", "Facile", "Facile", "Kolay"];
+var spanModerateFindOut=["Moderieren", "Moderate", "Moderada", "Mod&eacute;r&eacute;", "Moderato", "Normal"];
+var spanHardFindOut=["Schwer", "Hard", "Difficile", "Dur", "Difficile", "Zor"];
+
+$("#spanEasyFindOut").html(spanEasyFindOut[langID]);
+$("#spanModerateFindOut").html(spanModerateFindOut[langID]);
+$("#spanHardFindOut").html(spanHardFindOut[langID]);
+
+};
+/* pageFindOutLevel kodu sonu */
+
+
 
 
 /* pageFindOutPlay kodu baslangici */
+$("#pageFindOutPlay").live("pagebeforeshow", function() {
+clearInterval(gameCountDown);
+pageFindOutPlayLanguageChange();
+$("#pageFindOutPlayTimeSpan").removeClass("time1");
+$("#pageFindOutPlayTimeSpan").removeClass("time2");
+$("#pageFindOutPlayTimeSpan").addClass("time1");
+});
+
+
+
+
+
+function pageFindOutPlayLanguageChange(){
+
+var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
+langID=findlangID();
+//["", "", "", "", "", ""];
+
+//var a=["", "", "", "", "", ""];
+var popupFindOutPlaySucH1=["Gl&#220;ckw&#220;nsche", "Congratulations", "Congratulaciones", "F&eacute;licitations", "Congratulazioni", "Tebrikler"];
+var popupFindOutPlaySucH3=["Sie wurde erfolgreich abgeschlossen.", "You completed successfuly.", "Ha completado con &eacute;xito.", "Vous avez termin&eacute; avec succ&eacute;s.", "Hai completato con successo.", "Ba&#351;ar&#305;yla tamamlad&#305;n&#305;z."];
+var popupFindOutPlaySucSpan=["Ok", "Ok", "Aceptar", "D'accord", "Bene", "Tamam"];
+var popupFindOutPlayUnSucH1=["Leider", "Sorry", "Arrepentido", "D&eacute;sol&eacute;", "Dispiacente", "Maalesef"];
+var popupFindOutPlayUnSucH3=["Sie konnten nicht erfolgreich abzuschlie&szlig;en.", "You could not complete succesfully.", "No se pudo completar con &eacute;xito.", "On ne pouvait pas terminer avec succ&eacute;s.", "Non &eacute; in grado di completare con successo.", "Ba&#351;ar&#305;yla tamamlayamad&#305;n&#305;z."];
+var popupFindOutPlayUnSucSpan=["Ok", "Ok", "Aceptar", "D'accord", "Bene", "Tamam"];
+
+//$("#").html([langID]);
+$("#popupFindOutPlaySucH1").html(popupFindOutPlaySucH1[langID]);
+$("#popupFindOutPlaySucH3").html(popupFindOutPlaySucH3[langID]);
+$("#popupFindOutPlaySucSpan").html(popupFindOutPlaySucSpan[langID]);
+$("#popupFindOutPlayUnSucH1").html(popupFindOutPlayUnSucH1[langID]);
+$("#popupFindOutPlayUnSucH3").html(popupFindOutPlayUnSucH3[langID]);
+$("#popupFindOutPlayUnSucSpan").html(popupFindOutPlayUnSucSpan[langID]);
+
+}
+
 function playFindOut(level, score){
 
 //Deneme amaçli degerler
@@ -1638,6 +1516,9 @@ $.mobile.changePage( $("#pageFindOutPlay") , { transition: "slide"} );
 //alert("score="+score+" level="+level);
 if(score==0){
 gameLevel=level;
+gameLevelsConfig();	//Oyunlarin, seviyeye bagli olarak ayarlari belirleniyor
+gameDifficulty=lastSelDif[gamePlayerID][1];
+
 $('#playFindOutEq').removeClass("ui-disabled");
 $('#playFindOutNotEq').removeClass("ui-disabled");
 $('#playFindOutBig').removeClass("ui-disabled");
@@ -1646,11 +1527,33 @@ $('#playFindOutLess').removeClass("ui-disabled");
 $('#playFindOutEqLess').removeClass("ui-disabled");
 $("#pageFindOutPlaySlider").val(score.toString());
 $("#pageFindOutPlaySlider").slider('refresh');
+
+var time=30;
+if(gameDifficulty==1) time=50;
+if(gameDifficulty==2) time=100;
+
+//alert(time);
+time=timeCal(time);
+//alert(time);
+$("#pageFindOutPlayTimeSpan").html(time);
+gameCountDown=self.setInterval(function(){
+time--;
+$("#pageFindOutPlayTimeSpan").html(time);
+if(time<10){
+$("#pageFindOutPlayTimeSpan").removeClass("time1");
+$("#pageFindOutPlayTimeSpan").addClass("time2");
+}
+if(time<1){
+clearInterval(gameCountDown);
+playFindOutFinish();
+}
+},1000);
+
 }
 
-gameLevelsConfig();	//Oyunlarin, seviyeye bagli olarak ayarlari belirleniyor
-gameDifficulty=lastSelDif[gamePlayerID][1];
 
+//gameDifficulty=lastSelDif[gamePlayerID][1];
+//alert("gameDifficulty1= "+gameDifficulty);
 
 //iRand ile Denklem olusturmakta kullanilacak seçeneklerin bulundugu yer belirlenecek
 var iRand=Math.floor(Math.random()*gameDigit.length);
@@ -1739,13 +1642,21 @@ $('#playFindOutEqLess').removeClass("ui-disabled");
 $('#'+bSign).addClass("ui-disabled");
 var points;
 points=Number($("#pageFindOutPlaySlider").val());
+point=Number(point);
+if(point<0){
+if(gameDifficulty==1) point=point*2;
+if(gameDifficulty==2) point=point*3;
+}
 points=points+Number(point);
 if(points<0) points=0;
 if(points>100) points=100;
 $("#pageFindOutPlaySlider").val(points.toString());
 $("#pageFindOutPlaySlider").slider('refresh');
 
+
+
 if(points>=100){
+clearInterval(gameCountDown);
 //level atlama kodu
 //pLevels[gamePlayerID][1][gameDifficulty]++;
 //alert("levels="+pLevels[gamePlayerID][1][gameDifficulty]+"-"+gameLevel);
@@ -1757,438 +1668,106 @@ changeLevel(1, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]+1));
 //if(pLevels[gamePlayerID][1][0]==5)	changeLevel(1, 1, 1);
 //if(pLevels[gamePlayerID][1][1]==5)	changeLevel(1, 2, 1);
 
-$( "#popupFindOutPlay" ).popup( "open" );
+$( "#popupFindOutPlaySuc" ).popup( "open" );
 }
 else{
 playFindOut();
 }
+}
+
+function playFindOutFinish(){
+var points, gameDifficulty, scoreForLevelUp;
+points=Number($("#pageFindOutPlaySlider").val());
+
+//gameDifficulty=lastSelDif[gamePlayerID][4];
+//scoreForLevelUp=90;		//gameDifficulty=2
+//if (gameDifficulty==0) scoreForLevelUp=50;
+//if (gameDifficulty==1) scoreForLevelUp=75;
+
+//if(points>=scoreForLevelUp){
+if(points>=100){
+
+if(pLevels[gamePlayerID][1][gameDifficulty]==gameLevel){
+changeLevel(1, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]+1));
+}
+//difficulty degistirme kodlari da gelecek buraya
+$("#popupFindOutPlaySuc").popup("open");
+
+}
+else{
+clearInterval(gameCountDown);
+$("#popupFindOutPlayUnSuc").popup("open");
+}
+
 }
 /* pageFindOutPlay kodu sonu */
 
 
 
 
+/* pageMathrisLevel kodu baslangici */
 
-
-
-/* pageMathrixPlay kodu baslangici */
-function playMathrix(level,score){
-$('#pageMathrixPlayQuestions').stop();
-$.mobile.changePage( $("#pageMathrixPlay") , { transition: "slide"} );
-if(score==0){
-gameLevel=level;
-$("#pageMathrixPlaySlider").val(score.toString());
-$("#pageMathrixPlaySlider").slider('refresh');
-}
-
-gameLevelsConfig();	//Oyunlarin, seviyeye bagli olarak ayarlari belirleniyor
-gameDifficulty=lastSelDif[gamePlayerID][3];
-
-//iRand ile Denklem olusturmakta kullanilacak seçeneklerin bulundugu yer belirlenecek
-var iRand=Math.floor(Math.random()*gameDigit.length);
-
-var result= [];	//result[0]; Esitligin html kodu	result[1]; Esitligin hesaplanan sonucu
-var result2; //result2; Esitligin hesaplanan sonucundan farkli (veya farksiz) gösterilecek sonuç
-var result3 =""; //result3; bütün sorulari barindiran degisken
-
-var eqSign=[];	//Esitsiligin isaretini belirlemekte kullanilacak
-var eqRes;		//Esitsizligin dogrulugu veya yanlisligi
-var point;		//Dogru veya yanlis cevapta eklenecek veya çikarilacak puan
-var totalQNum;		//question numbers.
-var qTime;		//question time.
-var sSucc;		//score success. Basarili kabul edilecek score
-
-point=1;		//gameDifficulty=2 için degeri
-totalQNum=100;		//gameDifficulty=2 için degeri
-qTime=1000000;	//gameDifficulty=2 için degeri
-sSucc=90;		//gameDifficulty=2 için degeri
-
-if(gameDifficulty==0){
-point=25;
-totalQNum=20;
-qTime=200000;
-sSucc=50;
-}
-if(gameDifficulty==1){
-point=2;
-totalQNum=50;
-qTime=500000;
-sSucc=75;
-}
-
-for(iQuestion=0;iQuestion<totalQNum;iQuestion++){
-
-result =creatEquation(iRand); 
-result2=createResult(result[1]);
-
-
-
-eqSign[0]=Math.floor(Math.random()*6);	//A6 isaretten birini alacak
-eqSign[0]=0;
-
-if(eqSign[0]==0){	//Esitlik isareti
-eqSign[1]="=";
-eqRes=(-1)*point;
-if(result[1]==result2) eqRes=point;
-}
-else if(eqSign[0]==1){	//Esitsizlik isareti
-eqSign[1]="&ne;";
-eqRes=(-1)*point;
-if(result[1]!=result2) eqRes=point;
-}
-else if(eqSign[0]==2){	//Büyük isareti
-eqSign[1]=">";
-eqRes=(-1)*point;
-if(result[1]>result2) eqRes=point;
-}
-else if(eqSign[0]==3){	//Büyük esit isareti
-eqSign[1]="&ge;";
-eqRes=(-1)*point;
-if(result[1]>=result2) eqRes=point;
-}
-else if(eqSign[0]==4){	//Küçük isareti
-eqSign[1]="<";
-eqRes=(-1)*point;
-if(result[1]<result2) eqRes=point;
-}
-else if(eqSign[0]==5){	//Küçük esit isareti
-eqSign[1]="&le;";
-eqRes=(-1)*point;
-if(result[1]<=result2) eqRes=point;
-}
-
-
-result[0]='<div id="pageMatrixPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrixQuestion ui-bar2" style="margin-top:5px;"><table width="100%" align="center" border="0"><tbody><tr><td><img src="images/delete.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table width="" align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';
-
-
-
-result3=result3+result[0];
-}
-
-$("#pageMathrixPlayQuestions").html(result3);
-
-
-var h;
-var h2;
-var h3;
-
-h=$("#pageMathrixPlayQuestions").height();
-h2=$("#pageMathrixPlayQuestionsView").height();
-$("#pageMathrixPlayQuestions").css("top",h*(-1)+"px");
-
-h3=h+h2;
-h3="+="+h3+"px";
-
-$('#pageMathrixPlayQuestions').animate({
-top: h3
-}, qTime, 'linear', function() {
-	
-// Animation complete.
-var pScore;
-pScore=$("#pageMathrixPlaySlider").val(score.toString());
-if (pScore>=sSucc){
-$( "#popup1MathrixPlay" ).popup( "open" );
-if(pLevels[gamePlayerID][1][gameDifficulty]==gameLevel){
-changeLevel(2, gameDifficulty, (pLevels[gamePlayerID][2][gameDifficulty]+1));
-}
-
-//Difficulty moderate ve hard'in açilma zamanlari
-//if(pLevels[gamePlayerID][2][0]==5)	changeLevel(1, 1, 1);
-//if(pLevels[gamePlayerID][2][1]==5)	changeLevel(1, 2, 1);
-}
-else{
-$( "#popup2MathrixPlay" ).popup( "open" );
-}
-
+$("#pageMathrisLevel").live("pagebeforeshow", function() {
+window.clearInterval(mathrisSetInt);
+pageMathrisLevelLanguageChange();
+gamesModesLevels(2, "Mathris");
 });
 
+function pageMathrisLevelLanguageChange(){
+var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
+langID=findlangID();
 
-}
+var spanEasyMathris=["Leicht", "Easy", "F&aacute;cil", "Facile", "Facile", "Kolay"];
+var spanModerateMathris=["Moderieren", "Moderate", "Moderada", "Mod&eacute;r&eacute;", "Moderato", "Normal"];
+var spanHardMathris=["Schwer", "Hard", "Difficile", "Dur", "Difficile", "Zor"];
 
-function playMathrixCal(qNum, point){
+$("#spanEasyMathris").html(spanEasyMathris[langID]);
+$("#spanModerateMathris").html(spanModerateMathris[langID]);
+$("#spanHardMathris").html(spanHardMathris[langID]);
 
-$('#pageMatrixPlayQuestion'+qNum).addClass("ui-disabled");
-var points;
-points=Number($("#pageMathrixPlaySlider").val());
-points=points+Number(point);
-if(points<0) points=0;
-if(points>100) points=100;
-$("#pageMathrixPlaySlider").val(points.toString());
-$("#pageMathrixPlaySlider").slider('refresh');
-
-}
-/* pageMathrixPlay kodu sonu */
+};
+/* pageMathrisLevel kodu sonu */
 
 
 
 
-
-
-//$("#pageShootOutPlay").live("orientationchange", function() {
-//alert("cem");
-//});
-function playShootOutRearrange(){
-var w0, w1, w2, w3, w4, w5, h0, h1, h2, t1, t2;
-
-$("#pageShootOutPlayQuestions").find(".ui-bar").each(function(){
-
-w0=$(window).width();
-w1=$("#pageShootOutPlayQuestions").width();
-w2=$(this).width();
-w3=w1*100/w0;
-w4=w2*100/w0
-
-//w2=(($("#pageShootOutPlayQuestions").offset().left+Math.floor(Math.random()*(w0-w1-10)))*100/$(window).width()).toString();
-
-w2=($("#pageShootOutPlayQuestions").offset().left+(Math.random()*(100-((w1*100)/w0)))).toString();
-w5=100-w3+Math.random()*(100-2*(100-w3)-w4);
-//alert(w0+" - "+w1+" - "+w2+" - "+w3+" - "+w4+" - "+w5);
-if(w2<w1){
-$(this).css("left",w5+"%");
-}
-
-h0=$(window).height();
-t1=$("#pageShootOutPlayQuestions").offset().top;
-h1=h0-t1-h0*3/100;	//1=alttaki bosluk= %1 ekran yüksekligi
-h2=$(this).height();
-
-
-t2=(h0/100)*(t1*100/h0+Math.random()*(100-t1*100/h0-3-h2*100/h0));
-//h2=($("#pageShootOutPlayQuestions").offset().top+Math.floor(Math.random()*(h0-h1))).toString();
-//alert(h0+" - "+h1+" - "+h2+" - "+t1+" - "+t2)
-$("#pageShootOutPlayQuestions").css("height",h1+"px");
-$(this).css("top",t2+"px");
-//alert(w0+"-"+w1+"-"+h0+"-"+h1+"-"+$(this).attr("id"));
-//alert($(this).html());
-});
-$("#pageShootOutPlayQuestions").trigger("create");
-}
-
-
-
-/* pageShootOutPlay kodu baslangici */
-function playShootOut(level,score){
-//score bu oyunda gerekli degil.
-//alert("cem");
-gameLevel=level;
-$.mobile.changePage( $("#pageShootOutPlay") , { transition: "slide"} );
-
-//var iQuestion=0;
-//var w=[];
-//var w2;
-//w[0]=$("#pageShootOutPlayQuestions").width();
-//
-//var h=[];
-//var h2;
-//h[0]=$("#pageShootOutPlayQuestions").height();
-
-//$("#pageShootOutPlayQuestions").find(".ui-bar").each(function(){
-//
-//
-//w[1]=$("#pageShootOutPlayQuestion"+iQuestion).width();
-//w2=(($("#pageShootOutPlayQuestions").offset().left+Math.floor(Math.random()*(w[0]-w[1]-10)))*100/$(window).width()).toString();
-//alert(i+"-"+w[1]+"-"+w[0]);
-//if(w[1]<w[0]){
-//$("#pageShootOutPlayQuestion"+iQuestion).css("left",w2+"%");
-//}
-//
-//h[1]=$("#pageShootOutPlayQuestion"+iQuestion).height();
-//h2=($("#pageShootOutPlayQuestions").offset().top+Math.floor(Math.random()*(h[0]-h[1]))).toString();
-//
-//$("#pageShootOutPlayQuestion"+iQuestion).css("top",h2+"px");
-//
-//iQuestion++;
-//
-//});
-
-//$("#pageShootOutPlayQuestions").trigger("create");
-
-}
-
-
-$("#pageShootOutPlay").live("pageshow", function(event, data) {
-playShootOutRearrange();
-})
-
-
-
-
-$("#pageShootOutPlay").live("pagebeforeshow", function(event, data) {
-
-//$("#pageShootOutPlayQuestions").html("");
-//alert("cem5");
-$("#pageShootOutPlayQuestions").empty();
-
-$("#pageShootOutPlaySlider").val("0");
-$("#pageShootOutPlaySlider").slider('refresh');
-
-gameLevelsConfig();	//Oyunlarin, seviyeye bagli olarak ayarlari belirleniyor
-
-gameDifficulty=lastSelDif[gamePlayerID][4];
-
-//iRand ile Denklem olusturmakta kullanilacak seçeneklerin bulundugu yer belirlenecek
-var iRand=Math.floor(Math.random()*gameDigit.length);
-
-var result=[];	//result[0]; Esitligin html kodu	result[1]; Esitligin hesaplanan sonucu
-var result2; //result2; Esitligin hesaplanan sonucundan farkli (veya farksiz) gösterilecek sonuç
-var result3 =""; //result3; bütün sorulari barindiran degisken
-
-
-
-
-for(iQuestion=0;iQuestion<2;iQuestion++){
-
-result =creatEquation(iRand); 
-result2=createResult(result[1]);
-
-var eqSign=[];	//Esitsiligin isaretini belirlemekte kullanilacak
-var eqRes;		//Esitsizligin dogrulugu veya yanlisligi
-var point;		//Dogru veya yanlis cevapta eklenecek veya çikarilacak puan
-point=1;
-if(gameDifficulty==0) point=25;
-if(gameDifficulty==1) point=2;
-
-eqSign[0]=Math.floor(Math.random()*6);	//A6 isaretten birini alacak
-eqSign[0]=0;
-
-if(eqSign[0]==0){	//Esitlik isareti
-eqSign[1]="=";
-eqRes=(-1)*point;
-if(result[1]==result2) eqRes=point;
-}
-else if(eqSign[0]==1){	//Esitsizlik isareti
-eqSign[1]="&ne;";
-eqRes=(-1)*point;
-if(result[1]!=result2) eqRes=point;
-}
-else if(eqSign[0]==2){	//Büyük isareti
-eqSign[1]=">";
-eqRes=(-1)*point;
-if(result[1]>result2) eqRes=point;
-}
-else if(eqSign[0]==3){	//Büyük esit isareti
-eqSign[1]="&ge;";
-eqRes=(-1)*point;
-if(result[1]>=result2) eqRes=point;
-}
-else if(eqSign[0]==4){	//Küçük isareti
-eqSign[1]="<";
-eqRes=(-1)*point;
-if(result[1]<result2) eqRes=point;
-}
-else if(eqSign[0]==5){	//Küçük esit isareti
-eqSign[1]="&le;";
-eqRes=(-1)*point;
-if(result[1]<=result2) eqRes=point;
-}
-
-result[0]='<div id="pageShootOutPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageShootOutQuestion ui-bar2" style="position:absolute; clear:none; float:none; width:auto;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';
-
-result3=$("#pageShootOutPlayQuestions").html()+result[0];
-
-//$("#pageShootOutPlayQuestions").html(result3);
-$("#pageShootOutPlayQuestions").append(result[0]).trigger("create");
-
-}
-//alert($("#pageShootOutPlayQuestions").html());
-var time=30;
-$("#pageShootOutPlayTimeSpan").html(time);
-gameCountDown=self.setInterval(function(){
-time--;
-$("#pageShootOutPlayTimeSpan").html(time);
-if(time<10){
-$("#pageShootOutPlayTimeSpan").removeClass("time1");
-$("#pageShootOutPlayTimeSpan").addClass("time2");
-}
-if(time<1){
-clearInterval(gameCountDown);
-playShootOutFinish();
-}
-},1000);
-
+/* pageMathrisPlay kodu baslangici */
+$("#pageMathrisPlay").live("pagebeforeshow", function() {
+pageMathrisPlayLanguageChange();
 });
 
-function playShootOutCal(qNum, point){
-//alert($('#pageShootOutPlayQuestion'+qNum).css("top"));
-$('#pageShootOutPlayQuestion'+qNum).addClass("ui-disabled");
-$("#pageShootOutPlayQuestion"+qNum).css("visibility","hidden");
-var points;
-points=Number($("#pageShootOutPlaySlider").val());
-points=points+Number(point);
-if(points<0) points=0;
-if(points>100) points=100;
-$("#pageShootOutPlaySlider").val(points.toString());
-$("#pageShootOutPlaySlider").slider('refresh');
+function pageMathrisPlayLanguageChange(){
 
-var n=0;
-var n2=0;
-$('#pageShootOutPlayQuestions').find(".ui-bar").each(function(){
-n++;
-})
-$('#pageShootOutPlayQuestions').find(".ui-disabled").each(function(){
-n2++;
-})
-if(n2>=n){
-playShootOutFinish();
-}
-//alert(n+" - "+n2);
+var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
+langID=findlangID();
+//["", "", "", "", "", ""];
+
+//var a=["", "", "", "", "", ""];
+var popupMathrisPlaySucH1=["Gl&#220;ckw&#220;nsche", "Congratulations", "Congratulaciones", "F&eacute;licitations", "Congratulazioni", "Tebrikler"];
+var popupMathrisPlaySucH3=["Sie wurde erfolgreich abgeschlossen.", "You completed successfuly.", "Ha completado con &eacute;xito.", "Vous avez termin&eacute; avec succ&eacute;s.", "Hai completato con successo.", "Ba&#351;ar&#305;yla tamamlad&#305;n&#305;z."];
+var popupMathrisPlaySucSpan=["Ok", "Ok", "Aceptar", "D'accord", "Bene", "Tamam"];
+var popupMathrisPlayUnSucH1=["Leider", "Sorry", "Arrepentido", "D&eacute;sol&eacute;", "Dispiacente", "Maalesef"];
+var popupMathrisPlayUnSucH3=["Sie konnten nicht erfolgreich abzuschlie&szlig;en.", "You could not complete succesfully.", "No se pudo completar con &eacute;xito.", "On ne pouvait pas terminer avec succ&eacute;s.", "Non &eacute; in grado di completare con successo.", "Ba&#351;ar&#305;yla tamamlayamad&#305;n&#305;z."];
+var popupMathrisPlayUnSucSpan=["Ok", "Ok", "Aceptar", "D'accord", "Bene", "Tamam"];
+
+//$("#").html([langID]);
+$("#popupMathrisPlaySucH1").html(popupMathrisPlaySucH1[langID]);
+$("#popupMathrisPlaySucH3").html(popupMathrisPlaySucH3[langID]);
+$("#popupMathrisPlaySucSpan").html(popupMathrisPlaySucSpan[langID]);
+$("#popupMathrisPlayUnSucH1").html(popupMathrisPlayUnSucH1[langID]);
+$("#popupMathrisPlayUnSucH3").html(popupMathrisPlayUnSucH3[langID]);
+$("#popupMathrisPlayUnSucSpan").html(popupMathrisPlayUnSucSpan[langID]);
 
 }
-
-function playShootOutFinish(){
-var points, gameDifficulty, scoreForLevelUp;
-points=Number($("#pageShootOutPlaySlider").val());
-
-gameDifficulty=lastSelDif[gamePlayerID][4];
-scoreForLevelUp=90;		//gameDifficulty=2
-if (gameDifficulty==0) scoreForLevelUp=50;
-if (gameDifficulty==0) scoreForLevelUp=75;
-
-if(points>scoreForLevelUp){
-
-if(pLevels[gamePlayerID][4][gameDifficulty]==gameLevel){
-changeLevel(1, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]+1));
-}
-//difficulty degistirme kodlari da gelecek buraya
-$("#popupShootOutPlay").popup("open");
-
-}
-else{
-$("#popupShootOutPlay").popup("open");
-}
-
-}
-/* pageShootOutPlay kodu sonu */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 var mathrisSetInt;
+var mathrisPlayOk=1;
 
-/* pageMathrisPlay kodu baslangici */
+
 function playMathris(level,score){
-var moveTime=200;	//moveTime: Her adimida beklenecek süre
-var moveStep=10;	//moveStep : Her adimda kayacak miktar.
-var qGap=10;		//questionGap: Her soru arasindaki mesafe
+
+mathrisPlayOk=1;
 
 $.mobile.changePage( $("#pageMathrisPlay") , { transition: "slide"} );
 
@@ -2201,12 +1780,25 @@ $("#pageMathrisPlayQuestions").html("");
 
 gameLevelsConfig();	//Oyunlarin, seviyeye bagli olarak ayarlari belirleniyor
 gameDifficulty=lastSelDif[gamePlayerID][2];
+
+var moveTime=100;	//moveTime: Her adimida beklenecek süre
+var moveStep=10;	//moveStep : Her adimda kayacak miktar.
+var qGap=10;		//questionGap: Her soru arasindaki mesafe
+
+if(gameDifficulty==1) moveTime=800;
+if(gameDifficulty==2) moveTime=500;
+time=timeCal(moveTime);
+
+if (mathrisPlayOk==1){
 playMathrisNewQuestion(qGap);
-//alert("cem1");
+
+//mathrisSetInt=setInterval(function (){mathrisQuestionMove(qGap, moveStep)},moveTime);
 mathrisSetInt=setInterval(function (){mathrisQuestionMove(qGap, moveStep)},moveTime);
-//mathrisSetInt=setInterval(mathrisQuestionMove(),moveTime);
-//alert("cem2");
 }
+
+
+}
+
 
 function playMathrisNewQuestion(qGap){
 var qID;
@@ -2275,10 +1867,17 @@ if(result[1]<=result2) eqRes=point;
 }
 
 
-result[0]='<div id="pageMathrisPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrisQuestion ui-bar2 moving" style="position:absolute; clear:none; float:none; width:96%;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\',\''+gameLevel+'\')"></td><td><table align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+eqRes+'\',\''+gameLevel+'\')"></td></tr></tbody></table></div>';
+<!--result[0]='<div id="pageMathrisPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrisQuestion ui-bar2 moving" style="position:absolute; clear:none; float:none; width:96%;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\',\''+gameLevel+'\')"></td><td><table align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+eqRes+'\',\''+gameLevel+'\')"></td></tr></tbody></table></div>';-->
+
+result[0]='<div id="pageMathrisPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrisQuestion ui-bar2 moving" style="position:absolute; width:96%;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\',\''+gameLevel+'\')"></td><td><table align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+eqRes+'\',\''+gameLevel+'\')"></td></tr></tbody></table></div>';
+
+
+<!--result[0]='<div id="pageMatrixPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrixQuestion ui-bar2" style="margin-top:5px;"><table width="100%" align="center" border="0"><tbody><tr><td><img src="images/delete.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table width="" align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';-->
+
 
 result3=$("#pageMathrisPlayQuestions").html()+result[0];
 $("#pageMathrisPlayQuestions").html(result3);
+mathrisQControl();
 var qLen=$("#pageMathrisPlayQuestions").children().length;
 
 if(qLen>1){
@@ -2288,39 +1887,37 @@ t1=$("#pageMathrisPlayQuestions div:nth-child("+qLen+")").offset().top;
 h1=$("#pageMathrisPlayQuestions div:nth-child("+qLen+")").outerHeight();
 if((t0-h1-qGap)<t1){
 	//alert("cem");
-$("#pageMathrisPlayQuestions div:nth-child("+i+")").css( "top", "50px"  );
-$("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("moving");
+mathrisPlayOk=0;
 window.clearInterval(mathrisSetInt);
+
+var qLen=$("#pageMathrisPlayQuestions").children().length;	
+for(var i=qLen;i>0;i--){
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").addClass("ui-disabled");
+}
+
+$("#popupMathrisPlayUnSuc").popup("open");
+
+
+
 }
 }
 
 
 }
-
-
-//silinecek
-function playMathris2(level,score){
-
-mathrisQuestionMove(level, iQuestion);
-
-}
-
 
 
 function qMNew(qGap){
 var qMLen;
 qMLen=$("#pageMathrisPlayQuestions").children(".moving").length;
-if(qMLen==0){
+if(qMLen==0 && mathrisPlayOk==1){
 playMathrisNewQuestion(qGap);//playMathris(level);
 }
 }
 
 
 function mathrisQuestionMove(qGap, moveStep){
-//var moveTime=100;	//moveTime: Her adimida beklenecek süre
-//var moveStep=10;	//moveStep : Her adimda kayacak miktar.
 var t0,t1, h1;
-
+//alert("cem");
 var qLen=$("#pageMathrisPlayQuestions").children().length;	
 t0=$("#pageMathrisPlayQuestions").outerHeight()+$("#pageMathrisPlayQuestions").offset().top;
 
@@ -2335,17 +1932,14 @@ t1=$("#pageMathrisPlayQuestions div:nth-child("+i+")").offset().top
 if(i>1) t0=$("#pageMathrisPlayQuestions div:nth-child("+(i-1)+")").offset().top;
 
 if((t0-qGap)>(t1+moveStep+h1)){
-
-//alert("cem3 = "+i+" - "+t0+" - "+t1+" - "+qGap+" - "+moveStep+" - "+h1);
+//alert(t1);
 t1=t1+moveStep;
-$("#pageMathrisPlayQuestions div:nth-child("+i+")").css("top", t1+"px");//"+moveStep+"
+//alert(t1);
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").css("top", t1+"px");
 $("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("moving");
 $("#pageMathrisPlayQuestions div:nth-child("+i+")").addClass("moving");
-t0=$("#pageMathrisPlayQuestions div:nth-child("+i+")").offset().top;
-//alert("cem4 ="+$("#pageMathrisPlayQuestions div:nth-child("+i+")").attr("id")+" - "+t0);
 }
 else{
-	//alert("cem5");
 $("#pageMathrisPlayQuestions div:nth-child("+i+")").css( "top", (t0-qGap-h1).toString+"px"  );
 $("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("moving");
 if(i==qLen) qMNew(qGap);
@@ -2355,6 +1949,988 @@ if(i==qLen) qMNew(qGap);
 
 
 }
+
+}
+
+
+function playMathrisCal(qNum, point, level){
+	
+//alert($('#pageMathrisPlayQuestion'+qNum).css("top"));
+//window.clearInterval(mathrisSetInt);
+//alert(point);
+if(Number(point)<=0){	//Cevap yanlis ise
+//alert("yanlis")
+$('#pageMathrisPlayQuestion'+qNum).addClass("ui-disabled");
+$('#pageMathrisPlayQuestion'+qNum).addClass("wrong");
+qMNew(level);
+}
+else{	//Cevap dogru ise
+//alert("dogru");
+$("#pageMathrisPlayQuestion"+qNum).remove();
+qMNew(level);
+}
+
+//$('#pageMathrisPlayQuestion'+qNum).stop();//addClass("ui-disabled");
+//$("#pageMathrisPlayQuestion"+qNum).css("visibility","hidden");
+var points;
+points=Number($("#pageMathrisPlaySlider").val());
+point=Number(point);
+if(point<0){
+if(gameDifficulty==1) point=point*2;
+if(gameDifficulty==2) point=point*3;
+}
+points=points+Number(point);
+if(points<0) points=0;
+if(points>100) points=100;
+$("#pageMathrisPlaySlider").val(points.toString());
+$("#pageMathrisPlaySlider").slider('refresh');
+mathrisQControl();
+if(points>=100){
+mathrisPlayOk=0;
+window.clearInterval(mathrisSetInt);
+if(pLevels[gamePlayerID][2][gameDifficulty]==gameLevel){
+changeLevel(2, gameDifficulty, (pLevels[gamePlayerID][2][gameDifficulty]+1));
+}
+$("#popupMathrisPlaySuc").popup("open");
+}
+}
+
+function mathrisQControl(){
+var qLen=$("#pageMathrisPlayQuestions").children().length;	
+
+var i2=0;
+for(var i=qLen;i>0;i--){
+
+if($("#pageMathrisPlayQuestions div:nth-child("+i+")").attr("class").indexOf("wrong")<1 && i2<2){
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("ui-disabled");
+i2++;
+}
+else{
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").removeClass("ui-disabled");
+$("#pageMathrisPlayQuestions div:nth-child("+i+")").addClass("ui-disabled");
+}
+
+}
+
+
+}
+/* pageMathrisPlay kodu sonu */
+
+
+
+/* pageMathrixLevel kodu baslangici */
+$("#pageMathrixLevel").live("pagebeforeshow", function() {
+clearInterval(mathrixSetInt);
+pageMathrixLevelLanguageChange();
+gamesModesLevels(3, "Mathrix");
+});
+
+function pageMathrixLevelLanguageChange(){
+var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
+langID=findlangID();
+
+var spanEasyMathrix=["Leicht", "Easy", "F&aacute;cil", "Facile", "Facile", "Kolay"];
+var spanModerateMathrix=["Moderieren", "Moderate", "Moderada", "Mod&eacute;r&eacute;", "Moderato", "Normal"];
+var spanHardMathrix=["Schwer", "Hard", "Difficile", "Dur", "Difficile", "Zor"];
+
+$("#spanEasyMathrix").html(spanEasyMathrix[langID]);
+$("#spanModerateMathrix").html(spanModerateMathrix[langID]);
+$("#spanHardMathrix").html(spanHardMathrix[langID]);
+
+};
+/* pageMathrixLevel kodu sonu */
+
+
+
+/* pageMathrixPlay kodu baslangici */
+var mathrixSetInt;
+
+$("#pageMathrixPlay").live("pagebeforeshow", function() {
+pageMathrixPlayLanguageChange();
+});
+
+function pageMathrixPlayLanguageChange(){
+
+var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
+langID=findlangID();
+//["", "", "", "", "", ""];
+
+//var a=["", "", "", "", "", ""];
+var popupMathrixPlaySucH1=["Gl&#220;ckw&#220;nsche", "Congratulations", "Congratulaciones", "F&eacute;licitations", "Congratulazioni", "Tebrikler"];
+var popupMathrixPlaySucH3=["Sie wurde erfolgreich abgeschlossen.", "You completed successfuly.", "Ha completado con &eacute;xito.", "Vous avez termin&eacute; avec succ&eacute;s.", "Hai completato con successo.", "Ba&#351;ar&#305;yla tamamlad&#305;n&#305;z."];
+var popupMathrixPlaySucSpan=["Ok", "Ok", "Aceptar", "D'accord", "Bene", "Tamam"];
+var popupMathrixPlayUnSucH1=["Leider", "Sorry", "Arrepentido", "D&eacute;sol&eacute;", "Dispiacente", "Maalesef"];
+var popupMathrixPlayUnSucH3=["Sie konnten nicht erfolgreich abzuschlie&szlig;en.", "You could not complete succesfully.", "No se pudo completar con &eacute;xito.", "On ne pouvait pas terminer avec succ&eacute;s.", "Non &eacute; in grado di completare con successo.", "Ba&#351;ar&#305;yla tamamlayamad&#305;n&#305;z."];
+var popupMathrixPlayUnSucSpan=["Ok", "Ok", "Aceptar", "D'accord", "Bene", "Tamam"];
+
+//$("#").html([langID]);
+$("#popupMathrixPlaySucH1").html(popupMathrixPlaySucH1[langID]);
+$("#popupMathrixPlaySucH3").html(popupMathrixPlaySucH3[langID]);
+$("#popupMathrixPlaySucSpan").html(popupMathrixPlaySucSpan[langID]);
+$("#popupMathrixPlayUnSucH1").html(popupMathrixPlayUnSucH1[langID]);
+$("#popupMathrixPlayUnSucH3").html(popupMathrixPlayUnSucH3[langID]);
+$("#popupMathrixPlayUnSucSpan").html(popupMathrixPlayUnSucSpan[langID]);
+
+}
+
+
+function playMathrix(level,score){
+clearInterval(mathrixSetInt);
+//$('#pageMathrixPlayQuestions').stop();
+$.mobile.changePage( $("#pageMathrixPlay") , { transition: "slide"} );
+if(score==0){
+gameLevel=level;
+$("#pageMathrixPlaySlider").val(score.toString());
+$("#pageMathrixPlaySlider").slider('refresh');
+}
+
+
+
+
+gameLevelsConfig();	//Oyunlarin, seviyeye bagli olarak ayarlari belirleniyor
+gameDifficulty=lastSelDif[gamePlayerID][3];
+
+//iRand ile Denklem olusturmakta kullanilacak seçeneklerin bulundugu yer belirlenecek
+var iRand=Math.floor(Math.random()*gameDigit.length);
+
+var result= [];	//result[0]; Esitligin html kodu	result[1]; Esitligin hesaplanan sonucu
+var result2; //result2; Esitligin hesaplanan sonucundan farkli (veya farksiz) gösterilecek sonuç
+var result3 =""; //result3; bütün sorulari barindiran degisken
+
+var eqSign=[];	//Esitsiligin isaretini belirlemekte kullanilacak
+var eqRes;		//Esitsizligin dogrulugu veya yanlisligi
+var point;		//Dogru veya yanlis cevapta eklenecek veya çikarilacak puan
+var totalQNum;		//question numbers.
+//var qTime;		//question time.
+var sSucc;		//score success. Basarili kabul edilecek score
+
+point=1;		//gameDifficulty=2 için degeri
+totalQNum=20;		//gameDifficulty=2 için degeri
+//qTime=1000;		//gameDifficulty=2 için degeri
+sSucc=90;		//gameDifficulty=2 için degeri		scoreSuccess
+
+if(gameDifficulty==0){
+point=25;
+totalQNum=20;
+//qTime=1000;
+sSucc=50;
+}
+if(gameDifficulty==1){
+point=2;
+totalQNum=50;
+qTime=1000;
+sSucc=75;
+}
+
+for(iQuestion=0;iQuestion<totalQNum;iQuestion++){
+
+result =creatEquation(iRand); 
+result2=createResult(result[1]);
+
+
+
+eqSign[0]=Math.floor(Math.random()*6);	//A6 isaretten birini alacak
+eqSign[0]=0;
+
+if(eqSign[0]==0){	//Esitlik isareti
+eqSign[1]="=";
+eqRes=(-1)*point;
+if(result[1]==result2) eqRes=point;
+}
+else if(eqSign[0]==1){	//Esitsizlik isareti
+eqSign[1]="&ne;";
+eqRes=(-1)*point;
+if(result[1]!=result2) eqRes=point;
+}
+else if(eqSign[0]==2){	//Büyük isareti
+eqSign[1]=">";
+eqRes=(-1)*point;
+if(result[1]>result2) eqRes=point;
+}
+else if(eqSign[0]==3){	//Büyük esit isareti
+eqSign[1]="&ge;";
+eqRes=(-1)*point;
+if(result[1]>=result2) eqRes=point;
+}
+else if(eqSign[0]==4){	//Küçük isareti
+eqSign[1]="<";
+eqRes=(-1)*point;
+if(result[1]<result2) eqRes=point;
+}
+else if(eqSign[0]==5){	//Küçük esit isareti
+eqSign[1]="&le;";
+eqRes=(-1)*point;
+if(result[1]<=result2) eqRes=point;
+}
+
+
+result[0]='<div id="pageMatrixPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrixQuestion ui-bar2" style="margin-top:5px;"><table width="100%" align="center" border="0"><tbody><tr><td><img src="images/delete.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table width="" align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';
+
+
+
+result3=result3+result[0];
+}
+
+$("#pageMathrixPlayQuestions").html(result3);
+
+var h;
+var h2;
+var h3;
+
+h=$("#pageMathrixPlayQuestions").height();
+//h2=$("#pageMathrixPlayQuestionsView").height();
+$("#pageMathrixPlayQuestions").css("top",h*(-1)+"px");
+
+var moveTime=1000;	//moveTime: Her adimida beklenecek süre
+var moveStep=5;	//moveStep : Her adimda kayacak miktar.
+
+if(gameDifficulty==1) moveTime=800;
+if(gameDifficulty==2) moveTime=500;
+time=timeCal(moveTime);
+
+mathrixSetInt=setInterval(function (){matrixQuestionsMove(moveStep)},moveTime);
+//alert("cem2");
+//h3=h+h2;
+//h3="+="+h3+"px";
+
+/*$('#pageMathrixPlayQuestions').animate({
+top: h3
+}, qTime, 'linear', function() {
+	
+// Animation complete.
+var pScore;
+pScore=$("#pageMathrixPlaySlider").val(score.toString());
+if (pScore>=sSucc){
+if(pLevels[gamePlayerID][3][gameDifficulty]==gameLevel){
+changeLevel(3, gameDifficulty, (pLevels[gamePlayerID][3][gameDifficulty]+1));
+}
+$( "#popupMathrixPlaySuc" ).popup( "open" );
+
+//Difficulty moderate ve hard'in açilma zamanlari
+//if(pLevels[gamePlayerID][2][0]==5)	changeLevel(1, 1, 1);
+//if(pLevels[gamePlayerID][2][1]==5)	changeLevel(1, 2, 1);
+}
+else{
+$( "#popupMathrixPlayUnSuc" ).popup( "open" );
+}
+
+});*/
+
+
+}
+
+function matrixQuestionsMove(moveStep){
+var h, h2, t, t2;
+
+//h=$("#pageMathrixPlayQuestions").height();
+h=$("#pageMathrixPlayQuestionsView").height();
+t2=$("#pageMathrixPlayQuestions").offset().top;
+t=$("#pageMathrixPlayQuestionsView").offset().top;
+
+
+if(t2<t+h){
+t2=t2+moveStep;//-t2;
+
+
+$("#pageMathrixPlayQuestions").offset({ top: t2});
+//$("#pageMathrixPlayQuestions").offset().top=t;
+}
+else{
+//clearInterval(mathrixSetInt);
+matrixControl("moveOut");
+//$("#popupMathrixPlayUnSuc").popup("open");
+}
+
+//alert("cem5");
+}
+
+function matrixControl(moveOut){
+var n, n2, points, gameDifficulty;
+n=$("#pageMathrixPlayQuestions").children(".ui-bar").length;
+n2=$("#pageMathrixPlayQuestions").children(".ui-disabled").length;
+points=Number($("#pageMathrixPlaySlider").val());
+gameDifficulty=lastSelDif[gamePlayerID][3];
+
+var sSucc;		//score success. Basarili kabul edilecek score
+sSucc=90;		//gameDifficulty=2 için degeri		scoreSuccess
+if(gameDifficulty==0) sSucc=50;
+if(gameDifficulty==1) sSucc=75;
+
+
+//alert(n+" - "+n2);
+
+
+
+if(n<=n2 && points<sSucc){
+clearInterval(mathrixSetInt);
+$("#popupMathrixPlayUnSuc").popup("open");
+}
+//else if(n<=n2 && points>=sSucc){
+//clearInterval(mathrixSetInt);
+//$("#popupMathrixPlaySuc").popup("open");
+//if(pLevels[gamePlayerID][3][gameDifficulty]==gameLevel){
+//changeLevel(3, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]+1));
+//}
+//}
+else if(moveOut!="" && points<sSucc){
+clearInterval(mathrixSetInt);
+$("#popupMathrixPlayUnSuc").popup("open");
+}
+else if(points>=sSucc){
+clearInterval(mathrixSetInt);
+$("#popupMathrixPlaySuc").popup("open");
+
+if(pLevels[gamePlayerID][3][gameDifficulty]==gameLevel){
+changeLevel(3, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]+1));
+}
+}
+
+
+
+
+}
+
+function playMathrixCal(qNum, point){
+
+$('#pageMatrixPlayQuestion'+qNum).addClass("ui-disabled");
+var points;
+points=Number($("#pageMathrixPlaySlider").val());
+point=Number(point);
+if(point<0){
+if(gameDifficulty==1) point=point*2;
+if(gameDifficulty==2) point=point*3;
+}
+points=points+Number(point);
+if(points<0) points=0;
+if(points>100) points=100;
+$("#pageMathrixPlaySlider").val(points.toString());
+$("#pageMathrixPlaySlider").slider('refresh');
+matrixControl("");
+}
+/* pageMathrixPlay kodu sonu */
+
+
+
+
+
+/* pageShootOutLevel kodu baslangici */
+$("#pageShootOutLevel").live("pagebeforeshow", function(e, data) {
+
+clearInterval(gameCountDown);
+/*$("#pageShootOutPlayTimeSpan").removeClass("time1");
+$("#pageShootOutPlayTimeSpan").removeClass("time2");
+$("#pageShootOutPlayTimeSpan").addClass("time1");*/
+
+pageShootOutLevelLanguageChange();
+gamesModesLevels(4, "ShootOut");
+});
+
+
+function pageShootOutLevelLanguageChange(){
+var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
+langID=findlangID();
+
+var spanEasyShootOut=["Leicht", "Easy", "F&aacute;cil", "Facile", "Facile", "Kolay"];
+var spanModerateShootOut=["Moderieren", "Moderate", "Moderada", "Mod&eacute;r&eacute;", "Moderato", "Normal"];
+var spanHardShootOut=["Schwer", "Hard", "Difficile", "Dur", "Difficile", "Zor"];
+
+$("#spanEasyShootOut").html(spanEasyShootOut[langID]);
+$("#spanModerateShootOut").html(spanModerateShootOut[langID]);
+$("#spanHardShootOut").html(spanHardShootOut[langID]);
+
+};
+/* pageShootOutLevel kodu sonu */
+
+
+
+
+
+
+
+/* pageShootOutPlay kodu baslangici */
+
+//$("#pageShootOutPlay").live("orientationchange", function() {
+//alert("cem");
+//});
+function playShootOutRearrange(){
+var w0, w1, w2, w3, w4, w5, h0, h1, h2, t1, t2;
+
+$("#pageShootOutPlayQuestions").find(".ui-bar").each(function(){
+
+w0=$(window).width();
+w1=$("#pageShootOutPlayQuestions").width();
+w2=$(this).width();
+w3=w1*100/w0;
+w4=w2*100/w0
+
+//w2=(($("#pageShootOutPlayQuestions").offset().left+Math.floor(Math.random()*(w0-w1-10)))*100/$(window).width()).toString();
+
+w2=($("#pageShootOutPlayQuestions").offset().left+(Math.random()*(100-((w1*100)/w0)))).toString();
+w5=100-w3+Math.random()*(100-2*(100-w3)-w4);
+//alert(w0+" - "+w1+" - "+w2+" - "+w3+" - "+w4+" - "+w5);
+if(w2<w1){
+$(this).css("left",w5+"%");
+}
+
+h0=$(window).height();
+t1=$("#pageShootOutPlayQuestions").offset().top;
+h1=h0-t1-h0*3/100;	//1=alttaki bosluk= %1 ekran yüksekligi
+h2=$(this).height();
+
+
+t2=(h0/100)*(t1*100/h0+Math.random()*(100-t1*100/h0-3-h2*100/h0));
+//h2=($("#pageShootOutPlayQuestions").offset().top+Math.floor(Math.random()*(h0-h1))).toString();
+//alert(h0+" - "+h1+" - "+h2+" - "+t1+" - "+t2)
+$("#pageShootOutPlayQuestions").css("height",h1+"px");
+$(this).css("top",t2+"px");
+//alert(w0+"-"+w1+"-"+h0+"-"+h1+"-"+$(this).attr("id"));
+//alert($(this).html());
+});
+$("#pageShootOutPlayQuestions").trigger("create");
+}
+
+
+function playShootOut(level,score){
+//score bu oyunda gerekli degil.
+//alert("cem");
+gameLevel=level;
+$.mobile.changePage( $("#pageShootOutPlay") , { transition: "slide"} );
+
+//var iQuestion=0;
+//var w=[];
+//var w2;
+//w[0]=$("#pageShootOutPlayQuestions").width();
+//
+//var h=[];
+//var h2;
+//h[0]=$("#pageShootOutPlayQuestions").height();
+
+//$("#pageShootOutPlayQuestions").find(".ui-bar").each(function(){
+//
+//
+//w[1]=$("#pageShootOutPlayQuestion"+iQuestion).width();
+//w2=(($("#pageShootOutPlayQuestions").offset().left+Math.floor(Math.random()*(w[0]-w[1]-10)))*100/$(window).width()).toString();
+//alert(i+"-"+w[1]+"-"+w[0]);
+//if(w[1]<w[0]){
+//$("#pageShootOutPlayQuestion"+iQuestion).css("left",w2+"%");
+//}
+//
+//h[1]=$("#pageShootOutPlayQuestion"+iQuestion).height();
+//h2=($("#pageShootOutPlayQuestions").offset().top+Math.floor(Math.random()*(h[0]-h[1]))).toString();
+//
+//$("#pageShootOutPlayQuestion"+iQuestion).css("top",h2+"px");
+//
+//iQuestion++;
+//
+//});
+
+//$("#pageShootOutPlayQuestions").trigger("create");
+
+}
+
+
+$("#pageShootOutPlay").live("pageshow", function(event, data) {
+playShootOutRearrange();
+})
+
+
+
+
+$("#pageShootOutPlay").live("pagebeforeshow", function(event, data) {
+pageShootOutPlayLanguageChange();
+//$("#pageShootOutPlayQuestions").html("");
+//alert("cem5");
+$("#pageShootOutPlayQuestions").empty();
+
+$("#pageShootOutPlaySlider").val("0");
+$("#pageShootOutPlaySlider").slider('refresh');
+
+$("#pageShootOutPlayTimeSpan").removeClass("time1");
+$("#pageShootOutPlayTimeSpan").removeClass("time2");
+$("#pageShootOutPlayTimeSpan").addClass("time1");
+
+gameLevelsConfig();	//Oyunlarin, seviyeye bagli olarak ayarlari belirleniyor
+
+gameDifficulty=lastSelDif[gamePlayerID][4];
+
+//iRand ile Denklem olusturmakta kullanilacak seçeneklerin bulundugu yer belirlenecek
+var iRand=Math.floor(Math.random()*gameDigit.length);
+
+var result=[];	//result[0]; Esitligin html kodu	result[1]; Esitligin hesaplanan sonucu
+var result2; //result2; Esitligin hesaplanan sonucundan farkli (veya farksiz) gösterilecek sonuç
+var result3 =""; //result3; bütün sorulari barindiran degisken
+
+var qCount;
+qCount=100;		//100 sorudan 90'inin dogru yapilmasi lazim level atlamak için
+if(gameDifficulty==0) qCount=20;	//20 sorudan 10'unun dogru yapilmasi lazim level atlamak için
+if(gameDifficulty==1) qCount=50;	//50 sorudan 38'inin dogru yapilmasi lazim level atlamak için
+
+var point;		//Dogru veya yanlis cevapta eklenecek veya çikarilacak puan
+point=1;
+if(gameDifficulty==0) point=25;
+if(gameDifficulty==1) point=2;
+
+for(iQuestion=0;iQuestion<qCount;iQuestion++){
+
+result =creatEquation(iRand); 
+result2=createResult(result[1]);
+
+var eqSign=[];	//Esitsiligin isaretini belirlemekte kullanilacak
+var eqRes;		//Esitsizligin dogrulugu veya yanlisligi
+
+
+eqSign[0]=Math.floor(Math.random()*6);	//A6 isaretten birini alacak
+eqSign[0]=0;
+
+if(eqSign[0]==0){	//Esitlik isareti
+eqSign[1]="=";
+eqRes=(-1)*point;
+if(result[1]==result2) eqRes=point;
+}
+else if(eqSign[0]==1){	//Esitsizlik isareti
+eqSign[1]="&ne;";
+eqRes=(-1)*point;
+if(result[1]!=result2) eqRes=point;
+}
+else if(eqSign[0]==2){	//Büyük isareti
+eqSign[1]=">";
+eqRes=(-1)*point;
+if(result[1]>result2) eqRes=point;
+}
+else if(eqSign[0]==3){	//Büyük esit isareti
+eqSign[1]="&ge;";
+eqRes=(-1)*point;
+if(result[1]>=result2) eqRes=point;
+}
+else if(eqSign[0]==4){	//Küçük isareti
+eqSign[1]="<";
+eqRes=(-1)*point;
+if(result[1]<result2) eqRes=point;
+}
+else if(eqSign[0]==5){	//Küçük esit isareti
+eqSign[1]="&le;";
+eqRes=(-1)*point;
+if(result[1]<=result2) eqRes=point;
+}
+
+result[0]='<div id="pageShootOutPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageShootOutQuestion ui-bar2" style="position:absolute; clear:none; float:none; width:auto;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';
+
+result3=$("#pageShootOutPlayQuestions").html()+result[0];
+
+//$("#pageShootOutPlayQuestions").html(result3);
+$("#pageShootOutPlayQuestions").append(result[0]).trigger("create");
+
+}
+//alert($("#pageShootOutPlayQuestions").html());
+var time=30;
+if(gameDifficulty==1) time=50;
+if(gameDifficulty==2) time=100;
+time=timeCal(time);
+
+$("#pageShootOutPlayTimeSpan").html(time);
+gameCountDown=self.setInterval(function(){
+time--;
+$("#pageShootOutPlayTimeSpan").html(time);
+if(time<10){
+$("#pageShootOutPlayTimeSpan").removeClass("time1");
+$("#pageShootOutPlayTimeSpan").addClass("time2");
+}
+if(time<1){
+clearInterval(gameCountDown);
+playShootOutFinish();
+}
+},1000);
+
+});
+
+function pageShootOutPlayLanguageChange(){
+
+var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
+langID=findlangID();
+//["", "", "", "", "", ""];
+
+//var a=["", "", "", "", "", ""];
+var popupShootOutPlaySucH1=["Gl&#220;ckw&#220;nsche", "Congratulations", "Congratulaciones", "F&eacute;licitations", "Congratulazioni", "Tebrikler"];
+var popupShootOutPlaySucH3=["Sie wurde erfolgreich abgeschlossen.", "You completed successfuly.", "Ha completado con &eacute;xito.", "Vous avez termin&eacute; avec succ&eacute;s.", "Hai completato con successo.", "Ba&#351;ar&#305;yla tamamlad&#305;n&#305;z."];
+var popupShootOutPlaySucSpan=["Ok", "Ok", "Aceptar", "D'accord", "Bene", "Tamam"];
+var popupShootOutPlayUnSucH1=["Leider", "Sorry", "Arrepentido", "D&eacute;sol&eacute;", "Dispiacente", "Maalesef"];
+var popupShootOutPlayUnSucH3=["Sie konnten nicht erfolgreich abzuschlie&szlig;en.", "You could not complete succesfully.", "No se pudo completar con &eacute;xito.", "On ne pouvait pas terminer avec succ&eacute;s.", "Non &eacute; in grado di completare con successo.", "Ba&#351;ar&#305;yla tamamlayamad&#305;n&#305;z."];
+var popupShootOutPlayUnSucSpan=["Ok", "Ok", "Aceptar", "D'accord", "Bene", "Tamam"];
+
+//$("#").html([langID]);
+$("#popupShootOutPlaySucH1").html(popupShootOutPlaySucH1[langID]);
+$("#popupShootOutPlaySucH3").html(popupShootOutPlaySucH3[langID]);
+$("#popupShootOutPlaySucSpan").html(popupShootOutPlaySucSpan[langID]);
+$("#popupShootOutPlayUnSucH1").html(popupShootOutPlayUnSucH1[langID]);
+$("#popupShootOutPlayUnSucH3").html(popupShootOutPlayUnSucH3[langID]);
+$("#popupShootOutPlayUnSucSpan").html(popupShootOutPlayUnSucSpan[langID]);
+
+}
+
+function playShootOutCal(qNum, point){
+//alert($('#pageShootOutPlayQuestion'+qNum).css("top"));
+$('#pageShootOutPlayQuestion'+qNum).addClass("ui-disabled");
+$("#pageShootOutPlayQuestion"+qNum).css("visibility","hidden");
+var points;
+points=Number($("#pageShootOutPlaySlider").val());
+point=Number(point);
+if(point<0){
+if(gameDifficulty==1) point=point*2;
+if(gameDifficulty==2) point=point*3;
+}
+points=points+Number(point);
+if(points<0) points=0;
+if(points>100) points=100;
+$("#pageShootOutPlaySlider").val(points.toString());
+$("#pageShootOutPlaySlider").slider('refresh');
+
+var n=0;
+var n2=0;
+$('#pageShootOutPlayQuestions').find(".ui-bar").each(function(){
+n++;
+})
+$('#pageShootOutPlayQuestions').find(".ui-disabled").each(function(){
+n2++;
+})
+if(n2>=n){
+playShootOutFinish();
+}
+//alert(n+" - "+n2);
+
+}
+
+function playShootOutFinish(){
+var points, gameDifficulty, scoreForLevelUp;
+points=Number($("#pageShootOutPlaySlider").val());
+
+gameDifficulty=lastSelDif[gamePlayerID][4];
+scoreForLevelUp=90;		//gameDifficulty=2
+if (gameDifficulty==0) scoreForLevelUp=50;
+if (gameDifficulty==1) scoreForLevelUp=75;
+
+if(points>=scoreForLevelUp){
+
+if(pLevels[gamePlayerID][4][gameDifficulty]==gameLevel){
+changeLevel(4, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]+1));
+}
+//difficulty degistirme kodlari da gelecek buraya
+$("#popupShootOutPlaySuc").popup("open");
+
+}
+else{
+$("#popupShootOutPlayUnSuc").popup("open");
+}
+
+}
+/* pageShootOutPlay kodu sonu */
+
+
+
+
+
+
+
+
+
+
+
+
+/*function page LanguageChange(){
+var =["", "", "", "", "", ""];
+
+$("#").html([langID]);
+};*/
+
+//function playerCreate(){
+//var name;	//, name2;
+//name=$("#createPlayerName").val();
+////name2=mysql_real_escape_string (name);
+////alert("Yeni oyuncu kaydi isim "+ name+ "- Güvenli isism="+name2 );
+////
+////return false;
+//if(name!=""){
+//gamePlayerCreate(name);
+//listPagePlayersUserInfoDB();	//Yeni olusturulanla birlikte oyuncular yeniden listeleniyor
+////langChangeSelect();
+//}
+//}
+
+//function playerDelete(id){
+//gamePlayerDelete(id);
+//listPagePlayersUserInfoDB();	//Silinen disindaki oyuncular yeniden listeleniyor
+////langChangeSelect();
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function gamesModesLevels(mode1, mode2){
+//mode1: hangi oyun modu için yapilacagi, numarasa 1:find out, 2-mathris ...	
+//mode2: hangi oyun modu için yapilacagi, sayfa adi gelecek (FindOut, Mathris) gibi
+
+//maxLevel: seçilen mode'un toplam kaç level oldugu. Böylece disable edilecek leveller belirlenecek
+var maxLevel;
+if(mode1==1){
+maxLevel=100;
+}
+else if(mode1==2){
+maxLevel=5;
+}
+else if(mode1==3){
+maxLevel=8;
+}
+else if(mode1==4){
+maxLevel=10;
+}
+
+$("#easy"+mode2).attr("checked",false).checkboxradio('enable').checkboxradio("refresh");
+$("#moderate"+mode2).attr("checked",false).checkboxradio('disable').checkboxradio("refresh");
+$("#hard"+mode2).attr("checked",false).checkboxradio('disable').checkboxradio("refresh");
+
+
+if(pLevels[gamePlayerID][1][1]>0){
+$("#moderate"+mode2).checkboxradio('enable').checkboxradio("refresh");	
+}
+if(pLevels[gamePlayerID][1][2]>0){
+$("#hard"+mode2).checkboxradio('enable').checkboxradio("refresh");
+}
+
+var level;	//level
+var dif;	//last selected difficulty
+
+dif=lastSelDif[gamePlayerID][mode1];
+level=pLevels[gamePlayerID][mode1][dif];
+
+if(pLevels[gamePlayerID][mode1][1]>0) $("#moderate"+mode2).checkboxradio('enable').checkboxradio("refresh");
+if(pLevels[gamePlayerID][mode1][2]>0) $("#hard"+mode2).checkboxradio('enable').checkboxradio("refresh");
+
+
+if(dif==0){
+$("#easy"+mode2).attr("checked",true).checkboxradio("refresh");
+}
+else if(dif==1){
+$("#moderate"+mode2).attr("checked",true).checkboxradio("refresh");
+}
+else{	//dif=2
+$("#hard"+mode2).attr("checked",true).checkboxradio("refresh");
+}
+
+
+
+var levelHtml="";
+if (level>maxLevel){
+level=maxLevel;
+//Gerekirse,  level=maxLevel; ayarlamsi yapilacak ve veritabanna ve pLevels degiskenine islenecek
+//pLevels[gamePlayerID][mode1][dif]=level;
+}
+else{
+levelHtml='<a class="ui-btn ui-btn-up-d ui-shadow ui-btn-corner-all ui-disabled" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" onclick="play'+mode2+'('+(level+1)+',0)" data-role="button" data-theme="d"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+(level+1)+'</span></span></a>';
+}
+
+//for (i=2;i<maxLevel+1;i++){
+//$("#"+mode2).find("#level"+i.toString()).removeClass("ui-disabled");	//Varsa, kaldirmis olacak
+//$("#"+mode2).find("#level"+i.toString()).addClass("ui-disabled");
+//}
+
+
+for (i=level;i>0;i--){
+levelHtml=levelHtml+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" onclick="play'+mode2+'('+i+',0)" data-role="button" data-theme="d"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+i+'</span></span></a>';
+
+//$("#"+mode2).find("#level"+i.toString()).removeClass("ui-disabled");
+}
+$("#page"+mode2+"Levels").html(levelHtml);
+
+
+}
+
+
+function timeCalculate1(){
+
+
+
+}
+
+
+
+
+
+
+
+//Silinecek
+function difficultyClick(mod, v){
+
+if(mod=="fmdiffiulty" && v!=lastSelFMDif[gamePlayerID]){
+playerDifUpdate(mod, v)
+}
+else if(mod=="findoutdifficulty" && v!=lastSelFindOutDif[gamePlayerID]){
+playerDifUpdate(mod, v)
+}
+else if(mod=="mathrisdifficulty" && v!=lastSelMathrisDif[gamePlayerID]){
+playerDifUpdate(mod, v)
+}
+else if(mod=="mathrixdifficulty" && v!=lastSelMathrixDif[gamePlayerID]){
+playerDifUpdate(mod, v)
+}
+else if(mod=="shootoutdifficulty" && v!=lastSelShootOutDif[gamePlayerID]){
+playerDifUpdate(mod, v)
+}
+
+}
+
+
+//silinecek
+function goster (){
+//seçili radio dügmesinin degerini ögrenme
+alert("cem1");
+//$("#freeModeEasy").click();
+$("#freeModeEasy").attr("checked",true).checkboxradio("refresh");
+
+
+//attr("checked",false).checkboxradio('enable').checkboxradio("refresh");
+
+
+//$("#pageFreeModeLevel .labelEasy").removeClass("ui-radio-off ui-radio-on ui-focus ui-btn-active");
+////$("#pageFreeModeLevel .labelEasy").attr("checked", false);
+//$("#pageFreeModeLevel .labelEasy").removeAttr("checked");
+//$("#pageFreeModeLevel .labelModerate").removeClass("ui-radio-off ui-radio-on ui-focus ui-btn-active");
+////$("#pageFreeModeLevel .labelModerate").attr("checked", false);
+////$("#pageFreeModeLevel .labelModerate").removeAttr("checked");
+//$("#pageFreeModeLevel .labelHard").removeClass("ui-radio-off ui-radio-on ui-focus ui-btn-active");
+//$("#pageFreeModeLevel .labelHard").attr("checked", true);
+//$("#pageFreeModeLevel .labelHard").removeAttr("checked");
+
+
+
+//$("#pageFreeModeLevel").find("input[name=gDifficulty]:checked").each(function() {
+//alert($(this).val());
+//if($(this).val()==2){
+//alert ("val=2");
+//$("#freeModeEasy").parent().trigger("click");
+//.trigger("click");.find(".ui-btn-text")
+//$(this).trigger("click").checkboxradio("refresh");	
+//}
+//});
+
+	$("#pageFreeModeLevel").find("input[name=gDifficulty]:checked").each(function() {															
+    alert("checked = "+$(this).val());
+	alert($(this).attr("id"));
+    });
+//	alert("cemmm");
+//$("#pageFreeModeLevel .labelModerate").addClass("ui-radio-on ui-focus ui-btn-active");
+
+//$("#pageFreeModeLevel [name=gDifficulty]").removeAttr("checked");
+//$("#pageFreeModeLevel .labelModerate").addClass("ui-radio-on ui-btn-active");
+//$("#freeModeModerate").attr("checked",true).checkboxradio("refresh");
+//$("#freeModeModerate").attr("checked",false).checkboxradio("refresh");
+
+//$("#pageFreeModeLevel .labelModerate").attr("checked", "checked");
+//$("#pageFreeModeLevel .labelModerate").trigger("click");
+
+//$("#pageFreeModeLevel .labelModerate").prop("checked", true);
+
+//$("#pageFreeModeLevel [name=gDifficulty]").trigger("change");
+//$("#oAdd").checkboxradio("enable").attr("checked",true).checkboxradio('refresh');
+
+//$("#pageFreeModeLevel").find("#oSub").checkboxradio("enable").attr("checked",false).checkboxradio('refresh');
+
+//$("#pageFreeModeLevel").find("#oSub").removeClass("ui-disable");
+//$("#pageFreeModeLevel").find("#oSub").trigger("click");
+
+//$("#pageFreeModeLevel .labelModerate").parent().parent().trigger("click");	//hatali
+//$("#pageFreeModeLevel .labelModerate").find(".ui-btn").trigger("click");
+alert("cem2");
+}
+
+//silinecek
+function bas (){
+//radio button disable kaldirma
+	//$("#freeModeHard").parent().removeClass("ui-disabled");
+	//$("#freeModeHard").removeAttr("disabled");
+	
+$("#freeModeModerate").checkboxradio('enable').checkboxradio("refresh");
+$("#freeModeHard").checkboxradio('enable').checkboxradio("refresh");
+//$("input[type='radio']:first").attr("checked",true).checkboxradio("refresh");
+
+//radio button yazi degistirme
+//$(".labelHard").find(".ui-btn-text").html("zooor");
+
+//$("#oSub").button("enable").trigger("click").button('refresh');
+//$("#oMul").button("enable").button('refresh');
+//$("#oDiv").button("enable").button('refresh');
+
+
+$("#oSub").checkboxradio("enable").attr("checked",true).checkboxradio('refresh');
+$("#oMul").checkboxradio("enable").checkboxradio('refresh');
+$("#oDiv").checkboxradio("enable").checkboxradio('refresh');
+
+
+}
+
+//silinecek
+function bas2 (){
+//radio button disable yapma
+
+$("#freeModeEasy").trigger("click").checkboxradio("refresh");
+//$("#freeModeEasy").checkboxradio("refresh");
+$("#freeModeHard").checkboxradio('disable').checkboxradio("refresh");
+$("#freeModeModerate").checkboxradio('disable').checkboxradio("refresh");
+
+//$("#freeModeEasy").parent().trigger("click");
+//$("#freeModeEasy").child().trigger("click");
+//$("#freeModeEasy").child().child().trigger("click");
+//$("#freeModeEasy").child().child().child().trigger("click");
+
+//$("input[type='radio']").checkboxradio('enable');
+//
+//$("#freeModeEasy").find("labelEasy").trigger("click");
+//	$("#freeModeHard").parent().addClass("ui-disabled");
+//	$("#freeModeHard").attr("disabled", "disabled");
+	//Seçiliyse kaldirmak için
+//	$("#freeModeHard").removeAttr("checked");
+	
+//	$("#freeModeHard").find(".labelHard").removeClass("ui-btn-active");
+//	$("#freeModeHard").find(".labelHard").addClass("ui-radio-off");
+$("#pageFreeModeLevelContent").trigger("create");
+
+
+$("#oAdd").checkboxradio("enable").attr("checked",true).checkboxradio('refresh');
+$("#oSub").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#oMul").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+$("#oDiv").checkboxradio("disable").attr("checked",false).checkboxradio('refresh');
+	
+}
+
+//silinecek
+function bas3(){
+	freeModeLevels();
+}
+
+//silinecek
+function playMathris2(level,score){
+
+mathrisQuestionMove(level, iQuestion);
 
 }
 
@@ -2544,36 +3120,52 @@ alert("ce  mmm");
 
 
 
-function playMathrisCal(qNum, point, level){
-	
-//alert($('#pageMathrisPlayQuestion'+qNum).css("top"));
-//window.clearInterval(mathrisSetInt);
-//alert(point);
-if(Number(point)<=0){	//Cevap yanlis ise
-//alert("yanlis")
-$('#pageMathrisPlayQuestion'+qNum).addClass("ui-disabled");
-qMNew(level);
-}
-else{	//Cevap dogru ise
-//alert("dogru");
-$("#pageMathrisPlayQuestion"+qNum).remove();
-qMNew(level);
 
 
-}
 
-//$('#pageMathrisPlayQuestion'+qNum).stop();//addClass("ui-disabled");
-//$("#pageMathrisPlayQuestion"+qNum).css("visibility","hidden");
-var points;
-points=Number($("#pageMathrisPlaySlider").val());
-points=points+Number(point);
-if(points<0) points=0;
-if(points>100) points=100;
-$("#pageMathrisPlaySlider").val(points.toString());
-$("#pageMathrisPlaySlider").slider('refresh');
 
-}
-/* pageMathrisPlay kodu sonu */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Page kodu baslangici */

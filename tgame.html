@@ -11,6 +11,8 @@
 <script src="jquery.mobile-1.2.0.min.js"></script>
 <script src="jquery.jqmts.js"></script>
 
+<!--<script src="jquery.animate-enhanced.js"></script>-->
+
 <script src="functions.js"></script>
 
 <script src="phonegap.js"></script>
@@ -68,7 +70,7 @@ lastSelFMNum[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
 lastSelFMDig[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
 lastSelFMOC[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
 lastSelFMS[0]=[[1,0,0,0,0,0],[1,0,0,0,0,0],[1,0,0,0,0,0]];
-pLevels[0]=[[5,5,5],[3,0,0],[5,3,2],[7,4,3],[10,9,8]];
+pLevels[0]=[[5,1,1],[1,1,1],[1,1,1],[1,1,1],[1,1,1]];
 
 /*
 pId[0]=0; 		//id
@@ -265,7 +267,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 	if(name!=""){
 	db.transaction(function (tx){
-	tx.executeSql("INSERT INTO players (name, plfreemode, plfindout, plmathris, plmathrix, plshootout, freemodedifficulty, findoutdifficulty, mathrisdifficulty, mathrixdifficulty, shootoutdifficulty, fmoperation, fmnumbers, fmdigit, fmocount, fmsign) VALUES ('"+name+"', '1|0|0', '1|0|0', '1|0|0', '1|0|0', '1|0|0', 0, 0, 0, 0, 0, '1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0')");
+	tx.executeSql("INSERT INTO players (name, plfreemode, plfindout, plmathris, plmathrix, plshootout, freemodedifficulty, findoutdifficulty, mathrisdifficulty, mathrixdifficulty, shootoutdifficulty, fmoperation, fmnumbers, fmdigit, fmocount, fmsign) VALUES ('"+name+"', '1|1|1', '1|1|1', '1|1|1', '1|1|1', '1|1|1', 0, 0, 0, 0, 0, '1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0')");
 	alert("Yeni oyuncu kaydedildi");
 	}, errorCB, function (){
 	if(nameFrom="form"){
@@ -619,6 +621,7 @@ MathMadness is checking some controls. Please wait.
 
 
 
+
 <!-- /Sayfa başlangıcı -->
 <!--Program yüklendikten sonraki ilk açılışta dil seçimi yaptıracak sayfa-->
 <div data-role="page" id="pageLang">
@@ -631,136 +634,14 @@ MathMadness is checking some controls. Please wait.
 
 <div data-role="content" id="pageLangContent" align="center">
 <h1>Choose Your Language</h1>
+
 <img src="images/de.png" onClick="chooseLang('de');">
 <img src="images/en.png" onClick="chooseLang('en');">
 <img src="images/es.png" onClick="chooseLang('es');">
 <img src="images/fr.png" onClick="chooseLang('fr');">
 <img src="images/it.png" onClick="chooseLang('it');">
 <img src="images/tr.png" onClick="chooseLang('tr');">
-</div>
-
-</div><!-- /page -->
-
-
-
-
-<!-- /Sayfa başlangıcı -->
-<div data-role="page" id="pageGameInfo">
-
-<div data-role="header" data-theme="b" data-position="fixed">
-<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>MathMadness</h1>
-</div><!-- /header -->
-
-<div data-role="content" id="pageGameInfoContent" align="center">
-Explanations of games.
-</div>
-
-</div><!-- /page -->
-
-
-<!-- /Sayfa başlangıcı -->
-<div data-role="page" id="pageGameSettings">
-
-<div data-role="header" data-theme="b" data-position="fixed">
-<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>MathMadness</h1>
-</div><!-- /header -->
-
-<div data-role="content" id="pageGameSettingsContent" align="center">
-<label for="langSelect" class="select" style="margin-top:20px; font-weight:bold"><h2 id="langLabelH">Language :</h2></label>
-<select name="langSelect" id="langSelect" onChange="langChangeSelect();">
-   <option value="de">Deutsch</option>
-   <option value="en" selected>English</option>
-   <option value="es">Espanol</option>   
-   <option value="fr">Français</option>
-   <option value="it">Italiano</option>
-   <option value="tr">Türkçe</option>
-</select>
-</div>
-
-</div><!-- /page -->
-
-
-
-<!-- /Sayfa başlangıcı -->
-<div data-role="page" id="pagePlayerRename">
-
-<div data-role="header" data-theme="b" data-position="fixed">
-<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>MathMadness</h1>
-</div><!-- /header -->
-
-<div data-role="content" id="pagePlayerRenameContent" align="center">
-<form>
-<div style="padding:10px 10px;" align="left">
-<h2 id="pagePlayerRenamePlayerH" align="center">Rename Player</h2>
-<h3 id="pagePlayerRenamePlayerName" align="center">Oyuncu 1</h3>
-
-
-<label id="labelNewName" for="newname" style="font-weight:bold;">New Name :</label>
-<input type="text" name="newname" id="newname" value="" data-theme="d" />
-<p align="center">
-<button type="button" onClick="closePageToPlayers();" data-theme="d" data-inline="true" ><span class="playerCancelSpan">Cancel</span></button>
-<button type="button" id="pagePlayerRenameButton" onClick="" data-theme="d" data-inline="true" ><span class="playerRenameSpan">Rename</span></button>
-</p>
-</div>
-</form>
-</div>
-</div><!-- /page -->
-
-
-
-
-<!-- /Sayfa başlangıcı -->
-<div data-role="page" id="pagePlayerDelete">
-
-<div data-role="header" data-theme="b" data-position="fixed">
-<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>MathMadness</h1>
-</div><!-- /header -->
-
-<div data-role="content" id="pagePlayerDeleteContent" align="center">
-<form>
-<div style="padding:10px 10px;" align="left">
-<h2 id="pagePlayerDeletePlayerH" align="center">Delete Player</h2>
-<h3 id="pagePlayerDeletePlayerName" align="center">Oyuncu 1</h3>
-<label id="labelDelete" style="font-weight:bold;">Do you want to delete player?</label>
-<br>
-<p align="center"><button type="button" onClick="closePageToPlayers();" data-theme="d" data-inline="true" ><span class="playerCancelSpan">Cancel</span></button>
-<button type="button" id="pagePlayerDeleteButton" onClick="" data-theme="d" data-inline="true" >Delete</button>
-</p>
-</div>
-</form>
-</div>
-
-</div><!-- /page -->
-
-
-
-
-
-
-<!-- /Sayfa başlangıcı -->
-<div data-role="page" id="pagePlayerCreate">
-
-<div data-role="header" data-theme="b" data-position="fixed">
-<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>MathMadness</h1>
-</div><!-- /header -->
-
-<div data-role="content" id="pagePlayerCreateContent" align="center">
-<form>
-<div style="padding:10px 10px;" align="left">
-<h2 id="pagePlayerCreatePlayerH" align="center">Create Player</h2>
-<label id="labelName" style="font-weight:bold;">Name :</label>
-<input type="text" name="createnewname" id="createPlayerName" value="" data-theme="d" />
-<p align="center"><button type="button" onClick="closePageToPlayers();" data-theme="d" data-inline="true" ><span class="playerCancelSpan">Cancel</span></button>
-<button type="button" id="pagePlayerCreateButton" onClick="gamePlayerCreateDB('');" data-theme="d" data-inline="true" ><span class="playerCancelSpan">Create</span></button>
-</p>
-</div>
-</form>
-
+<h3>You can change it later from game settings.</h3>
 </div>
 
 </div><!-- /page -->
@@ -868,24 +749,126 @@ Explanations of games.
 
 
 
+<!-- /Sayfa başlangıcı -->
+<div data-role="page" id="pageGameInfo">
+
+<div data-role="header" data-theme="b" data-position="fixed">
+<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
+</div><!-- /header -->
+
+<div data-role="content" id="pageGameInfoContent" align="center">
+Explanations of games.
+</div>
+
+</div><!-- /page -->
 
 
 
 <!-- /Sayfa başlangıcı -->
-<div data-role="page" id="pageGameModesInfo">
+<div data-role="page" id="pageGameSettings">
 
 <div data-role="header" data-theme="b" data-position="fixed">
-<a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>MathMadness</h1>
 </div><!-- /header -->
 
-<div data-role="content" id="pageInfoContent" align="center">
-Explanations of modes.
-
-
+<div data-role="content" id="pageGameSettingsContent">
+<h1 align="center" id="gameSettingsH1">Game Settings</h1>
+<label for="langSelect" class="select" style="margin-top:20px; font-weight:bold;"><h2 id="langLabelH">Language :</h2></label>
+<select name="langSelect" id="langSelect" onChange="langChangeSelect();">
+   <option value="de">Deutsch</option>
+   <option value="en" selected>English</option>
+   <option value="es">Espanol</option>   
+   <option value="fr">Français</option>
+   <option value="it">Italiano</option>
+   <option value="tr">Türkçe</option>
+</select>
 </div>
 
 </div><!-- /page -->
+
+
+
+<!-- /Sayfa başlangıcı -->
+<div data-role="page" id="pagePlayerRename">
+
+<div data-role="header" data-theme="b" data-position="fixed">
+<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
+</div><!-- /header -->
+
+<div data-role="content" id="pagePlayerRenameContent" align="center">
+<form>
+<div style="padding:10px 10px;" align="left">
+<h2 id="pagePlayerRenamePlayerH" align="center">Rename Player</h2>
+<h3 id="pagePlayerRenamePlayerName" align="center">Player 1</h3>
+
+
+<label id="labelNewName" for="newname" style="font-weight:bold;">New Name :</label>
+<input type="text" name="newname" id="newname" value="" data-theme="d" />
+<p align="center">
+<button type="button" onClick="closePageToPlayers();" data-theme="d" data-inline="true" ><span class="playerCancelSpan">Cancel</span></button>
+<button type="button" id="pagePlayerRenameButton" onClick="" data-theme="d" data-inline="true" ><span class="playerRenameSpan">Rename</span></button>
+</p>
+</div>
+</form>
+</div>
+</div><!-- /page -->
+
+
+
+<!-- /Sayfa başlangıcı -->
+<div data-role="page" id="pagePlayerDelete">
+
+<div data-role="header" data-theme="b" data-position="fixed">
+<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
+</div><!-- /header -->
+
+<div data-role="content" id="pagePlayerDeleteContent" align="center">
+<form>
+<div style="padding:10px 10px;" align="left">
+<h2 id="pagePlayerDeletePlayerH" align="center">Delete Player</h2>
+<h3 id="pagePlayerDeletePlayerName" align="center">Oyuncu 1</h3>
+<label id="labelDelete" style="font-weight:bold;">Do you want to delete player?</label>
+<br>
+<p align="center"><button type="button" onClick="closePageToPlayers();" data-theme="d" data-inline="true" ><span id="playerCancelSpan">Cancel</span></button>
+<button type="button" onClick="" data-theme="d" data-inline="true" ><span id="playerDeleteSpan" >Delete</span></button>
+</p>
+</div>
+</form>
+</div>
+
+</div><!-- /page -->
+
+
+
+<!-- /Sayfa başlangıcı -->
+<div data-role="page" id="pagePlayerCreate">
+
+<div data-role="header" data-theme="b" data-position="fixed">
+<a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
+</div><!-- /header -->
+
+<div data-role="content" id="pagePlayerCreateContent" align="center">
+<form>
+<div style="padding:10px 10px;" align="left">
+<h2 id="pagePlayerCreatePlayerH" align="center">Create Player</h2>
+<label id="labelName" style="font-weight:bold;"><span id="nameSpan">Name :</span></label>
+<input type="text" name="createnewname" id="createPlayerName" value="" data-theme="d" />
+<p align="center"><button type="button" onClick="closePageToPlayers();" data-theme="d" data-inline="true" ><span id="playerCreateCancelSpan">Cancel</span></button>
+<button type="button" onClick="gamePlayerCreateDB('');" data-theme="d" data-inline="true" ><span id="playerCreateCreateSpan">Create</span></button>
+</p>
+</div>
+</form>
+
+</div>
+</div><!-- /page -->
+
+
+
 
 
 
@@ -914,6 +897,23 @@ Explanations of modes.
 
 
 
+<!-- /Sayfa başlangıcı -->
+<div data-role="page" id="pageGameModesInfo">
+
+<div data-role="header" data-theme="b" data-position="fixed">
+<a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
+</div><!-- /header -->
+
+<div data-role="content" id="pageInfoContent" align="center">
+Explanations of modes.
+
+
+</div>
+
+</div><!-- /page -->
+
+
 
 
 
@@ -931,20 +931,20 @@ Explanations of modes.
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
 <input type="radio" name="gDifficulty" id="freeModeEasy" onClick="changeDifficulty(0, 0);" />
-<label class="labelEasy" for="freeModeEasy">Kolay</label>
+<label class="labelEasy" for="freeModeEasy"><span id="spanEasyFreeMode">Kolay</span></label>
 
 <input type="radio" name="gDifficulty" id="freeModeModerate" onClick="changeDifficulty(0, 1);" />
-<label class="labelModerate" for="freeModeModerate">Normal</label>
+<label class="labelModerate" for="freeModeModerate"><span id="spanModerateFreeMode">Normal</span></label>
 
 <input type="radio" name="gDifficulty" id="freeModeHard" onClick="changeDifficulty(0, 2);" />
-<label class="labelHard" for="freeModeHard">Zor</label>
+<label class="labelHard" for="freeModeHard"><span id="spanHardFreeMode">Zor</span></label>
 
 </fieldset>
 
 <hr>
 <br>
 
-<h3>İşlemler (Operations)</h3>
+<h3 id="operationsH3">İşlemler</h3>
 
 <label><input type="checkbox" name="operation" id="oAdd" data-mini="true" onClick="changeOpt(0,0);" /><span id="spanOAdd">Toplama</span></label>
 <label><input type="checkbox" name="operation" id="oSub" data-mini="true" onClick="changeOpt(0,1);" disabled /><span id="spanOSub">Çıkarma</span></label>
@@ -954,7 +954,7 @@ Explanations of modes.
 <hr>
 <br>
 
-<h3>Sayılar (Numbers)</h3>
+<h3 id="numbersH3">Sayılar</h3>
 <label><input type="checkbox" name="number" id="nInt" data-mini="true" onClick="changeOpt(1,0);" /><span id="spanNInt">Tam Sayılar</span></label>
 
 <label><input type="checkbox" name="number" id="nDec" data-mini="true" onClick="changeOpt(1,1);" disabled /><span id="spanNDec">Ondalık Sayılar</span></label>
@@ -968,7 +968,7 @@ Explanations of modes.
 <hr>
 <br>
 
-<h3>Hane Sayısı (Digit)</h3>
+<h3 id="digitsH3">Hane Sayısı</h3>
 
 <label><input type="checkbox" name="digit" id="digit1" data-mini="true" onClick="changeOpt(2,0);" /><span id="spanDigit1">X</span></label>
 
@@ -984,7 +984,7 @@ Explanations of modes.
 <hr>
 <br>
 
-<h3>İşlem sayısı (Operation count)</h3>
+<h3 id="oCountH3">İşlem sayısı</h3>
 
 <label><input type="checkbox" name="oCount" id="oCount1" data-mini="true" onClick="changeOpt(3,0);" /><span id="spanCount1">
 X ? X</span></label>
@@ -1004,7 +1004,7 @@ X ? X ? X ? X ? X ? X</span></label>
 <hr>
 <br>
 
-<h3>İşaret</h3>
+<h3 id="signH3">İşaret</h3>
 
 <label><input type="checkbox" name="eSign" id="eSign0" data-mini="true" onClick="changeOpt(4,0);" /><span id="spanESign0">=</span></label>
 
@@ -1020,16 +1020,14 @@ X ? X ? X ? X ? X ? X</span></label>
 
 <hr>
 <br>
-<a href="#" onClick="playFreeMode(0);" data-role="button" data-theme="d">Play</a>
+<a href="#" onClick="playFreeMode(0);" data-role="button" data-theme="d"><span id="playSpan">Play</span></a>
 
 </div><!-- /content -->
  
 </div><!-- /page -->
 
 
-<!--<h1>TEBRİKLER</h1>
-<h3>Oyunu başarıyla bitirdiniz.</h3>
-<a href="#pageFreeModeLevel" data-role="button" data-theme="d">Tamam</a>-->
+
 
 
 
@@ -1053,10 +1051,18 @@ Question</div>
 </div>
 
 
-<div data-role="popup" data-theme="b" id="popupFreeModePlay" class="ui-content">
-<p><h1 align="center" id="popupFreeModePlayH1">TEBRİKLER</h1>
-<h3 id="popupFreeModePlayH3">Oyunu başarıyla bitirdiniz.</h3>
-<a href="#pageFreeModeLevel" data-role="button" data-theme="d"><span id="popupFreeModePlaySpan">Tamam</span></a></p>
+<div align="center" data-role="popup" data-theme="b" id="popupFreeModePlaySuc" class="ui-content">
+<h1 id="popupFreeModePlaySucH1">CONGRATULATIONS</h1>
+<h3 id="popupFreeModePlaySucH3">You completed successfuly.</h3>
+<img src="images/true.png">
+<a href="#pageFreeModeLevel" data-role="button" data-theme="d"><span id="popupFreeModePlaySucSpan">OK</span></a>
+</div>
+
+<div align="center" data-role="popup" data-theme="b" id="popupFreeModePlayUnSuc" class="ui-content">
+<h1 id="popupFreeModePlayUnSucH1">SORRY</h1>
+<h3 id="popupFreeModePlayUnSucH3">You could not complete succesfully.</h3>
+<img src="images/wrong.png">
+<a href="#pageFreeModeLevel" data-role="button" data-theme="d"><span id="popupFreeModePlayUnSucSpan">OK</span></a>
 </div>
 
 
@@ -1066,16 +1072,6 @@ Question</div>
 </div><!-- /footer --> 
 
 </div><!-- /page -->
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1094,11 +1090,11 @@ Question</div>
 <h1>Find Out</h1>
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 <input type="radio" name="gDifficulty" id="easyFindOut" onClick="changeDifficulty(1, 0);" />
-<label class="labelEasy" for="easyFindOut">Kolay</label>
+<label class="labelEasy" for="easyFindOut"><span id="spanEasyFindOut">Kolay</span></label>
 <input type="radio" name="gDifficulty" id="moderateFindOut" onClick="changeDifficulty(1, 1);"/>
-<label class="labelModerate" for="moderateFindOut">Normal</label>
+<label class="labelModerate" for="moderateFindOut"><span id="spanModerateFindOut">Normal</span></label>
 <input type="radio" name="gDifficulty" id="hardFindOut" onClick="changeDifficulty(1, 2);" />
-<label class="labelHard" for="hardFindOut">Zor</label>
+<label class="labelHard" for="hardFindOut"><span id="spanHardFindOut">Zor</span></label>
 </fieldset>
 
 
@@ -1117,6 +1113,7 @@ Question</div>
 
 
 
+
 <!--Boş sayfa-->
 <!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageFindOutPlay">
@@ -1128,20 +1125,40 @@ Question</div>
 
 <div data-role="content" id="pageFindOutPlayContent">
 
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr><td>
 <input type="range" name="pageFindOutPlaySlider" id="pageFindOutPlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
+</td>
+<td width="10" align="center" style="text-align:center">
+<span id="pageFindOutPlayTimeSpan" class="time1">600</span>
+</td>
+</tr></table>
 
-<input type="text" value="" id="playFreeModeAnswer" style="visibility:hidden" disabled>
+
+
+<!--<input type="range" name="pageFindOutPlaySlider" id="pageFindOutPlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />-->
+
 
 <!--<img class="pageFreeModePlayImage" src="background.png">-->
 <div id="pageFindOutPlayQuestion" class="ui-bar ui-bar-d ui-corner-all pageFindOutPlayQuestion">
 </div>
 </div>
 
-<div data-role="popup" data-theme="b" id="popupFindOutPlay" class="ui-content">
-<p><h1 align="center" id="popupFindOutPlayH1">TEBRİKLER</h1>
-<h3 id="popupFindOutPlayH3">Oyunu başarıyla bitirdiniz.</h3>
-<a href="#pageFindOutLevel" data-role="button" data-theme="d"><span id="popupFindOutPlaySpan">Tamam</span></a></p>
+
+<div align="center" data-role="popup" data-theme="b" id="popupFindOutPlaySuc" class="ui-content">
+<h1 id="popupFindOutPlaySucH1">CONGRATULATIONS</h1>
+<h3 id="popupFindOutPlaySucH3">You completed successfuly.</h3>
+<img src="images/true.png">
+<a href="#pageFindOutLevel" data-role="button" data-theme="d"><span id="popupFindOutPlaySucSpan">OK</span></a>
 </div>
+
+<div align="center" data-role="popup" data-theme="b" id="popupFindOutPlayUnSuc" class="ui-content">
+<h1 id="popupFindOutPlayUnSucH1">SORRY</h1>
+<h3 id="popupFindOutPlayUnSucH3">You could not complete succesfully.</h3>
+<img src="images/wrong.png">
+<a href="#pageFindOutLevel" data-role="button" data-theme="d"><span id="popupFindOutPlayUnSucSpan">OK</span></a>
+</div>
+
 
 <div data-role="footer" data-theme="b" data-position="fixed" align="center">
 <table width="100%" style="margin:0px;">
@@ -1176,13 +1193,13 @@ Question</div>
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
 <input type="radio" name="gDifficulty" id="easyMathris" onClick="changeDifficulty(2, 0);" />
-<label class="labelEasy" for="easyMathris">Kolay</label>
+<label class="labelEasy" for="easyMathris"><span id="spanEasyMathris">Kolay</span></label>
 
 <input type="radio" name="gDifficulty" id="moderateMathris" onClick="changeDifficulty(2, 1);" />
-<label class="labelModerate" for="moderateMathris">Normal</label>
+<label class="labelModerate" for="moderateMathris"><span id="spanModerateMathris">Normal</span></label>
 
 <input type="radio" name="gDifficulty" id="hardMathris" onClick="changeDifficulty(2, 2);" />
-<label class="labelHard" for="hardMathris">Zor</label>
+<label class="labelHard" for="hardMathris"><span id="spanHardMathris">Zor</span></label>
 
 </fieldset>
 
@@ -1195,6 +1212,7 @@ Question</div>
 
 </div><!-- /content -->
 </div><!-- /page -->
+
 
 
 
@@ -1221,18 +1239,26 @@ Question</div>
 <!--Sorular buraya gelecek-->
 
 </div>
+<hr>
 <!--</div>-->
 </div>
 
-<div data-role="popup" data-theme="b" id="popupMathrisPlay" class="ui-content">
-<p><h1 align="center" id="popupMathrisPlayH1">TEBRİKLER</h1>
-<h3 id="popupMathrisPlayH3">Oyunu başarıyla bitirdiniz.</h3>
-<a href="#pageMathrisLevel" data-role="button" data-theme="d"><span id="popupMathrisPlaySpan">Tamam</span></a></p>
+
+<div align="center" data-role="popup" data-theme="b" id="popupMathrisPlaySuc" class="ui-content">
+<h1 id="popupMathrisPlaySucH1">CONGRATULATIONS</h1>
+<h3 id="popupMathrisPlaySucH3">You completed successfuly.</h3>
+<img src="images/true.png">
+<a href="#pageMathrisLevel" data-role="button" data-theme="d"><span id="popupMathrisPlaySucSpan">OK</span></a>
+</div>
+
+<div align="center" data-role="popup" data-theme="b" id="popupMathrisPlayUnSuc" class="ui-content">
+<h1 id="popupMathrisPlayUnSucH1">SORRY</h1>
+<h3 id="popupMathrisPlayUnSucH3">You could not complete succesfully.</h3>
+<img src="images/wrong.png">
+<a href="#pageMathrisLevel" data-role="button" data-theme="d"><span id="popupMathrisPlayUnSucSpan">OK</span></a>
 </div>
 
 </div><!-- /page -->
-
-
 
 
 
@@ -1253,13 +1279,13 @@ Question</div>
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
 <input type="radio" name="gDifficulty" id="easyMathrix" onClick="changeDifficulty(3, 0);" />
-<label class="labelEasy" for="easyMathrix">Kolay</label>
+<label class="labelEasy" for="easyMathrix"><span id="spanEasyMathrix">Kolay</span></label>
 
 <input type="radio" name="gDifficulty" id="moderateMathrix" onClick="changeDifficulty(3, 1);" />
-<label class="labelModerate" for="moderateMathrix">Normal</label>
+<label class="labelModerate" for="moderateMathrix"><span id="spanModerateMathrix">Normal</span></label>
 
 <input type="radio" name="gDifficulty" id="hardMathrix" onClick="changeDifficulty(3, 2);" />
-<label class="labelHard" for="hardMathrix">Zor</label>
+<label class="labelHard" for="hardMathrix"><span id="spanHardMathrix">Zor</span></label>
 
 </fieldset>
 
@@ -1295,7 +1321,7 @@ Question</div>
 
 <div id="pageMathrixPlayQuestionsView" style="margin:0px; padding:0px 0px; overflow:hidden;">
 
-<div id="pageMathrixPlayQuestions" style="margin:0px; padding:0px 5px; position:relative;">
+<div id="pageMathrixPlayQuestions" style="margin:0px; padding:0px 0px; position:relative;">
 
 <!--Sorular buraya gelecek-->
 
@@ -1305,25 +1331,23 @@ Question</div>
 
 </div>
 
-<div data-role="popup" data-theme="b" id="popup1MathrixPlay" class="ui-content">
-<p><h1 align="center" id="popup1MathrixPlayH1">TEBRİKLER</h1>
-<h3 id="popup1MathrixPlayH3">Oyunu başarıyla bitirdiniz.</h3>
-<a href="#pageMathrixLevel" data-role="button" data-theme="d"><span id="popup1MathrixPlaySpan">Tamam</span></a></p>
+
+<div align="center" data-role="popup" data-theme="b" id="popupMathrixPlaySuc" class="ui-content">
+<h1 id="popupMathrixPlaySucH1">CONGRATULATIONS</h1>
+<h3 id="popupMathrixPlaySucH3">You completed successfuly.</h3>
+<img src="images/true.png">
+<a href="#pageMathrixLevel" data-role="button" data-theme="d"><span id="popupMathrixPlaySucSpan">OK</span></a>
 </div>
 
-<div data-role="popup" data-theme="b" id="popup2MathrixPlay" class="ui-content">
-<p><h1 align="center" id="popup2MathrixPlayH1">YETERSİZ PUAN</h1>
-<h3 id="popup2MathrixPlayH3">Bir sonraki aşamaya geçmek için gerekli puanı toplayamadınız.</h3>
-<a href="#pageMathrixLevel" data-role="button" data-theme="d"><span id="popup2MathrixPlaySpan">Tamam</span></a></p>
+<div align="center" data-role="popup" data-theme="b" id="popupMathrixPlayUnSuc" class="ui-content">
+<h1 id="popupMathrixPlayUnSucH1">SORRY</h1>
+<h3 id="popupMathrixPlayUnSucH3">You could not complete succesfully.</h3>
+<img src="images/wrong.png">
+<a href="#pageMathrixLevel" data-role="button" data-theme="d"><span id="popupMathrixPlayUnSucSpan">OK</span></a>
 </div>
+
 
 </div><!-- /page -->
-
-
-
-
-
-
 
 
 
@@ -1343,13 +1367,13 @@ Question</div>
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
 
 <input type="radio" name="gDifficulty" id="easyShootOut" onClick="changeDifficulty(4, 0);" />
-<label class="labelEasy" for="easyShootOut">Kolay</label>
+<label class="labelEasy" for="easyShootOut"><span id="spanEasyShootOut">Kolay</span></label>
 
 <input type="radio" name="gDifficulty" id="moderateShootOut" onClick="changeDifficulty(4, 1);" />
-<label class="labelModerate" for="moderateShootOut">Normal</label>
+<label class="labelModerate" for="moderateShootOut"><span id="spanModerateShootOut">Normal</span></label>
 
 <input type="radio" name="gDifficulty" id="hardShootOut" onClick="changeDifficulty(4, 2);" />
-<label class="labelHard" for="hardShootOut">Zor</label>
+<label class="labelHard" for="hardShootOut"><span id="spanHardShootOut">Zor</span></label>
 
 </fieldset>
 
@@ -1381,7 +1405,7 @@ Question</div>
 <tr><td>
 <input type="range" name="pageShootOutPlaySlider" id="pageShootOutPlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
 </td>
-<td width="70" align="center" bgcolor="#999999">
+<td width="10" align="center">
 <span id="pageShootOutPlayTimeSpan" class="time1">600</span>
 </td>
 </tr></table>
@@ -1393,17 +1417,49 @@ Question</div>
 
 </div>
 
-<div data-role="popup" data-theme="b" id="popupShootOutPlay" class="ui-content">
-<p><h1 align="center" id="popupShootOutPlayH1">TEBRİKLER</h1>
-<h3 id="popupShootOutPlayH3">Oyunu başarıyla bitirdiniz.</h3>
-<a href="#pageShootOutLevel" data-role="button" data-theme="d"><span id="popupShootOutPlaySpan">Tamam</span></a></p>
+
+
+
+<div align="center" data-role="popup" data-theme="b" id="popupShootOutPlaySuc" class="ui-content">
+<h1 id="popupShootOutPlaySucH1">CONGRATULATIONS</h1>
+<h3 id="popupShootOutPlaySucH3">You completed successfuly.</h3>
+<img src="images/true.png">
+<a href="#pageShootOutLevel" data-role="button" data-theme="d"><span id="popupShootOutPlaySucSpan">OK</span></a>
 </div>
+
+<div align="center" data-role="popup" data-theme="b" id="popupShootOutPlayUnSuc" class="ui-content">
+<h1 id="popupShootOutPlayUnSucH1">SORRY</h1>
+<h3 id="popupShootOutPlayUnSucH3">You could not complete succesfully.</h3>
+<img src="images/wrong.png">
+<a href="#pageShootOutLevel" data-role="button" data-theme="d"><span id="popupShootOutPlayUnSucSpan">OK</span></a>
+</div>
+
 
 </div><!-- /page -->
 
 
 
 
+
+
+<!--<h1>TEBRİKLER</h1>
+<h3>Oyunu başarıyla bitirdiniz.</h3>
+<a href="#pageFreeModeLevel" data-role="button" data-theme="d">Tamam</a>-->
+
+
+
+<!--popups
+<div data-role="popup" data-theme="b" id="popupMathrisPlaySuc" class="ui-content">
+<p><h1 align="center" id="popupMathrisPlaySucH1">TEBRİKLER</h1>
+<h3 id="popupMathrisPlaySucH3">Oyunu başarıyla bitirdiniz.</h3>
+<a href="#pageMathrisLevel" data-role="button" data-theme="d"><span id="popupMathrisPlaySucSpan">Tamam</span></a></p>
+</div>
+
+<div data-role="popup" data-theme="b" id="popupMathrisPlayUnSuc" class="ui-content">
+<p><h1 align="center" id="popupMathrisPlayUnSucH1">OLMADI</h1>
+<h3 id="popupMathrisPlayUnSucH3">Oyunu başarıyla bitiremediniz.</h3>
+<a href="#pageMathrisLevel" data-role="button" data-theme="d"><span id="popupMathrisPlayUnSucSpan">Tamam</span></a></p>
+</div>-->
 
 
 </body>
