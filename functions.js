@@ -2721,7 +2721,7 @@ var level;	//level
 var dif;	//last selected difficulty
 
 dif=lastSelDif[gamePlayerID][mode1];
-level=pLevels[gamePlayerID][mode1][dif];
+level=pLevels[gamePlayerID][mode1][dif]*1;
 
 if(pLevels[gamePlayerID][mode1][1]>0) $("#moderate"+mode2).checkboxradio('enable').checkboxradio("refresh");
 if(pLevels[gamePlayerID][mode1][2]>0) $("#hard"+mode2).checkboxradio('enable').checkboxradio("refresh");
@@ -2740,13 +2740,13 @@ $("#hard"+mode2).attr("checked",true).checkboxradio("refresh");
 
 
 var levelHtml="";
-if (level>maxLevel){
+if (level>=maxLevel){
 level=maxLevel;
 //Gerekirse,  level=maxLevel; ayarlamsi yapilacak ve veritabanna ve pLevels degiskenine islenecek
 //pLevels[gamePlayerID][mode1][dif]=level;
 }
 else{
-levelHtml='<a class="ui-btn ui-btn-up-d ui-shadow ui-btn-corner-all ui-disabled" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" onclick="play'+mode2+'('+(level+1)+',0)" data-role="button" data-theme="d"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+(level+1)+'</span></span></a>';
+levelHtml='<a class="ui-btn ui-btn-up-d ui-shadow ui-btn-corner-all ui-disabled" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" onclick="play'+mode2+'('+(level*1+1)+',0)" data-role="button" data-theme="d"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+(level*1+1)+'</span></span></a>';
 }
 
 //for (i=2;i<maxLevel+1;i++){
