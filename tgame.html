@@ -223,7 +223,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	}
 // Önemsiz callback'ler sonu
 
-	function gameLangChange(){
+	function gameLangChangeDB(){
 	alert("oyun dili değiştiriliyor dil="+gameLang);
 	//Oyun dili değiştirildiğinde çağrılacak
 	//Veritabanındaki dili ve gameLang değişkenini değiştiren kod
@@ -237,12 +237,12 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	tx.executeSql("INSERT INTO game (language) VALUES ('"+gameLang+"')");
 	
 	//Daha önce dil kaydı yapılmadığına göre oyuncu da kayıtlı değildir. Çünkü dil olmaması durumu, oyun ilk yüklendiğinde olacak sadece
-		if(gameLang=="de") gamePlayerCreateDB("Neue Spieler");
-		if(gameLang=="en") gamePlayerCreateDB("New player");
-		if(gameLang=="es") gamePlayerCreateDB("Nuevo Jugador");
-		if(gameLang=="fr") gamePlayerCreateDB("Nouveau Joueur");
-		if(gameLang=="it") gamePlayerCreateDB("Nuovo Giocatore");
-		if(gameLang=="tr") gamePlayerCreateDB("Yeni Oyuncu");
+//		if(gameLang=="de") gamePlayerCreateDB("Neue Spieler");
+//		if(gameLang=="en") gamePlayerCreateDB("New player");
+//		if(gameLang=="es") gamePlayerCreateDB("Nuevo Jugador");
+//		if(gameLang=="fr") gamePlayerCreateDB("Nouveau Joueur");
+//		if(gameLang=="it") gamePlayerCreateDB("Nuovo Giocatore");
+//		if(gameLang=="tr") gamePlayerCreateDB("Yeni Oyuncu");
 		
 	}
 	else{
@@ -591,8 +591,9 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 	
 	
 	function playerDBUpdate(mode, v){	//v=value int veya char
-	alert("update yapılacak, mode="+mode+" v="+v);
+	alert("update yapılacak, mode="+mode+" v="+v+" player ID="+gamePlayerID);
 	tx.executeSql("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID + "'");
+	alert("update yapıldı");
 	}
 /* Veritananı bağlantı kodları sonu */
 

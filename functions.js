@@ -640,7 +640,7 @@ if(lang!=""){
 gameLang=lang;
 
 pageGameSettingsLanguageChange();
-if(dbOK==1) gameLangChange();	//tarayicida çalismayi önler
+if(dbOK==1) gameLangChangeDB();	//tarayicida çalismayi önler
 //gameLanguageChanged();
 }
 //gameLangChange(lang);		//Tarayicida çalismayi önler
@@ -835,7 +835,7 @@ function playerSelect(id){
 //alert(id);
 //Oyuncunun seçilip oyun seçimi sayfasina yönlendirme yapiliyor
 gamePlayerID=id;
-
+alert("gamePlayerID="+gamePlayerID);
 
 //$("#pageGameModesContent").trigger("create");
 //}
