@@ -591,6 +591,7 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 	
 	
 	function playerDBUpdate(mode, v){	//v=value int veya char
+	alert("update yapılacak, mode="+mode+" v="+v);
 	tx.executeSql("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID + "'");
 	}
 /* Veritananı bağlantı kodları sonu */
@@ -839,7 +840,7 @@ Explanations of games.
 <label id="labelDelete" style="font-weight:bold;">Do you want to delete player?</label>
 <br>
 <p align="center"><button type="button" onClick="closePageToPlayers();" data-theme="d" data-inline="true" ><span id="playerCancelSpan">Cancel</span></button>
-<button type="button" onClick="" data-theme="d" data-inline="true" ><span id="playerDeleteSpan" >Delete</span></button>
+<button type="button" id="pagePlayerDeleteButton" onClick="" data-theme="d" data-inline="true" ><span id="playerDeleteSpan" >Delete</span></button>
 </p>
 </div>
 </form>

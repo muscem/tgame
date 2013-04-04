@@ -640,7 +640,7 @@ if(lang!=""){
 gameLang=lang;
 
 pageGameSettingsLanguageChange();
-//gameLangChange();	//tarayicida çalismayi önler
+if(dbOK==1) gameLangChange();	//tarayicida çalismayi önler
 //gameLanguageChanged();
 }
 //gameLangChange(lang);		//Tarayicida çalismayi önler
