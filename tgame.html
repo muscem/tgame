@@ -446,18 +446,18 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 alert("htmlcode yazıldı");
 			}
 		}
-		//else if(len==0){
-//			alert("Veritabanında kayıtlı oyuncu bulunamadı. Yeni oluşturulacak");
-//		//eğer bütün oyuncular silinmiş ise
-//		//seçili dilde "Yeni Oyuncu" adında oyuncu oluşturulacak
-//		if(gameLang=="de") gamePlayerCreateDB("Neue Spieler");
-//		if(gameLang=="en") gamePlayerCreateDB("New player");
-//		if(gameLang=="es") gamePlayerCreateDB("Nuevo Jugador");
-//		if(gameLang=="fr") gamePlayerCreateDB("Nouveau Joueur");
-//		if(gameLang=="it") gamePlayerCreateDB("Nuovo Giocatore");
-//		if(gameLang=="tr") gamePlayerCreateDB("Yeni Oyuncu");
-//		
-//		}
+		else if(len==0){
+			alert("Veritabanında kayıtlı oyuncu bulunamadı. Yeni oluşturulacak");
+		//eğer bütün oyuncular silinmiş ise
+		//seçili dilde "Yeni Oyuncu" adında oyuncu oluşturulacak
+		if(gameLang=="de") gamePlayerCreateDB("Neue Spieler");
+		if(gameLang=="en") gamePlayerCreateDB("New player");
+		if(gameLang=="es") gamePlayerCreateDB("Nuevo Jugador");
+		if(gameLang=="fr") gamePlayerCreateDB("Nouveau Joueur");
+		if(gameLang=="it") gamePlayerCreateDB("Nuovo Giocatore");
+		if(gameLang=="tr") gamePlayerCreateDB("Yeni Oyuncu");
+		
+		}
 		//htmlcode sayfaya aktarılıyor
 		$("#pagePlayersList").html(htmlCode);
 		$("#pagePlayersList").trigger( "create" );

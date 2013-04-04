@@ -624,7 +624,7 @@ gameLang=lang;
 $("#langSelect").val(gameLang);
 $("#langSelect").trigger("change");  //Bunun içinde gameLanguageChanged() çalistiriliyor
 
-//$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
 }
 /* pageLang kodu sonu */
 
