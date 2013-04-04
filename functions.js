@@ -167,7 +167,7 @@ if(i2==op2 && dif==i){
 opt1[i2]=(lastSelFMOp[gamePlayerID][i][i2]+1)%2;
 }
 
-if(optDB!="") optDB+"|";
+if(optDB!="") optDB=optDB+"|";
 optDB=optDB.toString()+opt1[i2].toString();
 }
 
@@ -188,7 +188,7 @@ if(i2==op2 && dif==i){
 opt1[i2]=(lastSelFMNum[gamePlayerID][i][i2]+1)%2;
 }
 
-if(optDB!="") optDB+"|";
+if(optDB!="") optDB=optDB+"|";
 optDB=optDB.toString()+opt1[i2].toString();
 }
 
@@ -209,7 +209,7 @@ if(i2==op2 && dif==i){
 opt1[i2]=(lastSelFMDig[gamePlayerID][i][i2]+1)%2;
 }
 
-if(optDB!="") optDB+"|";
+if(optDB!="") optDB=optDB+"|";
 optDB=optDB.toString()+opt1[i2].toString();
 }
 
@@ -230,7 +230,7 @@ if(i2==op2 && dif==i){
 opt1[i2]=(lastSelFMOC[gamePlayerID][i][i2]+1)%2;
 }
 
-if(optDB!="") optDB+"|";
+if(optDB!="") optDB=optDB+"|";
 optDB=optDB.toString()+opt1[i2].toString();
 }
 
@@ -251,7 +251,7 @@ if(i2==op2 && dif==i){
 opt1[i2]=(lastSelFMS[gamePlayerID][i][i2]+1)%2;
 }
 
-if(optDB!="") optDB+"|";
+if(optDB!="") optDB=optDB+"|";
 optDB=optDB.toString()+opt1[i2].toString();
 }
 
