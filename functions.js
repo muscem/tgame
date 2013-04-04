@@ -69,7 +69,7 @@ gameSign=[[0]];
 
 function closePageToPlayers(){
 gamePlayerID=0;
-$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
 }
 
 
@@ -624,7 +624,7 @@ gameLang=lang;
 $("#langSelect").val(gameLang);
 $("#langSelect").trigger("change");  //Bunun içinde gameLanguageChanged() çalistiriliyor
 
-$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
 }
 /* pageLang kodu sonu */
 
@@ -755,16 +755,16 @@ $("#playerCreateCreateSpan").html(playerCreateCreateSpan[langID]);
 /* pagePlayers kodu baslangici */
 function openPagePlayerRename(id){
 gamePlayerID=id;
-$.mobile.changePage( $("#pagePlayerRename") , { transition: "slide"} );
+$.mobile.changePage( $("#pagePlayerRename") , { transition: "none"} );
 }
 
 function openPagePlayerDelete(id){
 gamePlayerID=id;
-$.mobile.changePage( $("#pagePlayerDelete") , { transition: "slide"} );
+$.mobile.changePage( $("#pagePlayerDelete") , { transition: "none"} );
 }
 
 function openPagePlayerCreate(){
-$.mobile.changePage( $("#pagePlayerCreate") , { transition: "slide"} );
+$.mobile.changePage( $("#pagePlayerCreate") , { transition: "none"} );
 $("#pagePlayerCreateContent").find("#createPlayerName").val("");
 }
 
@@ -849,7 +849,7 @@ gamePlayerID=id;
 //});
 
 
-$.mobile.changePage( $("#pageGameModes") , { transition: "slide"} );
+$.mobile.changePage( $("#pageGameModes") , { transition: "none"} );
 }
 
 
@@ -888,19 +888,19 @@ if(pLevels[gamePlayerID][4][0]>0) $("#pageGameModesShootOut").removeClass("ui-di
 function gameModeSelect(mode){
 gameMode=mode;
 if (gameMode==0){
-$.mobile.changePage( $("#pageFreeModeLevel") , { transition: "slide"} );
+$.mobile.changePage( $("#pageFreeModeLevel") , { transition: "none"} );
 }
 else if (gameMode==1){
-$.mobile.changePage( $("#pageFindOutLevel") , { transition: "slide"} );
+$.mobile.changePage( $("#pageFindOutLevel") , { transition: "none"} );
 }
 else if (gameMode==2){
-$.mobile.changePage( $("#pageMathrisLevel") , { transition: "slide"} );
+$.mobile.changePage( $("#pageMathrisLevel") , { transition: "none"} );
 }
 else if (gameMode==3){
-$.mobile.changePage( $("#pageMathrixLevel") , { transition: "slide"} );
+$.mobile.changePage( $("#pageMathrixLevel") , { transition: "none"} );
 }
 else if (gameMode==4){
-$.mobile.changePage( $("#pageShootOutLevel") , { transition: "slide"} );
+$.mobile.changePage( $("#pageShootOutLevel") , { transition: "none"} );
 }
 return false;
 }
@@ -1265,7 +1265,7 @@ gameSign[0]=gameSign2;
 
 
 //alert("cem "+gameDigit[2][0]);
-$.mobile.changePage( $("#pageFreeModePlay") , { transition: "slide"} );
+$.mobile.changePage( $("#pageFreeModePlay") , { transition: "none"} );
 if(score==0){
 $("#pageFreeModePlaySlider").val(0);
 $("#pageFreeModePlaySlider").slider('refresh');
@@ -1511,7 +1511,7 @@ function playFindOut(level, score){
 //gameSign=[[5]];
 //gameDifficulty=0;	//0,1,2
 
-$.mobile.changePage( $("#pageFindOutPlay") , { transition: "slide"} );
+$.mobile.changePage( $("#pageFindOutPlay") , { transition: "none"} );
 
 //alert("score="+score+" level="+level);
 if(score==0){
@@ -1661,7 +1661,7 @@ clearInterval(gameCountDown);
 //pLevels[gamePlayerID][1][gameDifficulty]++;
 //alert("levels="+pLevels[gamePlayerID][1][gameDifficulty]+"-"+gameLevel);
 if(pLevels[gamePlayerID][1][gameDifficulty]==gameLevel){
-changeLevel(1, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]+1));
+changeLevel(1, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]*1+1));
 }
 
 //Difficulty moderate ve hard'in açilma zamanlari
@@ -1688,7 +1688,7 @@ points=Number($("#pageFindOutPlaySlider").val());
 if(points>=100){
 
 if(pLevels[gamePlayerID][1][gameDifficulty]==gameLevel){
-changeLevel(1, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]+1));
+changeLevel(1, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]*1+1));
 }
 //difficulty degistirme kodlari da gelecek buraya
 $("#popupFindOutPlaySuc").popup("open");
@@ -1769,7 +1769,7 @@ function playMathris(level,score){
 
 mathrisPlayOk=1;
 
-$.mobile.changePage( $("#pageMathrisPlay") , { transition: "slide"} );
+$.mobile.changePage( $("#pageMathrisPlay") , { transition: "none"} );
 
 //if(score==0){
 gameLevel=level;
@@ -1989,7 +1989,7 @@ if(points>=100){
 mathrisPlayOk=0;
 window.clearInterval(mathrisSetInt);
 if(pLevels[gamePlayerID][2][gameDifficulty]==gameLevel){
-changeLevel(2, gameDifficulty, (pLevels[gamePlayerID][2][gameDifficulty]+1));
+changeLevel(2, gameDifficulty, (pLevels[gamePlayerID][2][gameDifficulty]*1+1));
 }
 $("#popupMathrisPlaySuc").popup("open");
 }
@@ -2077,7 +2077,7 @@ $("#popupMathrixPlayUnSucSpan").html(popupMathrixPlayUnSucSpan[langID]);
 function playMathrix(level,score){
 clearInterval(mathrixSetInt);
 //$('#pageMathrixPlayQuestions').stop();
-$.mobile.changePage( $("#pageMathrixPlay") , { transition: "slide"} );
+$.mobile.changePage( $("#pageMathrixPlay") , { transition: "none"} );
 if(score==0){
 gameLevel=level;
 $("#pageMathrixPlaySlider").val(score.toString());
@@ -2202,7 +2202,7 @@ var pScore;
 pScore=$("#pageMathrixPlaySlider").val(score.toString());
 if (pScore>=sSucc){
 if(pLevels[gamePlayerID][3][gameDifficulty]==gameLevel){
-changeLevel(3, gameDifficulty, (pLevels[gamePlayerID][3][gameDifficulty]+1));
+changeLevel(3, gameDifficulty, (pLevels[gamePlayerID][3][gameDifficulty]*1+1));
 }
 $( "#popupMathrixPlaySuc" ).popup( "open" );
 
@@ -2269,7 +2269,7 @@ $("#popupMathrixPlayUnSuc").popup("open");
 //clearInterval(mathrixSetInt);
 //$("#popupMathrixPlaySuc").popup("open");
 //if(pLevels[gamePlayerID][3][gameDifficulty]==gameLevel){
-//changeLevel(3, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]+1));
+//changeLevel(3, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]*1+1));
 //}
 //}
 else if(moveOut!="" && points<sSucc){
@@ -2281,7 +2281,7 @@ clearInterval(mathrixSetInt);
 $("#popupMathrixPlaySuc").popup("open");
 
 if(pLevels[gamePlayerID][3][gameDifficulty]==gameLevel){
-changeLevel(3, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]+1));
+changeLevel(3, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]*1+1));
 }
 }
 
@@ -2394,7 +2394,7 @@ function playShootOut(level,score){
 //score bu oyunda gerekli degil.
 //alert("cem");
 gameLevel=level;
-$.mobile.changePage( $("#pageShootOutPlay") , { transition: "slide"} );
+$.mobile.changePage( $("#pageShootOutPlay") , { transition: "none"} );
 
 //var iQuestion=0;
 //var w=[];
@@ -2611,7 +2611,7 @@ if (gameDifficulty==1) scoreForLevelUp=75;
 if(points>=scoreForLevelUp){
 
 if(pLevels[gamePlayerID][4][gameDifficulty]==gameLevel){
-changeLevel(4, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]+1));
+changeLevel(4, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]*1+1));
 }
 //difficulty degistirme kodlari da gelecek buraya
 $("#popupShootOutPlaySuc").popup("open");

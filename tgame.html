@@ -62,15 +62,17 @@ var lastSelFMS=[[[]]];
 
 
 //gamePlayerID=0 veritabanindan gelemeyecek bir sayi. Bu yüzden deneme kisisi (guest) için ayridim.
-//pId[0]=0;
-//pName[0]=["cem"];	
-//lastSelDif[0]=[0,0,0,0,0];	//[1,0,0,0,0]	[2,0,0,0,0]
-//lastSelFMOp[0]=[[1,0,0,0],[1,0,0,0],[1,0,0,0]];
-//lastSelFMNum[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
-//lastSelFMDig[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
-//lastSelFMOC[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
-//lastSelFMS[0]=[[1,0,0,0,0,0],[1,0,0,0,0,0],[1,0,0,0,0,0]];
-//pLevels[0]=[[5,1,1],[1,1,1],[1,1,1],[1,1,1],[1,1,1]];
+/*gamePlayerID=0;
+gameLang="tr";
+pId[0]=0;
+pName[0]=["cem"];	
+lastSelDif[0]=[0,0,0,0,0];	//[1,0,0,0,0]	[2,0,0,0,0]
+lastSelFMOp[0]=[[1,0,0,0],[1,0,0,0],[1,0,0,0]];
+lastSelFMNum[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
+lastSelFMDig[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
+lastSelFMOC[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
+lastSelFMS[0]=[[1,0,0,0,0,0],[1,0,0,0,0,0],[1,0,0,0,0,0]];
+pLevels[0]=[[5,1,1],[1,1,1],[1,1,1],[1,1,1],[1,1,1]];*/
 
 
 
@@ -181,7 +183,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		if(len==1){
 		gameLang=results.rows.item(0).language;
 		//alert("dil="+gameLang);
-		$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );	
+		$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );	
 		//Dil daha önceden seçilmişse, oyuncu kaydıda yapılmış olabilir. Kontrol ediliyor
 		//alert("oyuncu bilgileri kontrol edilecek");
 		//db.transaction(listPagePlayersUserInfoDB, errorCB, listPagePlayersUserInfoDBSuccess);
@@ -190,12 +192,12 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		//Yanlışlıkla birden fazla kayıt yapılırsa (programlama hatasıyla)
 		//alert("Birden fazla dil kaydı olmuş. Hata!");
 		tx.executeSql('DELETE FROM game');
-		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );	
+		$.mobile.changePage( $("#pageLang") , { transition: "none"} );	
 		}
 		else{
 		//alert("dil yok=");
 		//Dil seçim sayfası açılacak
-		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );		
+		$.mobile.changePage( $("#pageLang") , { transition: "none"} );		
 		}
 	}, errorCB);
 	}
@@ -203,7 +205,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	
 	function getLangDBSuccess(){
 	if (gameLang!=""){
-	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+	$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
 	}
 	}
 	
@@ -275,7 +277,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	//alert("Yeni oyuncu kaydedildi");
 	}, errorCB, function (){
 	if(nameFrom="form"){
-	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );	
+	$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );	
 	}
 	}
 	);
@@ -548,7 +550,7 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 	
 //	function listPagePlayersUserInfoDBSuccess(){
 //	//Oyuncu veritabanı başarıyla kontrol edildikten sonra, pagePlayers sayfası açılıyor
-//	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+//	$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
 //	}
 	
 	function gamePlayerDeleteDB(id){
@@ -557,7 +559,7 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 	db.transaction(function(tx){
 	tx.executeSql("DELETE FROM players WHERE id='"+id+"'");
 	}, errorCB, function(){
-	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+	$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
 	}
 	);
 	}
@@ -584,7 +586,7 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 	}, errorCB);
 	
 	}, errorCB,  function(){
-	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );
+	$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
 	}
 	);
 	}
