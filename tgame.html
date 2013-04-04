@@ -165,22 +165,22 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	//Veritabanı kullanılabilir durumda
 	//alert("Veritabanı kullanılabilir durumda");
 	
-	alert("dil kontrol edilecek");
+	//alert("dil kontrol edilecek");
 	db.transaction(getLangDB, errorCB, successCB);
 	//db.transaction(getLangDB, errorCB, getLangDBSuccess);
 	}
 
 	function getLangDB(tx){
-		alert("dil kontrol ediliyor");
+		//alert("dil kontrol ediliyor");
 		//Oyunun daha önce açılıp, dil seçimi yapılıp yapılmadığı bulunuyor.
 		//Yapılmadıysa dil seçim sayfasına,
 		//aksi halde oyuncu seçim sayfasın yönlendirme yapılıyor.
 		tx.executeSql('SELECT * FROM game', [], function(tx, results) {
 		var len = results.rows.length;
-		alert("bulunan dil sayısı len= "+len);
+		//alert("bulunan dil sayısı len= "+len);
 		if(len==1){
 		gameLang=results.rows.item(0).language;
-		alert("dil="+gameLang);
+		//alert("dil="+gameLang);
 		$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );	
 		//Dil daha önceden seçilmişse, oyuncu kaydıda yapılmış olabilir. Kontrol ediliyor
 		//alert("oyuncu bilgileri kontrol edilecek");
@@ -188,12 +188,12 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		}
 		else if(len>1){
 		//Yanlışlıkla birden fazla kayıt yapılırsa (programlama hatasıyla)
-		alert("Birden fazla dil kaydı olmuş. Hata!");
+		//alert("Birden fazla dil kaydı olmuş. Hata!");
 		tx.executeSql('DELETE FROM game');
 		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );	
 		}
 		else{
-		alert("dil yok=");
+		//alert("dil yok=");
 		//Dil seçim sayfası açılacak
 		$.mobile.changePage( $("#pageLang") , { transition: "slide"} );		
 		}
@@ -224,7 +224,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 // Önemsiz callback'ler sonu
 
 	function gameLangChangeDB(){
-	alert("oyun dili değiştiriliyor dil="+gameLang);
+	//alert("oyun dili değiştiriliyor dil="+gameLang);
 	//Oyun dili değiştirildiğinde çağrılacak
 	//Veritabanındaki dili ve gameLang değişkenini değiştiren kod
 	
@@ -233,7 +233,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	tx.executeSql('SELECT * FROM game', [], function (tx, results){
 	var len = results.rows.length;
 	if(len==0 || len>1){
-	alert("Daha öncesinde dil yok. Yeni kayıt yapılacak "+gameLang);
+	//alert("Daha öncesinde dil yok. Yeni kayıt yapılacak "+gameLang);
 	tx.executeSql("INSERT INTO game (language) VALUES ('"+gameLang+"')");
 	
 	//Daha önce dil kaydı yapılmadığına göre oyuncu da kayıtlı değildir. Çünkü dil olmaması durumu, oyun ilk yüklendiğinde olacak sadece
@@ -247,9 +247,9 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	}
 	else{
 	var dbLangId=results.rows.item(0).id;	
-	alert("Daha önceki dil değeri değiştirilecek. id="+dbLangId);
+	//alert("Daha önceki dil değeri değiştirilecek. id="+dbLangId);
 	var dbLangPre=results.rows.item(0).language;	
-	alert("Önceki dil. id="+dbLangPre);
+	//alert("Önceki dil. id="+dbLangPre);
 	tx.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + dbLangId + "'");
 	}
 	
@@ -267,12 +267,12 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	name=$("#pagePlayerCreateContent").find("#createPlayerName").val();
 	nameFrom="form";
 	}
-	alert("name= "+name);
+	//alert("name= "+name);
 
 	if(name!=""){
 	db.transaction(function (tx){
 	tx.executeSql("INSERT INTO players (name, plfreemode, plfindout, plmathris, plmathrix, plshootout, freemodedifficulty, findoutdifficulty, mathrisdifficulty, mathrixdifficulty, shootoutdifficulty, fmoperation, fmnumbers, fmdigit, fmocount, fmsign) VALUES ('"+name+"', '1|1|1', '1|1|1', '1|1|1', '1|1|1', '1|1|1', 0, 0, 0, 0, 0, '1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0')");
-	alert("Yeni oyuncu kaydedildi");
+	//alert("Yeni oyuncu kaydedildi");
 	}, errorCB, function (){
 	if(nameFrom="form"){
 	$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );	
@@ -285,8 +285,8 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 
 	function listPagePlayersUserInfoDB(){
-	alert("oyuncu bilgileri listeleniyor");
-	alert("dbOK= "+dbOK);
+	//alert("oyuncu bilgileri listeleniyor");
+	//alert("dbOK= "+dbOK);
 	if(dbOK==1){
 		
 	//Kayıtlı oyuncu varsa,
@@ -297,7 +297,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		var len = results.rows.length;
 		
 		if(len==0){
-		alert("Veritabanında kayıtlı oyuncu bulunamadı. Yeni oluşturulacak");
+		//alert("Veritabanında kayıtlı oyuncu bulunamadı. Yeni oluşturulacak");
 		//eğer bütün oyuncular silinmiş ise
 		//seçili dilde "Yeni Oyuncu" adında oyuncu oluşturulacak
 		if(gameLang=="de") gamePlayerCreateDB("Neue Spieler");
@@ -457,14 +457,14 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 '</div>'+
 '</div>';
 
-alert("htmlcode yazıldı");
+//alert("htmlcode yazıldı");
 			}
 		}
 		
 		//htmlcode sayfaya aktarılıyor
 		$("#pagePlayersList").html(htmlCode);
 		$("#pagePlayersList").trigger( "create" );
-		alert("herşey sayfaya yüklendi");
+		//alert("herşey sayfaya yüklendi");
 		
 		
 	}, errorCB);
@@ -480,7 +480,7 @@ alert("htmlcode yazıldı");
 	
 //veritabanı olmadığı zamanlarda çalışacak, bilgisayarda yani	
 function bilgi_liste(){
-	alert("veritabanı olmadan oyuncular listelenecek");
+	//alert("veritabanı olmadan oyuncular listelenecek");
 var htmlCode="";	
 	for(var id=0;id<1;id++){
 
@@ -574,7 +574,7 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 	var len = results.rows.length;
 
 	if(len==0 || len>1){
-	alert("Hata oldu. Daha önceden olmayan bir oyuncu sanıldı");
+	//alert("Hata oldu. Daha önceden olmayan bir oyuncu sanıldı");
 	}
 	else{
 
@@ -596,14 +596,14 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 	function playerDBUpdate(mode, v){	//v=value int veya char
 	mode=mode.toString();
 	v=v.toString();
-	alert("update yapılacak, mode="+mode+" v="+v+" player ID="+gamePlayerID);
-	alert("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID.toString() + "'");
+	//alert("update yapılacak, mode="+mode+" v="+v+" player ID="+gamePlayerID);
+	//alert("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID.toString() + "'");
 	db.transaction(function(tx){
 							
 	tx.executeSql("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID + "'");
 	
 	}, errorCB, successCB);
-	alert("update yapıldı");
+	//alert("update yapıldı");
 	}
 /* Veritananı bağlantı kodları sonu */
 

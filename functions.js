@@ -613,7 +613,7 @@ function chooseLang(lang){
 //Seçilen bayraga göre
 //Oynun dili (hem js degiskeni, hem de veritabanindaki degeri) degistirilecek
 //Sonra da pagePlayers sayfasina yönlendirilecek
-alert("dil seçildi = "+lang);
+//alert("dil seçildi = "+lang);
 //lang="en";	//Deneme amaçli, silinecek
 gameLang=lang;
 
@@ -635,7 +635,7 @@ function langChangeSelect() {
 
 var lang;
 lang=$("#langSelect").val();
-alert(lang);
+//alert(lang);
 if(lang!=""){
 gameLang=lang;
 
@@ -835,7 +835,7 @@ function playerSelect(id){
 //alert(id);
 //Oyuncunun seçilip oyun seçimi sayfasina yönlendirme yapiliyor
 gamePlayerID=id;
-alert("gamePlayerID="+gamePlayerID);
+//alert("gamePlayerID="+gamePlayerID);
 
 //$("#pageGameModesContent").trigger("create");
 //}
