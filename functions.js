@@ -2740,13 +2740,16 @@ $("#hard"+mode2).attr("checked",true).checkboxradio("refresh");
 
 
 var levelHtml="";
+
+levelHtml=levelHtml+'<div class="ui-grid-b"><div class="ui-block-a"></div><div class="ui-block-b">';
+
 if (level>=maxLevel){
 level=maxLevel;
 //Gerekirse,  level=maxLevel; ayarlamsi yapilacak ve veritabanna ve pLevels degiskenine islenecek
 //pLevels[gamePlayerID][mode1][dif]=level;
 }
 else{
-levelHtml='<a class="ui-btn ui-btn-up-d ui-shadow ui-btn-corner-all ui-disabled" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" onclick="play'+mode2+'('+(level*1+1)+',0)" data-role="button" data-theme="d"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+(level*1+1)+'</span></span></a>';
+levelHtml=levelHtml+'<a class="ui-btn ui-btn-up-d ui-shadow ui-btn-corner-all ui-disabled" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" onclick="play'+mode2+'('+(level*1+1)+',0)" data-role="button" data-theme="d"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+(level*1+1)+'</span></span></a>';
 }
 
 //for (i=2;i<maxLevel+1;i++){
@@ -2756,10 +2759,12 @@ levelHtml='<a class="ui-btn ui-btn-up-d ui-shadow ui-btn-corner-all ui-disabled"
 
 
 for (i=level;i>0;i--){
-levelHtml=levelHtml+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" onclick="play'+mode2+'('+i+',0)" data-role="button" data-theme="d"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+i+'</span></span></a>';
+levelHtml=levelHtml+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-up-d"  data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" onclick="play'+mode2+'('+i+',0)" data-role="button" data-theme="d"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+i+'</span></span></a>';
 
 //$("#"+mode2).find("#level"+i.toString()).removeClass("ui-disabled");
 }
+
+levelHtml=levelHtml+'</div><div class="ui-block-c"></div>';
 $("#page"+mode2+"Levels").html(levelHtml);
 
 
