@@ -166,7 +166,8 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	//alert("Veritabanı kullanılabilir durumda");
 	
 	alert("dil kontrol edilecek");
-	db.transaction(getLangDB, errorCB, getLangDBSuccess);
+	db.transaction(getLangDB, errorCB, successCB);
+	//db.transaction(getLangDB, errorCB, getLangDBSuccess);
 	}
 
 	function getLangDB(tx){
@@ -180,7 +181,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		if(len==1){
 		gameLang=results.rows.item(0).language;
 		alert("dil="+gameLang);
-		//$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );	
+		$.mobile.changePage( $("#pagePlayers") , { transition: "slide"} );	
 		//Dil daha önceden seçilmişse, oyuncu kaydıda yapılmış olabilir. Kontrol ediliyor
 		//alert("oyuncu bilgileri kontrol edilecek");
 		//db.transaction(listPagePlayersUserInfoDB, errorCB, listPagePlayersUserInfoDBSuccess);
@@ -284,7 +285,8 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 
 	function listPagePlayersUserInfoDB(){
-	//alert("oyuncu bilgileri listeleniyor");
+	alert("oyuncu bilgileri listeleniyor");
+	alert("dbOK= "+dbOK);
 	if(dbOK==1){
 		
 	//Kayıtlı oyuncu varsa,
@@ -475,7 +477,7 @@ alert("htmlcode yazıldı");
 	
 //veritabanı olmadığı zamanlarda çalışacak, bilgisayarda yani	
 function bilgi_liste(){
-	//alert("veritabanı olmadan oyuncular listelenecek");
+	alert("veritabanı olmadan oyuncular listelenecek");
 var htmlCode="";	
 	for(var id=0;id<1;id++){
 
