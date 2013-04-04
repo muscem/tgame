@@ -23,8 +23,8 @@ var dbOK=0;		//Bilgisayarda kullanamk için gerekli. Sonra sil.
 
 //Oyunun her yerinde kullanılacak bazı değişkenler
 //Veritabanından alınan bilgiler (p = player)
-var gameLang="tr";			//Oyun dili
-var gamePlayerID=0;		//Oyuncu id
+var gameLang;			//Oyun dili		var gameLang="tr";
+var gamePlayerID;		//Oyuncu id			var gamePlayerID=0;
 
 //Oyuncunun seçimleri
 var gameMode;				//Oyun modu
@@ -62,15 +62,18 @@ var lastSelFMS=[[[]]];
 
 
 //gamePlayerID=0 veritabanindan gelemeyecek bir sayi. Bu yüzden deneme kisisi (guest) için ayridim.
-pId[0]=0;
-pName[0]=["cem"];	
-lastSelDif[0]=[0,0,0,0,0];	//[1,0,0,0,0]	[2,0,0,0,0]
-lastSelFMOp[0]=[[1,0,0,0],[1,0,0,0],[1,0,0,0]];
-lastSelFMNum[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
-lastSelFMDig[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
-lastSelFMOC[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
-lastSelFMS[0]=[[1,0,0,0,0,0],[1,0,0,0,0,0],[1,0,0,0,0,0]];
-pLevels[0]=[[5,1,1],[1,1,1],[1,1,1],[1,1,1],[1,1,1]];
+//pId[0]=0;
+//pName[0]=["cem"];	
+//lastSelDif[0]=[0,0,0,0,0];	//[1,0,0,0,0]	[2,0,0,0,0]
+//lastSelFMOp[0]=[[1,0,0,0],[1,0,0,0],[1,0,0,0]];
+//lastSelFMNum[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
+//lastSelFMDig[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
+//lastSelFMOC[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
+//lastSelFMS[0]=[[1,0,0,0,0,0],[1,0,0,0,0,0],[1,0,0,0,0,0]];
+//pLevels[0]=[[5,1,1],[1,1,1],[1,1,1],[1,1,1],[1,1,1]];
+
+
+
 
 /*
 pId[0]=0; 		//id
