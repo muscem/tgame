@@ -12,7 +12,7 @@ gameDigit=[[]];				//Oyun hane sayisi
 gameOCount=[[]];				//Oyun islem sayisi
 gameSign=[[]];				//Oyun sayi türü	//Sonradan ekledim bölümlerde yok.
 
-if(gameLevel==1){
+/*if(gameLevel==1){
 gameOperation=[[0]];	//[[1,2],[1,2,3],[1]];
 gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
 gameDigit=[[0]];
@@ -60,7 +60,114 @@ gameNumber = [[0]];	//null; //gameNumber=[[1]];	//[[1,2],[1,2,3],[1]];
 gameDigit=[[0]];
 gameOCount=[[0]];
 gameSign=[[0]];
-}
+}*/
+
+
+if(gameLevel==1){gameOperation=[[0]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0]];}
+else if(gameLevel==2){gameOperation=[[1]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0]];}
+else if(gameLevel==3){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0]];}
+else if(gameLevel==4){gameOperation=[[2]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0]];}
+else if(gameLevel==5){gameOperation=[[3]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0]];}
+else if(gameLevel==6){gameOperation=[[2,3]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0]];}
+else if(gameLevel==7){gameOperation=[[0,1,2,3]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0]];}
+else if(gameLevel==8){gameOperation=[[0,1,2,3]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[1]];}
+else if(gameLevel==9){gameOperation=[[0,1,2,3]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[2]];}
+else if(gameLevel==10){gameOperation=[[0,1,2,3]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[3]];}
+else if(gameLevel==11){gameOperation=[[0,1,2,3]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[4]];}
+else if(gameLevel==12){gameOperation=[[0,1,2,3]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[5]];}
+else if(gameLevel==13){gameOperation=[[0,1,2,3]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==14){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==15){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[1,2]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==16){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[3,4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==17){gameOperation=[[2]];gameNumber=[[2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==18){gameOperation=[[3]];gameNumber=[[2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==19){gameOperation=[[0]];gameNumber=[[2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==20){gameOperation=[[1]];gameNumber=[[2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==21){gameOperation=[[0,1,2,3]];gameNumber=[[2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==22){gameOperation=[[2]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==23){gameOperation=[[3]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==24){gameOperation=[[0,1,2,3]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==25){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==26){gameOperation=[[0]];gameNumber=[[1]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==27){gameOperation=[[1]];gameNumber=[[1]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==28){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==29){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==30){gameOperation=[[0,1]];gameNumber=[[0,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==31){gameOperation=[[0,1]];gameNumber=[[1,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==32){gameOperation=[[0,1]];gameNumber=[[0,1,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==33){gameOperation=[[2,3]];gameNumber=[[0,1]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==34){gameOperation=[[2,3]];gameNumber=[[0,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==35){gameOperation=[[2,3]];gameNumber=[[1,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==36){gameOperation=[[2,3]];gameNumber=[[0,1,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==37){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==38){gameOperation=[[0]];gameNumber=[[3]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==39){gameOperation=[[1]];gameNumber=[[3]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==40){gameOperation=[[2]];gameNumber=[[3]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==41){gameOperation=[[3]];gameNumber=[[3]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==42){gameOperation=[[0,1,2,3]];gameNumber=[[3]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==43){gameOperation=[[0]];gameNumber=[[4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==44){gameOperation=[[1]];gameNumber=[[4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==45){gameOperation=[[2]];gameNumber=[[4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==46){gameOperation=[[3]];gameNumber=[[4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==47){gameOperation=[[0,1,2,3]];gameNumber=[[4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==48){gameOperation=[[2,3]];gameNumber=[[3,4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==49){gameOperation=[[0,1]];gameNumber=[[3,4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==50){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==51){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==52){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==53){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==54){gameOperation=[[0,1]];gameNumber=[[2]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==55){gameOperation=[[0,1]];gameNumber=[[2]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==56){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==57){gameOperation=[[0,1]];gameNumber=[[0,2]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==58){gameOperation=[[0,1]];gameNumber=[[1,2]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==59){gameOperation=[[0,1]];gameNumber=[[0,1,2]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==60){gameOperation=[[0]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==61){gameOperation=[[1]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==62){gameOperation=[[2]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==63){gameOperation=[[3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==64){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==65){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[1]];gameOCount=[[2]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==66){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[1]];gameOCount=[[2]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==67){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[1]];gameOCount=[[3]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==68){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[1]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==69){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[2]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==70){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[2]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==71){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[2]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==72){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[2]];gameOCount=[[1,2]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==73){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[2]];gameOCount=[[1,2]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==74){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[2]];gameOCount=[[1,2]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==75){gameOperation=[[0,1]];gameNumber=[[3]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==76){gameOperation=[[0,1]];gameNumber=[[4]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==77){gameOperation=[[0,1]];gameNumber=[[3,4]];gameDigit=[[1]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==78){gameOperation=[[2,3]];gameNumber=[[0]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==79){gameOperation=[[2,3]];gameNumber=[[1]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==80){gameOperation=[[2,3]];gameNumber=[[2]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==81){gameOperation=[[0,1]];gameNumber=[[2]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==82){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[3]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==83){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[4]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==84){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[2,3,4]];gameOCount=[[0,1,2]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==85){gameOperation=[[2,3]];gameNumber=[[3]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==86){gameOperation=[[2,3]];gameNumber=[[4]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==87){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[2,3]];gameOCount=[[3]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==88){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[2,3]];gameOCount=[[3]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==89){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[3,4]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==90){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[3,4]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==91){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[4]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==92){gameOperation=[[2]];gameNumber=[[0]];gameDigit=[[2]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==93){gameOperation=[[3]];gameNumber=[[0]];gameDigit=[[3]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==94){gameOperation=[[2]];gameNumber=[[0]];gameDigit=[[2]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==95){gameOperation=[[3]];gameNumber=[[0]];gameDigit=[[3]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==96){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==97){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[1]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==98){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[2]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==99){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[3]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==100){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[4]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+
+
+
+
+
 
 }
 
@@ -337,7 +444,7 @@ m="plshootout";
 }
 
 if (dbOK==1) playerDBUpdate(m, v);
-//alert("m="+m+" seldif="+selDif);
+
 }
 
 
@@ -2269,7 +2376,7 @@ $("#popupMathrixPlayUnSuc").popup("open");
 //clearInterval(mathrixSetInt);
 //$("#popupMathrixPlaySuc").popup("open");
 //if(pLevels[gamePlayerID][3][gameDifficulty]==gameLevel){
-//changeLevel(3, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]*1+1));
+//changeLevel(3, gameDifficulty, (pLevels[gamePlayerID][3][gameDifficulty]*1+1));
 //}
 //}
 else if(moveOut!="" && points<sSucc){
@@ -2281,7 +2388,7 @@ clearInterval(mathrixSetInt);
 $("#popupMathrixPlaySuc").popup("open");
 
 if(pLevels[gamePlayerID][3][gameDifficulty]==gameLevel){
-changeLevel(3, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]*1+1));
+changeLevel(3, gameDifficulty, (pLevels[gamePlayerID][3][gameDifficulty]*1+1));
 }
 }
 
@@ -2592,9 +2699,11 @@ n++;
 $('#pageShootOutPlayQuestions').find(".ui-disabled").each(function(){
 n2++;
 })
+
 if(n2>=n){
 playShootOutFinish();
 }
+
 //alert(n+" - "+n2);
 
 }
@@ -2611,7 +2720,7 @@ if (gameDifficulty==1) scoreForLevelUp=75;
 if(points>=scoreForLevelUp){
 
 if(pLevels[gamePlayerID][4][gameDifficulty]==gameLevel){
-changeLevel(4, gameDifficulty, (pLevels[gamePlayerID][1][gameDifficulty]*1+1));
+changeLevel(4, gameDifficulty, (pLevels[gamePlayerID][4][gameDifficulty]*1+1));
 }
 //difficulty degistirme kodlari da gelecek buraya
 $("#popupShootOutPlaySuc").popup("open");
@@ -2620,7 +2729,6 @@ $("#popupShootOutPlaySuc").popup("open");
 else{
 $("#popupShootOutPlayUnSuc").popup("open");
 }
-
 }
 /* pageShootOutPlay kodu sonu */
 
@@ -2696,13 +2804,13 @@ if(mode1==1){
 maxLevel=100;
 }
 else if(mode1==2){
-maxLevel=5;
+maxLevel=100;
 }
 else if(mode1==3){
-maxLevel=8;
+maxLevel=100;
 }
 else if(mode1==4){
-maxLevel=10;
+maxLevel=100;
 }
 
 $("#easy"+mode2).attr("checked",false).checkboxradio('enable').checkboxradio("refresh");
