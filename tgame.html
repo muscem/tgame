@@ -255,7 +255,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	
 	}, errorCB);
 	
-	}, errorCB, getLangDBSuccess);
+	}, errorCB, successCB);
 	
 	}
 	
@@ -592,6 +592,7 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 	
 	function playerDBUpdate(mode, v){	//v=value int veya char
 	alert("update yapılacak, mode="+mode+" v="+v+" player ID="+gamePlayerID);
+	alert("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID + "'");
 	tx.executeSql("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID + "'");
 	alert("update yapıldı");
 	}
