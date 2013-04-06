@@ -85,3 +85,13 @@
 	padding:0px;
 	color:#00F;
 }
+.intro{
+	position:relative;
+	top:20%;
+	margin-left:auto;
+	margin-right:auto;
+	color:#FF0;
+	word-wrap:none;
+	width:auto;
+	font-size:0px;
+}

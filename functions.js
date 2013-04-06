@@ -370,7 +370,7 @@ lastSelFMS[gamePlayerID]=opt2;
 }
 
 
-
+//alert("m="+m+" -optDB="+optDB); 
 if (dbOK==1) playerDBUpdate(m, optDB);	//Veritabanina kayit
 //fmoperation, fmnumbers, fmdigit, fmocount, fmsign
 //'1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0'
@@ -390,7 +390,6 @@ else if(mode==1){
 lastSelDif[gamePlayerID]=[lastSelDif[gamePlayerID][0], selDif, lastSelDif[gamePlayerID][2], lastSelDif[gamePlayerID][3], lastSelDif[gamePlayerID][4]];
 m="findoutdifficulty";
 gamesModesLevels(1, "FindOut");
-
 }
 else if(mode==2){
 lastSelDif[gamePlayerID]=[lastSelDif[gamePlayerID][0], lastSelDif[gamePlayerID][1], selDif,lastSelDif[gamePlayerID][3], lastSelDif[gamePlayerID][4]];
@@ -494,20 +493,35 @@ cNumber[1]=Math.floor(Math.random()*digitMul).toString();
 iDig=Math.floor(Math.random()*gameDigit[iRand].length);	
 digitMul=createMul(iRand, iDig);
 cNumber[2]=Math.floor(Math.random()*digitMul).toString();
+while(cNumber[2]==0 && gameDifficulty==0 ){
+cNumber[2]=Math.floor(Math.random()*digitMul).toString();
+}
 }
 else if (gameNumber[iRand][iNum]==3){	//Üslü sayi
 cNumber[0]=3;
 cNumber[1]=Math.floor(Math.random()*digitMul).toString();
+while(cNumber[1]==0 && gameDifficulty==0 ){
+cNumber[1]=Math.floor(Math.random()*digitMul).toString();
+}
 iDig=Math.floor(Math.random()*gameDigit[iRand].length);	
 digitMul=createMul(iRand, iDig);
 cNumber[2]=Math.floor(Math.random()*digitMul).toString();
+while(cNumber[2]==0 && gameDifficulty==0 ){
+cNumber[2]=Math.floor(Math.random()*digitMul).toString();
+}
 }
 else if (gameNumber[iRand][iNum]==4){	//Köklü sayi
 cNumber[0]=4;
 cNumber[1]=Math.floor(Math.random()*digitMul).toString();
+while(cNumber[1]==0){
+cNumber[1]=Math.floor(Math.random()*digitMul).toString();
+}
 iDig=Math.floor(Math.random()*gameDigit[iRand].length);	
 digitMul=createMul(iRand, iDig);
 cNumber[2]=Math.floor(Math.random()*digitMul).toString();
+while(cNumber[2]==0 && gameDifficulty==0 ){
+cNumber[2]=Math.floor(Math.random()*digitMul).toString();
+}
 }
 
 return cNumber;
@@ -663,9 +677,18 @@ result=result-iDiff;
 
 }
 
+//result=5/0;
+if(result=="Infinity" && gameLang!="en"){
+if (gameLang=="de") result="Unendlichkeit";
+if (gameLang=="es") result="Infinito";
+if (gameLang=="fr") result="Infini";
+if (gameLang=="it") result="Infinito";
+if (gameLang=="tr") result="Sonsuz";
+}
 //alert("sonuc = "+result);
 //resultSet[0]=iDiff2;
 //resultSet[1]=result;
+
 
 return result;
 }
@@ -731,14 +754,14 @@ gameLang=lang;
 $("#langSelect").val(gameLang);
 $("#langSelect").trigger("change");  //Bunun içinde gameLanguageChanged() çalistiriliyor
 
-$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
+$.mobile.changePage( $("#pageIntro") , { transition: "none"} );
 }
 /* pageLang kodu sonu */
 
 
 
 /* pageGameSettings kodu baslangici */
-function langChangeSelect() {
+function langChangeSelect(){
 
 var lang;
 lang=$("#langSelect").val();
@@ -809,6 +832,7 @@ pageDeleteLanguageChange();
 $("#pagePlayerDeleteContent").find("#pagePlayerDeleteButton").attr("onclick","gamePlayerDeleteDB("+gamePlayerID+");");
 $("#pagePlayerDeleteContent").find("#pagePlayerDeletePlayerName").html(pName[gamePlayerID]);
 });
+
 
 function pageDeleteLanguageChange(){
 
@@ -970,7 +994,7 @@ pagePlayersLanguageChange();
 
 
 /* pageGameModes kodu baslangici */
-$("#pageGameModes").live("pagebeforeshow", function() {
+$("#pageGameModes").live("pagebeforeshow", function(){
 
 $("#pageGameModesFreeMode").removeClass("ui-disabled");
 $("#pageGameModesFindOut").removeClass("ui-disabled");
@@ -1015,7 +1039,7 @@ return false;
 
 
 /* pageFreeModeLevel kodu baslangici */
-$("#pageFreeModeLevel").live("pagebeforeshow", function() {
+$("#pageFreeModeLevel").live("pagebeforeshow", function(){
 pageFreeModeLevelLanguageChange();
 freeModeLevels();
 });
@@ -1214,6 +1238,7 @@ if(lastSelFMS[gamePlayerID][dif][0]==1) $("#pageFreeModeLevel").find("#eSign0").
 //alert("sifirlama tamam");
 
 }
+
 
 function pageFreeModeLevelLanguageChange(){
 
@@ -1459,9 +1484,11 @@ $("#pageFreeModePlayQuestion").css("top",h2+"%");
 
 }
 
+
 $("#pageFreeModePlay").live("pagebeforeshow", function() {
 pageFreeModePlayLanguageChange();
 });
+
 
 function pageFreeModePlayLanguageChange(){
 
@@ -1486,6 +1513,7 @@ $("#popupFreeModePlayUnSucH3").html(popupFreeModePlayUnSucH3[langID]);
 $("#popupFreeModePlayUnSucSpan").html(popupFreeModePlayUnSucSpan[langID]);
 
 }
+
 
 function playFreeModeCal(point){
 var points;
@@ -1531,7 +1559,7 @@ playFreeMode();
 
 
 /* pageFindOutLevel kodu baslangici */
-$("#pageFindOutLevel").live("pagebeforeshow", function() {
+$("#pageFindOutLevel").live("pagebeforeshow", function(){
 //var level;
 //
 //alert("cem sayfa");
@@ -1572,7 +1600,7 @@ $("#spanHardFindOut").html(spanHardFindOut[langID]);
 
 
 /* pageFindOutPlay kodu baslangici */
-$("#pageFindOutPlay").live("pagebeforeshow", function() {
+$("#pageFindOutPlay").live("pagebeforeshow", function(){
 clearInterval(gameCountDown);
 pageFindOutPlayLanguageChange();
 $("#pageFindOutPlayTimeSpan").removeClass("time1");
@@ -1635,9 +1663,14 @@ $('#playFindOutEqLess').removeClass("ui-disabled");
 $("#pageFindOutPlaySlider").val(score.toString());
 $("#pageFindOutPlaySlider").slider('refresh');
 
-var time=30;
-if(gameDifficulty==1) time=50;
-if(gameDifficulty==2) time=100;
+var time=120;	//6 saniye/soru
+if(gameDifficulty==1) time=275;	//5.5 saniye/soru
+if(gameDifficulty==2) time=500; //5 saniye/soru
+
+//var time=30;	//6 saniye/soru
+//if(gameDifficulty==1) time=50;
+//if(gameDifficulty==2) time=100;
+
 
 //alert(time);
 time=timeCal(time);
@@ -1814,7 +1847,7 @@ $("#popupFindOutPlayUnSuc").popup("open");
 
 /* pageMathrisLevel kodu baslangici */
 
-$("#pageMathrisLevel").live("pagebeforeshow", function() {
+$("#pageMathrisLevel").live("pagebeforeshow", function(){
 window.clearInterval(mathrisSetInt);
 pageMathrisLevelLanguageChange();
 gamesModesLevels(2, "Mathris");
@@ -1888,12 +1921,12 @@ $("#pageMathrisPlayQuestions").html("");
 gameLevelsConfig();	//Oyunlarin, seviyeye bagli olarak ayarlari belirleniyor
 gameDifficulty=lastSelDif[gamePlayerID][2];
 
-var moveTime=100;	//moveTime: Her adimida beklenecek süre
-var moveStep=10;	//moveStep : Her adimda kayacak miktar.
-var qGap=10;		//questionGap: Her soru arasindaki mesafe
+var moveTime=500;	//moveTime: Her adimida beklenecek süre
+var moveStep=5;	//moveStep : Her adimda kayacak miktar.
+var qGap=2;		//questionGap: Her soru arasindaki mesafe
 
-if(gameDifficulty==1) moveTime=800;
-if(gameDifficulty==2) moveTime=500;
+if(gameDifficulty==1) moveTime=450;
+if(gameDifficulty==2) moveTime=400;
 time=timeCal(moveTime);
 
 if (mathrisPlayOk==1){
@@ -2100,6 +2133,24 @@ changeLevel(2, gameDifficulty, (pLevels[gamePlayerID][2][gameDifficulty]*1+1));
 }
 $("#popupMathrisPlaySuc").popup("open");
 }
+/*else{	//Asagi düsen soru yanlis cevaplanirsa, diger soru gelmeye basliyor ancak
+//çok çabuk cevaplanmissa, yeteri kadar inmemissa, yeni soru üstüne biniyor ve oyun sonlaniyor.
+//Bu yüzden vaz geçtim.
+//Yeniden koyulursa, fonksiyonun öntanimli degiskeni olarak qGap eklenmeli.
+var n1=0;
+var qLen=$("#pageMathrisPlayQuestions").children().length;	
+for(var i=qLen;i>0;i--){
+
+if($("#pageMathrisPlayQuestions div:nth-child("+i+")").attr("class").indexOf("moving")>0 && $("#pageMathrisPlayQuestions div:nth-child("+i+")").attr("class").indexOf("wrong")<1){
+n1=1;
+}
+
+}
+//alert(n1);
+if(n1==0) playMathrisNewQuestion(qGap);
+//hareket
+}*/
+
 }
 
 function mathrisQControl(){
@@ -2126,11 +2177,12 @@ $("#pageMathrisPlayQuestions div:nth-child("+i+")").addClass("ui-disabled");
 
 
 /* pageMathrixLevel kodu baslangici */
-$("#pageMathrixLevel").live("pagebeforeshow", function() {
+$("#pageMathrixLevel").live("pagebeforeshow", function(){
 clearInterval(mathrixSetInt);
 pageMathrixLevelLanguageChange();
 gamesModesLevels(3, "Mathrix");
 });
+
 
 function pageMathrixLevelLanguageChange(){
 var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
@@ -2152,7 +2204,7 @@ $("#spanHardMathrix").html(spanHardMathrix[langID]);
 /* pageMathrixPlay kodu baslangici */
 var mathrixSetInt;
 
-$("#pageMathrixPlay").live("pagebeforeshow", function() {
+$("#pageMathrixPlay").live("pagebeforeshow", function(){
 pageMathrixPlayLanguageChange();
 });
 
@@ -2288,11 +2340,11 @@ h=$("#pageMathrixPlayQuestions").height();
 //h2=$("#pageMathrixPlayQuestionsView").height();
 $("#pageMathrixPlayQuestions").css("top",h*(-1)+"px");
 
-var moveTime=1000;	//moveTime: Her adimida beklenecek süre
+var moveTime=500;	//moveTime: Her adimida beklenecek süre
 var moveStep=5;	//moveStep : Her adimda kayacak miktar.
 
-if(gameDifficulty==1) moveTime=800;
-if(gameDifficulty==2) moveTime=500;
+if(gameDifficulty==1) moveTime=450;
+if(gameDifficulty==2) moveTime=400;
 time=timeCal(moveTime);
 
 mathrixSetInt=setInterval(function (){matrixQuestionsMove(moveStep)},moveTime);
@@ -2421,7 +2473,7 @@ matrixControl("");
 
 
 /* pageShootOutLevel kodu baslangici */
-$("#pageShootOutLevel").live("pagebeforeshow", function(e, data) {
+$("#pageShootOutLevel").live("pagebeforeshow", function(e, data){
 
 clearInterval(gameCountDown);
 /*$("#pageShootOutPlayTimeSpan").removeClass("time1");
@@ -2536,14 +2588,14 @@ $.mobile.changePage( $("#pageShootOutPlay") , { transition: "none"} );
 }
 
 
-$("#pageShootOutPlay").live("pageshow", function(event, data) {
+$("#pageShootOutPlay").live("pageshow", function(event, data){
 playShootOutRearrange();
-})
+});
 
 
 
 
-$("#pageShootOutPlay").live("pagebeforeshow", function(event, data) {
+$("#pageShootOutPlay").live("pagebeforeshow", function(event, data){
 pageShootOutPlayLanguageChange();
 //$("#pageShootOutPlayQuestions").html("");
 //alert("cem5");
@@ -2629,9 +2681,9 @@ $("#pageShootOutPlayQuestions").append(result[0]).trigger("create");
 
 }
 //alert($("#pageShootOutPlayQuestions").html());
-var time=30;
-if(gameDifficulty==1) time=50;
-if(gameDifficulty==2) time=100;
+var time=120;
+if(gameDifficulty==1) time=275;
+if(gameDifficulty==2) time=500;
 time=timeCal(time);
 
 $("#pageShootOutPlayTimeSpan").html(time);
@@ -2649,6 +2701,7 @@ playShootOutFinish();
 },1000);
 
 });
+
 
 function pageShootOutPlayLanguageChange(){
 
@@ -2673,6 +2726,7 @@ $("#popupShootOutPlayUnSucH3").html(popupShootOutPlayUnSucH3[langID]);
 $("#popupShootOutPlayUnSucSpan").html(popupShootOutPlayUnSucSpan[langID]);
 
 }
+
 
 function playShootOutCal(qNum, point){
 //alert($('#pageShootOutPlayQuestion'+qNum).css("top"));
@@ -2707,6 +2761,7 @@ playShootOutFinish();
 //alert(n+" - "+n2);
 
 }
+
 
 function playShootOutFinish(){
 var points, gameDifficulty, scoreForLevelUp;
@@ -2879,6 +2934,9 @@ $("#page"+mode2+"Levels").html(levelHtml);
 }
 
 
+
+
+//silinecek
 function timeCalculate1(){
 
 
@@ -3267,22 +3325,55 @@ alert("ce  mmm");
 
 
 
+/* pageIntro kodu baslangici */
+function pageIntroLanguageChange(){
+var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
+langID=findlangID();
+
+var intro1=["Dies<br>Ist<br>Nur<br>Ein<br>Anfang", "This<br>Is<br>Just<br>A<br>Beginning", "Esto<br>Es<br>S&oacute;lo<br>El<br>Comienzo", "Ce<br>N'est<br>Qu'un<br>D&eacute;but", "Questo<br>&Eacute;<br>Solo<br>Un<br>Inizio", "Bu<br>Sadece<br>Bir<br>Ba&#351;lang&#305;&#231;"];
+var intro2=["Der<br>Tag<br>Wird<br>Kommen", "The<br>Day<br>Is<br>Coming", "Se<br>Acerca<br>El<br>D&iacute;a", "Le<br>Jour<br>Viendra", "Il<br>Giorno<br>Sta<br>Arrivando", "B&#252;y&#252;k<br>G&#252;n<br>Geliyor"];
+var intro3=["Bereiten<br>Sie<br>Sich", "Prepare<br>Yourself", "Prepararse", "Pr&eacute;parez-vous", "Preparatevi", "Haz&#305;rlan&#305;n"];
+
+$("#intro1").html(intro1[langID]);
+$("#intro2").html(intro2[langID]);
+$("#intro3").html(intro3[langID]);
+
+};
+
+$("#pageIntro").live("pagebeforeshow", function(event, data){
+//alert($(window).outerHeight());
+//alert($("#pageIntroContent").height());
+$("#pageIntroContent").height($(window).outerHeight());
+pageIntroLanguageChange();
+})
+
+$("#pageIntro").live("pageshow", function(event, data){
 
 
+$('#intro1').animate({
+fontSize: '40px'
+}, 5000, function() {
+// Animation complete.
+$('#intro1').css("font-size","0px");
+$('#intro2').animate({
+fontSize: '40px'
+}, 5000, function() {
+// Animation complete.
+$('#intro2').css("font-size","0px");
+$('#intro3').animate({
+fontSize: '40px'
+}, 5000, function() {
+// Animation complete.
+$('#intro3').css("font-size","0px");
+$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
+});
 
+});
 
+});
 
-
-
-
-
-
-
-
-
-
-/* Page kodu baslangici */
-/* Page kodu sonu */
+});
+/* pageIntro kodu sonu */
 
 
 /* Page kodu baslangici */

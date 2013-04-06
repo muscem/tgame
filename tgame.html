@@ -62,7 +62,7 @@ var lastSelFMS=[[[]]];
 
 
 //gamePlayerID=0 veritabanindan gelemeyecek bir sayi. Bu yüzden deneme kisisi (guest) için ayridim.
-/*gamePlayerID=0;
+gamePlayerID=0;
 gameLang="tr";
 pId[0]=0;
 pName[0]=["cem"];	
@@ -72,7 +72,7 @@ lastSelFMNum[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
 lastSelFMDig[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
 lastSelFMOC[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
 lastSelFMS[0]=[[1,0,0,0,0,0],[1,0,0,0,0,0],[1,0,0,0,0,0]];
-pLevels[0]=[[5,1,1],[1,1,1],[1,1,1],[1,1,1],[1,1,1]];*/
+pLevels[0]=[[5,1,1],[1,1,1],[1,1,1],[1,1,1],[1,1,1]];
 
 
 
@@ -115,7 +115,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
     // Cordova is ready
     //
-    function onDeviceReady() {
+    function onDeviceReady(){
 		//alert("veritabanı oluşturulacak");
 		dbOK=1;
         //Veritabanı açılıyor (yoksa yaratılacak)
@@ -210,12 +210,12 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	}
 	
 // Önemsiz callback'ler
-    function errorCB(err) {
+    function errorCB(err){
 		//Veritabanına bağlanmakta sorun yaşanması durumu
         alert("Error processing SQL: "+err);
     }
 
-    function successCB() {
+    function successCB(){
 		//Veritabanına başarıyla bağlanılması durumu
         //alert("success!");
     }
@@ -599,13 +599,13 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 	mode=mode.toString();
 	v=v.toString();
 	//alert("update yapılacak, mode="+mode+" v="+v+" player ID="+gamePlayerID);
-	//alert("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID.toString() + "'");
+	alert("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID.toString() + "'");
 	db.transaction(function(tx){
 							
 	tx.executeSql("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID + "'");
 	
 	}, errorCB, successCB);
-	//alert("update yapıldı");
+	alert("update yapıldı");
 	}
 /* Veritananı bağlantı kodları sonu */
 
@@ -648,7 +648,7 @@ MathMadness is checking some controls. Please wait.
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageOpening" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>MathMadness</h1>
-<a href="#pagePlayers" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
+<a href="#pageIntro" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
 </div><!-- /header -->
 
 <div data-role="content" id="pageLangContent" align="center">
@@ -665,6 +665,28 @@ MathMadness is checking some controls. Please wait.
 
 </div><!-- /page -->
 
+
+
+<!-- /Sayfa başlangıcı -->
+<!--Program yüklendikten sonraki ilk açılışta dil seçimi yaptıracak sayfa-->
+<div data-role="page" id="pageIntro">
+
+<!-- <div data-role="header" data-theme="b" data-position="fixed">
+<a href="#pageLang" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
+<h1>MathMadness</h1>
+<a href="#pagePlayers" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
+</div>/header -->
+
+<div data-role="content" id="pageIntroContent" align="center" style="background-color:#000; height:300px; width:100%; padding:0px; margin:0px">
+
+<p id="intro1" class="intro">This<br>Is<br>Just<br>A<br>Begining</p>
+<p id="intro2" class="intro">The<br>Day<br>Is<br>Coming</p>
+<p id="intro3" class="intro">Prepare<br>Yourself</p>
+
+
+</div>
+
+</div><!-- /page -->
 
 
 
@@ -684,7 +706,7 @@ MathMadness is checking some controls. Please wait.
 <div id="pagePlayersList">
 
 
-<div class="pagePlayersPlayerInfo ui-corner-all">
+<!--<div class="pagePlayersPlayerInfo ui-corner-all">
 
 <a href="#" data-role="button" data-icon="star" data-theme="d" onClick="playerSelect('0')">Oyuncu 1</a>
 
@@ -747,7 +769,7 @@ MathMadness is checking some controls. Please wait.
 </p>
 
 
-</div>
+</div>-->
 </div>
 
 <br>  
@@ -1253,7 +1275,7 @@ Question</div>
 <!--<div id="pageMathrisPlayQuestions2" style="margin:0px; padding:0px 0px; height:800px; background-color:#35F">-->
 
 
-<div id="pageMathrisPlayQuestions" style="margin:0px; padding:0px 0px; height:450px; border-color:#006; background-color:#09F;"><!--overflow:hidden-->
+<div id="pageMathrisPlayQuestions" style="margin:0px; padding:0px 0px; height:450px; border-color:#006;"><!--overflow:hidden-->
 
 <!--Sorular buraya gelecek-->
 
@@ -1428,7 +1450,7 @@ Question</div>
 <span id="pageShootOutPlayTimeSpan" class="time1">600</span>
 </td>
 </tr></table>
-<div id="pageShootOutPlayQuestions" style="margin:0px; padding:0px 0px; height:300px; background-color:#09F;">
+<div id="pageShootOutPlayQuestions" style="margin:0px; padding:0px 0px; height:300px;">
 
 <!--Sorular buraya gelecek-->
 
@@ -1452,7 +1474,6 @@ Question</div>
 <img src="images/wrong.png">
 <a href="#pageShootOutLevel" data-role="button" data-theme="d"><span id="popupShootOutPlayUnSucSpan">OK</span></a>
 </div>
-
 
 </div><!-- /page -->
 
