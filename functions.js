@@ -290,19 +290,20 @@ m="fmnumbers";
 alert("op1==1 girildi");
 for(var i=0;i<3;i++){
 for (var i2=0;i2<5;i2++){
-alert("cem1");	
+
 opt1[i2]=lastSelFMNum[gamePlayerID][i][i2];
 if(i2==op2 && dif==i){
-alert("cem2");
 opt1[i2]=(lastSelFMNum[gamePlayerID][i][i2]+1)%2;
-alert("cem3");
 }
 
 if(optDB!="") optDB=optDB+"|";
-alert("cem4");
+alert("optDB="+optDB);
+alert("i2="+i2);
+alert("opt1[i2]="+opt1[i2]);
+alert("cem4="+opt1[i2].toString());
 optDB=optDB.toString()+opt1[i2].toString();
-alert("cem4-2");
-alert("cem4-3="+opt1[i2].toString());
+//alert("cem4-2");
+
 }
 alert("cem5");
 opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4]];
