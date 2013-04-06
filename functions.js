@@ -262,7 +262,7 @@ var optDB="";	//Veritabanina yazdirilacak veri
 var dif;
 dif=lastSelDif[gamePlayerID][0];	//Seçili zorluk derecesi
 //alert("seçili dif= "+lastSelDif[gamePlayerID][0]);
-alert("seçili dif= "+dif+" op1= "+op1+" op2= "+op2);
+//alert("seçili dif= "+dif+" op1= "+op1+" op2= "+op2);
 if(op1==0){
 m="fmoperation";
 
@@ -283,11 +283,11 @@ opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3]];
 
 lastSelFMOp[gamePlayerID]=opt2;
 //lastSelFMOp[gamePlayerID]=[[1,1,1,1],[1,0,0,0],[1,0,0,0]];
-alert("1-m="+m+" -optDB="+optDB); 
+//alert("1-m="+m+" -optDB="+optDB); 
 }
 else if(op1==1){
 m="fmnumbers";
-alert("op1==1 girildi");
+//alert("op1==1 girildi");
 for(var i=0;i<3;i++){
 for (var i2=0;i2<5;i2++){
 
@@ -297,21 +297,21 @@ opt1[i2]=(lastSelFMNum[gamePlayerID][i][i2]+1)%2;
 }
 
 if(optDB!="") optDB=optDB+"|";
-alert("optDB="+optDB);
-alert("i2="+i2);
-alert("opt1[i2]="+opt1[i2]);
-alert("cem4="+opt1[i2].toString());
+//alert("optDB="+optDB);
+//alert("i2="+i2);
+//alert("opt1[i2]="+opt1[i2]);
+//alert("cem4="+opt1[i2].toString());
 optDB=optDB.toString()+opt1[i2].toString();
 //alert("cem4-2");
 
 }
-alert("cem5");
+//alert("cem5");
 opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4]];
 }
-alert("cem6");
+//alert("cem6");
 lastSelFMNum[gamePlayerID]=opt2;
 //lastSelFMNum[gamePlayerID]=[[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0]];
-alert("1-m="+m+" -optDB="+optDB); 
+//alert("1-m="+m+" -optDB="+optDB); 
 }
 else if(op1==2){
 m="fmdigit";
@@ -333,7 +333,7 @@ opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4]];
 
 lastSelFMDig[gamePlayerID]=opt2;
 //lastSelFMDig[gamePlayerID]=[[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0]];
-alert("1-m="+m+" -optDB="+optDB); 
+//alert("1-m="+m+" -optDB="+optDB); 
 }
 else if(op1==3){
 m="fmocount";
@@ -355,7 +355,7 @@ opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4]];
 
 lastSelFMOC[gamePlayerID]=opt2;
 //lastSelFMOC[gamePlayerID]=[[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0]];
-alert("1-m="+m+" -optDB="+optDB); 
+//alert("1-m="+m+" -optDB="+optDB); 
 }
 else if(op1==4){
 m="fmsign";
@@ -377,11 +377,11 @@ opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4],opt1[5]];
 
 lastSelFMS[gamePlayerID]=opt2;
 //lastSelFMS[gamePlayerID]=[[1,1,1,1,1,1],[1,0,0,0,0,0],[1,0,0,0,0,0]];
-alert("1-m="+m+" -optDB="+optDB); 
+//alert("1-m="+m+" -optDB="+optDB); 
 }
 
 
-alert("2-m="+m+" -optDB="+optDB); 
+//alert("2-m="+m+" -optDB="+optDB); 
 if (dbOK==1) playerDBUpdate(m, optDB);	//Veritabanina kayit
 //fmoperation, fmnumbers, fmdigit, fmocount, fmsign
 //'1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0'

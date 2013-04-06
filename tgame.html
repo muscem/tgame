@@ -599,13 +599,13 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 	mode=mode.toString();
 	v=v.toString();
 	//alert("update yapılacak, mode="+mode+" v="+v+" player ID="+gamePlayerID);
-	alert("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID.toString() + "'");
+	//alert("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID.toString() + "'");
 	db.transaction(function(tx){
 							
 	tx.executeSql("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID + "'");
 	
 	}, errorCB, successCB);
-	alert("update yapıldı");
+	//alert("update yapıldı");
 	}
 /* Veritananı bağlantı kodları sonu */
 
