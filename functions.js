@@ -301,6 +301,8 @@ alert("cem3");
 if(optDB!="") optDB=optDB+"|";
 alert("cem4");
 optDB=optDB.toString()+opt1[i2].toString();
+alert("cem4-2");
+alert("cem4-3="+opt1[i2].toString());
 }
 alert("cem5");
 opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4]];
