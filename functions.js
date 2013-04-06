@@ -262,7 +262,7 @@ var optDB="";	//Veritabanina yazdirilacak veri
 var dif;
 dif=lastSelDif[gamePlayerID][0];	//Seçili zorluk derecesi
 //alert("seçili dif= "+lastSelDif[gamePlayerID][0]);
-//alert("seçili dif= "+dif);
+alert("seçili dif= "+dif+" op1= "+op1+" op2= "+op2);
 if(op1==0){
 m="fmoperation";
 
@@ -283,6 +283,7 @@ opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3]];
 
 lastSelFMOp[gamePlayerID]=opt2;
 //lastSelFMOp[gamePlayerID]=[[1,1,1,1],[1,0,0,0],[1,0,0,0]];
+alert("1-m="+m+" -optDB="+optDB); 
 }
 else if(op1==1){
 m="fmnumbers";
@@ -304,6 +305,7 @@ opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4]];
 
 lastSelFMNum[gamePlayerID]=opt2;
 //lastSelFMNum[gamePlayerID]=[[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0]];
+alert("1-m="+m+" -optDB="+optDB); 
 }
 else if(op1==2){
 m="fmdigit";
@@ -325,6 +327,7 @@ opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4]];
 
 lastSelFMDig[gamePlayerID]=opt2;
 //lastSelFMDig[gamePlayerID]=[[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0]];
+alert("1-m="+m+" -optDB="+optDB); 
 }
 else if(op1==3){
 m="fmocount";
@@ -346,6 +349,7 @@ opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4]];
 
 lastSelFMOC[gamePlayerID]=opt2;
 //lastSelFMOC[gamePlayerID]=[[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0]];
+alert("1-m="+m+" -optDB="+optDB); 
 }
 else if(op1==4){
 m="fmsign";
@@ -367,10 +371,11 @@ opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4],opt1[5]];
 
 lastSelFMS[gamePlayerID]=opt2;
 //lastSelFMS[gamePlayerID]=[[1,1,1,1,1,1],[1,0,0,0,0,0],[1,0,0,0,0,0]];
+alert("1-m="+m+" -optDB="+optDB); 
 }
 
 
-//alert("m="+m+" -optDB="+optDB); 
+alert("2-m="+m+" -optDB="+optDB); 
 if (dbOK==1) playerDBUpdate(m, optDB);	//Veritabanina kayit
 //fmoperation, fmnumbers, fmdigit, fmocount, fmsign
 //'1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0'
