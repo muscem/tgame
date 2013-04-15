@@ -279,11 +279,13 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	v=v.toString();
 	//alert("update yapılacak, mode="+mode+" v="+v+" player ID="+gamePlayerID);
 	//alert("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID.toString() + "'");
+	if(dbOK==1){
 	db.transaction(function(tx){
 							
 	tx.executeSql("UPDATE game SET "+mode+" = '" + v + "' WHERE id = '1'");
 	
 	}, errorCB, successCB);
+	}
 	//alert("update yapıldı");
 	}
 
@@ -592,7 +594,7 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 	
 	function gamePlayerRenameDB(id){
 	var name;
-	name=$("#pagePlayerRenameContent").find("#newname").val();
+	name=encodeURIComponent($("#pagePlayerRenameContent").find("#newname").val());
 	//alert("oyuncu adı değiştiriliyor id="+id+" name ="+name);
 	
 	db.transaction(function(tx){
@@ -697,7 +699,7 @@ MathMadness is checking some controls. Please wait.
 
 <!-- /Sayfa başlangıcı -->
 <!--Program yüklendikten sonraki ilk açılışta dil seçimi yaptıracak sayfa-->
-<div data-role="page" id="pageIntro">
+<div data-role="page" id="pageIntro"  style=" background-color:#999;">
 
 <!-- <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageLang" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
@@ -705,7 +707,17 @@ MathMadness is checking some controls. Please wait.
 <a href="#pagePlayers" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
 </div>/header -->
 
-<div data-role="content" id="pageIntroContent" align="center" style="background-color:#000; height:300px; width:100%; padding:0px; margin:0px">
+<div data-role="content" id="pageIntroContent" align="center" style=" background-color:#999; padding:0px; margin:0px; vertical-align:middle;">
+<table style="margin-top:50px;">
+<tr><td>
+<img src="splash.png" width="282" height="118" >
+</td>
+</tr>
+<tr><td height="50;" align="right" style="font-size:18px;">powered by</td></tr>
+<tr><td>
+<img src="logo_tayangu.png" width="74" height="66" align="right" >
+</td></tr>
+</table>
 
 <p id="intro1" class="intro">This<br>Is<br>Just<br>A<br>Begining</p>
 <p id="intro2" class="intro">The<br>Day<br>Is<br>Coming</p>

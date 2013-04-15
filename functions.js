@@ -3400,13 +3400,13 @@ $("#pageIntro").live("pagebeforeshow", function(event, data){
 //alert($(window).outerHeight());
 //alert($("#pageIntroContent").height());
 $("#pageIntroContent").height($(window).outerHeight());
-pageIntroLanguageChange();
+//pageIntroLanguageChange();
 })
 
 $("#pageIntro").live("pageshow", function(event, data){
 
 
-$('#intro1').animate({
+/*$('#intro1').animate({
 fontSize: '40px'
 }, 5000, function() {
 // Animation complete.
@@ -3426,7 +3426,10 @@ $.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
 
 });
 
-});
+});*/
+setTimeout(function(){
+$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
+},3000);
 
 });
 /* pageIntro kodu sonu */
