@@ -961,15 +961,23 @@ var levelSpanShootout=$("#levelSpanShootout");*/
 
 // diller 	[ 0=de, 1=en, 2=es, 3=fr, 4=it, 5=tr]
 //["", "", "", "", "", ""]
+alert("cem1");
 var playersH=["Spieler :", "Players :", "Jugadores :", "Joueurs :", "Giocatori :", "Oyuncular :"];
+alert("cem1_2");
 var levelSpanMode=["Modus","Mode","Modo","Mode","Moda","Mod"];
+alert("cem2");
 var levelSpanDifE=["Leicht", "Easy", "F&aacute;cil", "Facile", "Facile", "Kolay"];
+alert("cem3");
 var levelSpanDifM=["Moderieren", "Moderate", "Moderada", "Mod&eacute;r&eacute;e", "Moderata", "Normal"];
+alert("cem4");
 var levelSpanDifH=["Schwer", "Hard", "Dif&iacute;cil", "Difficile", "", "Zor"];
-var playerRenameSpan=["Umbenennen", "Rename", "Rebautizar", "Renommer", "Rinominare", "&#304;smi de&#287;i&#351;tir"]
+alert("cem5");
+var playerRenameSpan=["Umbenennen", "Rename", "Rebautizar", "Renommer", "Rinominare", "&#304;smi de&#287;i&#351;tir"];
+alert("cem6");
 var playerDeleteSpan=["L&ouml;schen", "Delete", "Borrar", "Effacer", "Cancellare", "Sil"];
+alert("cem7");
 var playerCreateSpan=["Schaffen", "Create", "Crear", "Cr&eacute;er", "Creare", "Olu&#351;tur"];
-
+alert("cem8");
 
 //var langLabel=["Sprache :", "Idioma", "Langue", "Lingua", "Dil :", "Language :"];
 //var playerDelSpan=["L&ouml;schen", "Borrar", "Effacer", "Cancellare", "Sil", "Delete"];
@@ -981,15 +989,23 @@ var playerCreateSpan=["Schaffen", "Create", "Crear", "Cr&eacute;er", "Creare", "
 //var levelSpanMathrix=["Mathrix", "Mathrix", "Mathrix", "Mathrix", "Mathrix", "Mathrix"];
 //var levelSpanShootout=["Shoot-Out", "Shoot-Out", "Shoot-Out", "Shoot-Out", "Shoot-Out", "Shoot-Out"];
 
-
+alert("cem9");
 $("#playersH").html(playersH[langID]);
+alert("cem10");
 $(".levelSpanMode").html(levelSpanMode[langID]);
+alert("cem11");
 $(".levelSpanDifE").html(levelSpanDifE[langID]);
+alert("cem12");
 $(".levelSpanDifM").html(levelSpanDifM[langID]);
+alert("cem13");
 $(".levelSpanDifH").html(levelSpanDifH[langID]);
+alert("cem14");
 $(".playerRenameSpan").html(playerRenameSpan[langID]);
+alert("cem15");
 $(".playerDeleteSpan").html(playerDeleteSpan[langID]);
+alert("cem16");
 $(".playerCreateSpan").html(playerCreateSpan[langID]);
+alert("cem17");
 
 
 //$("#langLabel").text(langLabel[langID]);
