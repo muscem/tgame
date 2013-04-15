@@ -4,8 +4,12 @@
 <meta charset="utf-8">
 <title>tgame</title> 
 <meta name="viewport" content="width=device-width, initial-scale=1"> 
-<link rel="stylesheet" href="tgame.css" />
-<link rel="stylesheet" href="jquery.mobile-1.2.0.min.css" />
+<!--<link rel="stylesheet" href="tgame.css" />-->
+<link rel="stylesheet" href="jquery.mobile-1.2.0.min1.css" id="styleConf" />
+
+<!--<link rel="stylesheet" href="jquery.mobile.structure-1.2.0.css" id="styleConf" />
+<link rel="stylesheet" href="jquery.mobile.theme-1.2.0.css" id="styleConf" />-->
+
 
 <script src="jquery-1.8.3.min.js"></script>
 <script src="jquery.mobile-1.2.0.min.js"></script>
@@ -14,6 +18,7 @@
 <!--<script src="jquery.animate-enhanced.js"></script>-->
 
 <script src="functions.js"></script>
+<!--<script src="fmin.js"></script>-->
 
 <script src="phonegap.js"></script>
 <!--<script src="cordova-2.2.0.js"></script>-->
@@ -25,6 +30,7 @@ var dbOK=0;		//Bilgisayarda kullanamk için gerekli. Sonra sil.
 //Veritabanından alınan bilgiler (p = player)
 var gameLang;			//Oyun dili		var gameLang="tr";
 var gamePlayerID;		//Oyuncu id			var gamePlayerID=0;
+var gameTheme;
 
 //Oyuncunun seçimleri
 var gameMode;				//Oyun modu
@@ -62,17 +68,17 @@ var lastSelFMS=[[[]]];
 
 
 //gamePlayerID=0 veritabanindan gelemeyecek bir sayi. Bu yüzden deneme kisisi (guest) için ayridim.
-gamePlayerID=0;
+/*gamePlayerID=0;
 gameLang="tr";
 pId[0]=0;
 pName[0]=["cem"];	
 lastSelDif[0]=[0,0,0,0,0];	//[1,0,0,0,0]	[2,0,0,0,0]
 lastSelFMOp[0]=[[1,0,0,0],[1,0,0,0],[1,0,0,0]];
-lastSelFMNum[0]=[[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,]];
+lastSelFMNum[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
 lastSelFMDig[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
 lastSelFMOC[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
 lastSelFMS[0]=[[1,0,0,0,0,0],[1,0,0,0,0,0],[1,0,0,0,0,0]];
-pLevels[0]=[[5,1,1],[1,1,1],[1,1,1],[1,1,1],[1,1,1]];
+pLevels[0]=[[5,3,1],[100,1,1],[100,1,1],[100,1,1],[100,1,1]];*/
 
 
 
@@ -136,7 +142,8 @@ document.addEventListener("deviceready", onDeviceReady, false);
 //alert("game tablosu oluşturulacak");
 		 tx.executeSql('CREATE TABLE IF NOT EXISTS game ('+
 					'id INTEGER PRIMARY KEY AUTOINCREMENT'+
-					', language VARCHAR(2))');
+					', language VARCHAR(2)'+
+					', theme INTEGER)');
 		 
 //alert("player tablosu oluşturulacak");			 
 		 tx.executeSql('CREATE TABLE IF NOT EXISTS players ('+
@@ -182,6 +189,11 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		//alert("bulunan dil sayısı len= "+len);
 		if(len==1){
 		gameLang=results.rows.item(0).language;
+		gameTheme=results.rows.item(0).theme;
+		if(gameTheme!=1){
+		var theme="jquery.mobile-1.2.0.min"+gameTheme+".css";
+		$('#styleConf[rel=stylesheet]').attr('href', theme);
+		}
 		//alert("dil="+gameLang);
 		$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );	
 		//Dil daha önceden seçilmişse, oyuncu kaydıda yapılmış olabilir. Kontrol ediliyor
@@ -236,7 +248,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	var len = results.rows.length;
 	if(len==0 || len>1){
 	//alert("Daha öncesinde dil yok. Yeni kayıt yapılacak "+gameLang);
-	tx.executeSql("INSERT INTO game (language) VALUES ('"+gameLang+"')");
+	tx.executeSql("INSERT INTO game (language, theme) VALUES ('"+gameLang+"', '1')");
 	
 	//Daha önce dil kaydı yapılmadığına göre oyuncu da kayıtlı değildir. Çünkü dil olmaması durumu, oyun ilk yüklendiğinde olacak sadece
 //		if(gameLang=="de") gamePlayerCreateDB("Neue Spieler");
@@ -261,7 +273,18 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	
 	}
 	
+	function gameDBUpdate(mode, v){	//v=value int veya char
+	mode=mode.toString();
+	v=v.toString();
+	//alert("update yapılacak, mode="+mode+" v="+v+" player ID="+gamePlayerID);
+	//alert("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID.toString() + "'");
+	db.transaction(function(tx){
+							
+	tx.executeSql("UPDATE game SET "+mode+" = '" + v + "' WHERE id = '1'");
 	
+	}, errorCB, successCB);
+	//alert("update yapıldı");
+	}
 
 	function gamePlayerCreateDB(name){
 	var nameFrom="";
@@ -273,7 +296,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 	if(name!=""){
 	db.transaction(function (tx){
-	tx.executeSql("INSERT INTO players (name, plfreemode, plfindout, plmathris, plmathrix, plshootout, freemodedifficulty, findoutdifficulty, mathrisdifficulty, mathrixdifficulty, shootoutdifficulty, fmoperation, fmnumbers, fmdigit, fmocount, fmsign) VALUES ('"+name+"', '1|1|1', '1|1|1', '1|1|1', '1|1|1', '1|1|1', 0, 0, 0, 0, 0, '1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0')");
+	tx.executeSql("INSERT INTO players (name, plfreemode, plfindout, plmathris, plmathrix, plshootout, freemodedifficulty, findoutdifficulty, mathrisdifficulty, mathrixdifficulty, shootoutdifficulty, fmoperation, fmnumbers, fmdigit, fmocount, fmsign) VALUES ('"+name+"', '1|1|1', '1|1|1', '1|1|1', '1|1|1', '1|1|1', 0, 0, 0, 0, 0, '1|0|0|0|1|0|0|0|1|0|0|0', '1|0|0|0|0|1|0|0|0|0|1|0|0|0|0', '1|0|0|0|0|1|0|0|0|0|1|0|0|0|0', '1|0|0|0|0|1|0|0|0|0|1|0|0|0|0', '1|0|0|0|0|0|1|0|0|0|0|0|1|0|0|0|0|0')");
 	//alert("Yeni oyuncu kaydedildi");
 	}, errorCB, function (){
 	if(nameFrom="form"){
@@ -607,6 +630,8 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 	}, errorCB, successCB);
 	//alert("update yapıldı");
 	}
+	
+	
 /* Veritananı bağlantı kodları sonu */
 
 
@@ -648,7 +673,7 @@ MathMadness is checking some controls. Please wait.
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageOpening" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>MathMadness</h1>
-<a href="#pageIntro" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
+<a href="#pagePlayers" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
 </div><!-- /header -->
 
 <div data-role="content" id="pageLangContent" align="center">
@@ -824,6 +849,16 @@ Explanations of games.
    <option value="fr">Français</option>
    <option value="it">Italiano</option>
    <option value="tr">Türkçe</option>
+</select>
+
+<label for="styleSelect" class="select" style="margin-top:20px; font-weight:bold;"><h2 id="themeLabelH">Theme :</h2></label>
+<select name="styleSelect" id="styleSelect" onChange="styleChangeSelect();">
+   <option value="1">1</option>
+   <option value="2">2</option>
+   <option value="3">3</option>
+   <option value="4">4</option>
+   <option value="5">5</option>
+   <option value="6">6</option>
 </select>
 </div>
 
@@ -1086,8 +1121,10 @@ X ? X ? X ? X ? X ? X</span></label>
 <input type="range" name="pageFreeModePlaySlider" id="pageFreeModePlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
 <input type="text" value="" id="playFreeModeAnswer" style="visibility:hidden" disabled>
 
-<div id="pageFreeModePlayQuestion" class="ui-bar ui-bar-d ui-corner-all pageFreeModePlayQuestion">
+<div style="margin:0px -20px; padding:0px">
+<div id="pageFreeModePlayQuestion" class="ui-bar ui-bar-d ui-corner-all pageFreeModePlayQuestion shadow">
 Question</div>
+</div>
 
 </div>
 
@@ -1181,7 +1218,7 @@ Question</div>
 
 
 <!--<img class="pageFreeModePlayImage" src="background.png">-->
-<div id="pageFindOutPlayQuestion" class="ui-bar ui-bar-d ui-corner-all pageFindOutPlayQuestion">
+<div id="pageFindOutPlayQuestion" class="ui-bar ui-bar-d ui-corner-all pageFindOutPlayQuestion shadow">
 </div>
 </div>
 
@@ -1272,16 +1309,18 @@ Question</div>
 
 <input type="range" name="pageShootOutPlaySlider" id="pageMathrisPlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
 
-<!--<div id="pageMathrisPlayQuestions2" style="margin:0px; padding:0px 0px; height:800px; background-color:#35F">-->
+<div id="pageMathrisPlayQuestions2" style="margin:0px -20px; padding:0px 0px; height:470px;">
 
 
-<div id="pageMathrisPlayQuestions" style="margin:0px; padding:0px 0px; height:450px; border-color:#006;"><!--overflow:hidden-->
+<div id="pageMathrisPlayQuestions" style="margin:0px; padding:0px 0px; height:450px; width:auto;"><!--overflow:hidden-->
 
 <!--Sorular buraya gelecek-->
 
 </div>
+
+
 <hr>
-<!--</div>-->
+</div>
 </div>
 
 

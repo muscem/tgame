@@ -722,11 +722,14 @@ function timeCal(time){
 //alert("cem1");
 //coefNum; sayilar - islemler katsayi tablosu coefNeum[sayi türü][islem türü]
 //sayi türü 0-4, islem türü 0-3 
-var coefNum=[[1,1,1.5,2],[1,1,1.5,2],[1.5,1.5,1.5,1.5],[2.5,2.5,2.5,2.5],[3,3,3,3]];
+var coefNum=[[1,1,1.01,1.02],[1,1,1.01,1.02],[1.01,1.01,1.01,1.01],[1.01,1.01,1.01,1.01],[1.01,1.01,1.01,1.01]];
+//var coefNum=[[1,1,1.5,2],[1,1,1.5,2],[1.5,1.5,1.5,1.5],[2.5,2.5,2.5,2.5],[3,3,3,3]];
+
 
 //coefDigit; hane sayisi - islemler katsayi tablosu coefDigit[hane sayisi][islem türü]
 //hane sayisi 0-4, islem türü 0-3
-var coefDigit=[[1,1,1,1],[2.1,2.1,2.8,2.9],[3.1,3.1,3.8,3.9],[4.1,4.1,4.8,4.9],[5.1,5.1,5.8,5.9]];
+var coefDigit=[[1,1,1,1],[1.01,1.01,1.02,1.02],[1.01,1.01,1.02,1.02],[1.01,1.01,1.02,1.02],[1.01,1.01,1.02,1.02]];
+//var coefDigit=[[1,1,1,1],[2.1,2.1,2.8,2.9],[3.1,3.1,3.8,3.9],[4.1,4.1,4.8,4.9],[5.1,5.1,5.8,5.9]];
 
 var time2;
 var maxOp, maxDig, maxNum, maxOC;
@@ -740,7 +743,8 @@ maxOC=findMax(gameOCount,1);
 time2=(1+maxOC*0.9)*(time*coefNum[maxNum][maxOp]*coefDigit[maxDig][maxOp]);
 //alert("time2= "+time2);
 //alert(maxOp+" - "+maxDig+" - "+maxNum+" - "+maxOC+" - "+coefNum[maxNum][maxOp]+" - "+coefDigit[maxDig][maxOp]);
-return time2;
+
+return Math.floor(time2);
 }
 //Bir sayfaya ait olmayan kodlar sonu
 
@@ -789,6 +793,31 @@ if(dbOK==1) gameLangChangeDB();	//tarayicida çalismayi önler
 }
 
 
+function styleChangeSelect(){
+
+var s1,s2;
+s1=$("#styleSelect").val();
+s2="jquery.mobile-1.2.0.min"+s1+".css";
+//if(s1=="1") s2="jquery.mobile-1.2.0.min.css";
+//if(s1=="2") s2="jquery.mobile-1.2.0.min2.css";
+//if(s1=="3") s2="jquery.mobile-1.2.0.min3.css";
+
+//alert(s1+"-"+s2);
+//alert($('#styleConf[rel=stylesheet]').attr('href'));
+gameDBUpdate("theme", s1);
+$('#styleConf[rel=stylesheet]').attr('href', s2);
+
+//if(lang!=""){
+//gameLang=lang;
+//
+//pageGameSettingsLanguageChange();
+//if(dbOK==1) gameLangChangeDB();	//tarayicida çalismayi önler
+////gameLanguageChanged();
+//}
+//gameLangChange(lang);		//Tarayicida çalismayi önler
+
+}
+
 function pageGameSettingsLanguageChange(){
 
 var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
@@ -796,10 +825,11 @@ langID=findlangID();
 
 var langLabelH=["Sprache", "Language", "Idioma", "Langue", "Lingua", "Dil"];
 var gameSettingsH1=["Spiel-Einstellungen", "Game Settings", "Configuraci&oacute;n Del Juego", "Param&eacute;tres De Jeu", "Impostazioni Di Gioco", "Oyun Ayarlar&#305;"];
+var themeLabelH=["Thema", "Theme", "Tema", "Th&eacute;me", "Tema", "Tema"];
 
 $("#gameSettingsH1").html(gameSettingsH1[langID]);
 $("#langLabelH").text(langLabelH[langID]);
-
+$("#themeLabelH").text(themeLabelH[langID]);
 }
 /* pageGameSettings kodu sonu */
 
@@ -1164,7 +1194,7 @@ $("#freeModeHard").attr("checked",true).checkboxradio("refresh");
 //lastSelFMOC[gamePlayerID][dif][0]; 0, 1, 2, 3, 4
 //lastSelFMS[gamePlayerID][dif][0]; 0, 1, 2, 3, 4, 5
 //alert("gameplayerid ="+gamePlayerID+" lastSelFMNum[gamePlayerID][dif][0]= "+lastSelFMNum[gamePlayerID][dif][0]);
-
+//alert("level="+level);
 switch (level){
 case 5:
 $("#pageFreeModeLevel").find("#nRoo").checkboxradio("enable").checkboxradio('refresh');
@@ -1481,6 +1511,9 @@ w2=((((w[0]-w[1])/2)*100)/w[0]).toString();
 if(w[1]<w[0]){
 $("#pageFreeModePlayQuestion").css("left",w2+"%");
 }
+else{
+$("#pageFreeModePlayQuestion").css("left","0px");
+}
 
 var h=[];
 var h2;
@@ -1489,6 +1522,9 @@ h[1]=$("#pageFreeModePlayQuestion").height();
 h2=((((h[0]-h[1])/2)*100)/h[0]).toString();
 if(h[1]<h[0]){
 $("#pageFreeModePlayQuestion").css("top",h2+"%");
+}
+else{
+$("#pageFreeModePlayQuestion").css("top","0px");
 }
 //$(".pageFreeModePlayImage").width(w[0]*0.8);
 //$(".pageFreeModePlayImage").height(h[0]*0.8);
@@ -1548,10 +1584,10 @@ changeLevel(0, gameDifficulty, 2)
 else if(pLevels[gamePlayerID][0][gameDifficulty]==2 && lastSelFMOp[gamePlayerID][gameDifficulty][1]==1){
 changeLevel(0, gameDifficulty, 3)
 }
-else if(pLevels[gamePlayerID][0][gameDifficulty]==3 && lastSelFMOp[gamePlayerID][gameDifficulty][0]==1){
+else if(pLevels[gamePlayerID][0][gameDifficulty]==3 && lastSelFMOp[gamePlayerID][gameDifficulty][2]==1){
 changeLevel(0, gameDifficulty, 4)
 }
-else if(pLevels[gamePlayerID][0][gameDifficulty]==4 && lastSelFMOp[gamePlayerID][gameDifficulty][0]==1){
+else if(pLevels[gamePlayerID][0][gameDifficulty]==4 && lastSelFMOp[gamePlayerID][gameDifficulty][3]==1){
 changeLevel(0, gameDifficulty, 5)
 //if(gameDifficulty==0)	changeLevel(0, 1, 1);
 //if(gameDifficulty==1)	changeLevel(0, 2, 1);
@@ -1674,7 +1710,7 @@ $('#playFindOutEqLess').removeClass("ui-disabled");
 $("#pageFindOutPlaySlider").val(score.toString());
 $("#pageFindOutPlaySlider").slider('refresh');
 
-var time=120;	//6 saniye/soru
+var time=20;	//6 saniye/soru
 if(gameDifficulty==1) time=275;	//5.5 saniye/soru
 if(gameDifficulty==2) time=500; //5 saniye/soru
 
@@ -1768,6 +1804,9 @@ w2=((((w[0]-w[1])/2)*100)/w[0]).toString();
 if(w[1]<w[0]){
 $("#pageFindOutPlayQuestion").css("left",w2+"%");
 }
+else{
+$("#pageFindOutPlayQuestion").css("left","0px");
+}
 
 var h=[];
 var h2;
@@ -1776,6 +1815,9 @@ h[1]=$("#pageFindOutPlayQuestion").height();
 h2=((((h[0]-h[1])/2)*100)/h[0]).toString();
 if(h[1]<h[0]){
 $("#pageFindOutPlayQuestion").css("top",h2+"%");
+}
+else{
+$("#pageFindOutPlayQuestion").css("top","0px");
 }
 //$(".pageFreeModePlayImage").width(w[0]*0.8);
 //$(".pageFreeModePlayImage").height(h[0]*0.8);
@@ -2020,7 +2062,7 @@ if(result[1]<=result2) eqRes=point;
 
 <!--result[0]='<div id="pageMathrisPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrisQuestion ui-bar2 moving" style="position:absolute; clear:none; float:none; width:96%;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\',\''+gameLevel+'\')"></td><td><table align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+eqRes+'\',\''+gameLevel+'\')"></td></tr></tbody></table></div>';-->
 
-result[0]='<div id="pageMathrisPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrisQuestion ui-bar2 moving" style="position:absolute; width:96%;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\',\''+gameLevel+'\')"></td><td><table align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+eqRes+'\',\''+gameLevel+'\')"></td></tr></tbody></table></div>';
+result[0]='<div id="pageMathrisPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d pageMathrisQuestion ui-bar2 moving shadow" style="position:absolute; width:100%;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\',\''+gameLevel+'\')"></td><td><table align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+eqRes+'\',\''+gameLevel+'\')"></td></tr></tbody></table></div>';
 
 
 <!--result[0]='<div id="pageMatrixPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrixQuestion ui-bar2" style="margin-top:5px;"><table width="100%" align="center" border="0"><tbody><tr><td><img src="images/delete.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table width="" align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';-->
@@ -2334,7 +2376,7 @@ if(result[1]<=result2) eqRes=point;
 }
 
 
-result[0]='<div id="pageMatrixPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrixQuestion ui-bar2" style="margin-top:5px;"><table width="100%" align="center" border="0"><tbody><tr><td><img src="images/delete.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table width="" align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';
+result[0]='<div id="pageMatrixPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrixQuestion ui-bar2 shadow" style="margin-top:5px;"><table width="100%" align="center" border="0"><tbody><tr><td><img src="images/delete.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table width="" align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';
 
 
 
@@ -2541,6 +2583,9 @@ w5=100-w3+Math.random()*(100-2*(100-w3)-w4);
 if(w2<w1){
 $(this).css("left",w5+"%");
 }
+else{
+$(this).css("left","0px");
+}
 
 h0=$(window).height();
 t1=$("#pageShootOutPlayQuestions").offset().top;
@@ -2683,7 +2728,7 @@ eqRes=(-1)*point;
 if(result[1]<=result2) eqRes=point;
 }
 
-result[0]='<div id="pageShootOutPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageShootOutQuestion ui-bar2" style="position:absolute; clear:none; float:none; width:auto;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';
+result[0]='<div id="pageShootOutPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageShootOutQuestion ui-bar2 shadow" style="position:absolute; clear:none; float:none; width:auto;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';
 
 result3=$("#pageShootOutPlayQuestions").html()+result[0];
 
@@ -2692,7 +2737,7 @@ $("#pageShootOutPlayQuestions").append(result[0]).trigger("create");
 
 }
 //alert($("#pageShootOutPlayQuestions").html());
-var time=120;
+var time=20;
 if(gameDifficulty==1) time=275;
 if(gameDifficulty==2) time=500;
 time=timeCal(time);
