@@ -823,9 +823,9 @@ function pageGameSettingsLanguageChange(){
 var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
 langID=findlangID();
 
-var langLabelH=["Sprache", "Language", "Idioma", "Langue", "Lingua", "Dil"];
+var langLabelH=["Sprache :", "Language :", "Idioma :", "Langue :", "Lingua :", "Dil :"];
 var gameSettingsH1=["Spiel-Einstellungen", "Game Settings", "Configuraci&oacute;n Del Juego", "Param&eacute;tres De Jeu", "Impostazioni Di Gioco", "Oyun Ayarlar&#305;"];
-var themeLabelH=["Thema", "Theme", "Tema", "Th&eacute;me", "Tema", "Tema"];
+var themeLabelH=["Thema :", "Theme :", "Tema :", "Th&eacute;me :", "Tema :", "Tema :"];
 
 $("#gameSettingsH1").html(gameSettingsH1[langID]);
 $("#langLabelH").text(langLabelH[langID]);
