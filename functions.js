@@ -838,8 +838,8 @@ var gameSettingsH1=["Spiel-Einstellungen", "Game Settings", "Configuraci&oacute;
 var themeLabelH=["Thema :", "Theme :", "Tema :", "Th&eacute;me :", "Tema :", "Tema :"];
 
 $("#gameSettingsH1").html(gameSettingsH1[langID]);
-$("#langLabelH").text(langLabelH[langID]);
-$("#themeLabelH").text(themeLabelH[langID]);
+$("#langLabelH").html(langLabelH[langID]);
+$("#themeLabelH").html(themeLabelH[langID]);
 }
 /* pageGameSettings kodu sonu */
 
@@ -890,9 +890,9 @@ function pageDeleteLanguageChange(){
 var langID=1; //gameLang=="en" Ingilizce //Hiç bir dil seçili degilse otomatik Ingilizce olacak
 langID=findlangID();
 
-var pagePlayerDeletePlayerH=["l&ouml;schen Spieler", "Delete Player", "Borrar Jugador", "Effacer Joueur", "Eliminare Giocatore", "Oyuncu Silme"];
-var labelDelete=["Wollen Sie spieler löschen?", "Do you want to delete player?", "¿Quieres eliminar jugador", "Voulez-vous supprimer joueur?", "Vuoi eliminare giocatore?", "Oyuncuyu silmek istiyor musunuz?"];
-var playerCancelSpan=["Kündigen", "Cancel", "Cancelar", "Annuler", "Annullare", "Vazge&ccedil;"];
+var pagePlayerDeletePlayerH=["L&ouml;schen Spieler", "Delete Player", "Borrar Jugador", "Effacer Joueur", "Eliminare Giocatore", "Oyuncu Silme"];
+var labelDelete=["Wollen Sie spieler l&ouml;schen?", "Do you want to delete player?", "¿Quieres eliminar jugador", "Voulez-vous supprimer joueur?", "Vuoi eliminare giocatore?", "Oyuncuyu silmek istiyor musunuz?"];
+var playerCancelSpan=["K&uuml;ndigen", "Cancel", "Cancelar", "Annuler", "Annullare", "Vazge&ccedil;"];
 var playerDeleteSpan=["L&ouml;schen", "Delete", "Borrar", "Effacer", "Cancellare", "Sil"]
 
 $("#pagePlayerDeletePlayerH").html(pagePlayerDeletePlayerH[langID]);
@@ -1000,22 +1000,32 @@ var playerCreateSpan=["Schaffen", "Create", "Crear", "Cr&eacute;er", "Creare", "
 //var levelSpanShootout=["Shoot-Out", "Shoot-Out", "Shoot-Out", "Shoot-Out", "Shoot-Out", "Shoot-Out"];
 
 //alert("cem9");
+alert($("#playersH").html()+" = "+playersH[langID]);
 $("#playersH").html(playersH[langID]);
 //alert("cem10");
+alert($(".levelSpanMode").html()+" = "+levelSpanMode[langID]);
 $(".levelSpanMode").html(levelSpanMode[langID]);
 //alert("cem11");
+alert($(".levelSpanDifE").html()+" = "+levelSpanDifE[langID]);
 $(".levelSpanDifE").html(levelSpanDifE[langID]);
 //alert("cem12");
+alert($(".levelSpanDifM").html()+" = "+levelSpanDifM[langID]);
 $(".levelSpanDifM").html(levelSpanDifM[langID]);
 //alert("cem13");
+alert($(".levelSpanDifH").html()+" = "+levelSpanDifH[langID]);
 $(".levelSpanDifH").html(levelSpanDifH[langID]);
 //alert("cem14");
+alert($(".playerRenameSpan").html()+" = "+playerRenameSpan[langID]);
 $(".playerRenameSpan").html(playerRenameSpan[langID]);
 //alert("cem15");
+alert($(".playerDeleteSpan").html()+" = "+playerDeleteSpan[langID]);
 $(".playerDeleteSpan").html(playerDeleteSpan[langID]);
 //alert("cem16");
+alert($(".playerCreateSpan").html()+" = "+playerCreateSpan[langID]);
 $(".playerCreateSpan").html(playerCreateSpan[langID]);
 //alert("cem17");
+
+
 
 
 //$("#langLabel").text(langLabel[langID]);
