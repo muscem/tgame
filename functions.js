@@ -746,6 +746,16 @@ time2=(1+maxOC*0.9)*(time*coefNum[maxNum][maxOp]*coefDigit[maxDig][maxOp]);
 
 return Math.floor(time2);
 }
+
+
+function pointToComma(vala){
+if(gameLang!="en"){
+while(vala.indexOf(".")>=0){
+vala=vala.replace(".",",");
+}
+}
+return vala;
+}
 //Bir sayfaya ait olmayan kodlar sonu
 
 
@@ -871,7 +881,7 @@ $("#labelNewName").html(labelNewName[langID]);
 $("#pagePlayerDelete").live('pagebeforeshow', function(event){
 pageDeleteLanguageChange();
 $("#pagePlayerDeleteContent").find("#pagePlayerDeleteButton").attr("onclick","gamePlayerDeleteDB("+gamePlayerID+");");
-$("#pagePlayerDeleteContent").find("#pagePlayerDeletePlayerName").html(pName[gamePlayerID]);
+$("#pagePlayerDeleteContent").find("#pagePlayerDeletePlayerName").html(decodeURIComponent(pName[gamePlayerID]));
 });
 
 
@@ -961,23 +971,23 @@ var levelSpanShootout=$("#levelSpanShootout");*/
 
 // diller 	[ 0=de, 1=en, 2=es, 3=fr, 4=it, 5=tr]
 //["", "", "", "", "", ""]
-alert("cem1");
+//alert("cem1");
 var playersH=["Spieler :", "Players :", "Jugadores :", "Joueurs :", "Giocatori :", "Oyuncular :"];
-alert("cem1_2");
+//alert("cem1_2");
 var levelSpanMode=["Modus","Mode","Modo","Mode","Moda","Mod"];
-alert("cem2");
+//alert("cem2");
 var levelSpanDifE=["Leicht", "Easy", "F&aacute;cil", "Facile", "Facile", "Kolay"];
-alert("cem3");
+//alert("cem3");
 var levelSpanDifM=["Moderieren", "Moderate", "Moderada", "Mod&eacute;r&eacute;e", "Moderata", "Normal"];
-alert("cem4");
+//alert("cem4");
 var levelSpanDifH=["Schwer", "Hard", "Dif&iacute;cil", "Difficile", "", "Zor"];
-alert("cem5");
+//alert("cem5");
 var playerRenameSpan=["Umbenennen", "Rename", "Rebautizar", "Renommer", "Rinominare", "&#304;smi de&#287;i&#351;tir"];
-alert("cem6");
+//alert("cem6");
 var playerDeleteSpan=["L&ouml;schen", "Delete", "Borrar", "Effacer", "Cancellare", "Sil"];
-alert("cem7");
+//alert("cem7");
 var playerCreateSpan=["Schaffen", "Create", "Crear", "Cr&eacute;er", "Creare", "Olu&#351;tur"];
-alert("cem8");
+//alert("cem8");
 
 //var langLabel=["Sprache :", "Idioma", "Langue", "Lingua", "Dil :", "Language :"];
 //var playerDelSpan=["L&ouml;schen", "Borrar", "Effacer", "Cancellare", "Sil", "Delete"];
@@ -989,23 +999,23 @@ alert("cem8");
 //var levelSpanMathrix=["Mathrix", "Mathrix", "Mathrix", "Mathrix", "Mathrix", "Mathrix"];
 //var levelSpanShootout=["Shoot-Out", "Shoot-Out", "Shoot-Out", "Shoot-Out", "Shoot-Out", "Shoot-Out"];
 
-alert("cem9");
+//alert("cem9");
 $("#playersH").html(playersH[langID]);
-alert("cem10");
+//alert("cem10");
 $(".levelSpanMode").html(levelSpanMode[langID]);
-alert("cem11");
+//alert("cem11");
 $(".levelSpanDifE").html(levelSpanDifE[langID]);
-alert("cem12");
+//alert("cem12");
 $(".levelSpanDifM").html(levelSpanDifM[langID]);
-alert("cem13");
+//alert("cem13");
 $(".levelSpanDifH").html(levelSpanDifH[langID]);
-alert("cem14");
+//alert("cem14");
 $(".playerRenameSpan").html(playerRenameSpan[langID]);
-alert("cem15");
+//alert("cem15");
 $(".playerDeleteSpan").html(playerDeleteSpan[langID]);
-alert("cem16");
+//alert("cem16");
 $(".playerCreateSpan").html(playerCreateSpan[langID]);
-alert("cem17");
+//alert("cem17");
 
 
 //$("#langLabel").text(langLabel[langID]);
@@ -1512,7 +1522,7 @@ if(result[1]<=result2) eqRes=point;
 }
 
 
-result[0]='<table align="center" class="equationTable"><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></table>';
+result[0]='<table align="center" class="equationTable"><tr>'+pointToComma(result[0])+'<td>'+eqSign[1]+'</td><td>'+pointToComma(result2)+'</td></tr></table>';
 
 $("#playFreeModeWrong").attr("onClick","playFreeModeCal('"+(eqRes*(-1))+"')");
 $("#playFreeModeRight").attr("onClick","playFreeModeCal('"+eqRes+"')");
@@ -1801,7 +1811,7 @@ eqRes[3]=point*(-1);
 }
 
 
-result[0]='<table align="center" class="equationTable"><tr>'+result[0]+'<td> ? </td><td>'+result2+'</td></tr></table>';
+result[0]='<table align="center" class="equationTable"><tr>'+pointToComma(result[0])+'<td> ? </td><td>'+pointToComma(result2)+'</td></tr></table>';
 
 $("#playFindOutEq").attr("onClick","playFindOutCal('playFindOutEq', '"+eqRes[0]+"')");
 $("#playFindOutNotEq").attr("onClick","playFindOutCal('playFindOutNotEq', '"+eqRes[1]+"')");
@@ -2078,7 +2088,7 @@ if(result[1]<=result2) eqRes=point;
 
 <!--result[0]='<div id="pageMathrisPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrisQuestion ui-bar2 moving" style="position:absolute; clear:none; float:none; width:96%;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\',\''+gameLevel+'\')"></td><td><table align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+eqRes+'\',\''+gameLevel+'\')"></td></tr></tbody></table></div>';-->
 
-result[0]='<div id="pageMathrisPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d pageMathrisQuestion ui-bar2 moving shadow" style="position:absolute; width:100%;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\',\''+gameLevel+'\')"></td><td><table align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+eqRes+'\',\''+gameLevel+'\')"></td></tr></tbody></table></div>';
+result[0]='<div id="pageMathrisPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d pageMathrisQuestion ui-bar2 moving shadow" style="position:absolute; width:100%;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\',\''+gameLevel+'\')"></td><td><table align="center" border="0"><tbody><tr>'+pointToComma(result[0])+'<td>'+eqSign[1]+'</td><td>'+pointToComma(result2)+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrisCal(\''+iQuestion+'\',\''+eqRes+'\',\''+gameLevel+'\')"></td></tr></tbody></table></div>';
 
 
 <!--result[0]='<div id="pageMatrixPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrixQuestion ui-bar2" style="margin-top:5px;"><table width="100%" align="center" border="0"><tbody><tr><td><img src="images/delete.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table width="" align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';-->
@@ -2392,7 +2402,7 @@ if(result[1]<=result2) eqRes=point;
 }
 
 
-result[0]='<div id="pageMatrixPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrixQuestion ui-bar2 shadow" style="margin-top:5px;"><table width="100%" align="center" border="0"><tbody><tr><td><img src="images/delete.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table width="" align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';
+result[0]='<div id="pageMatrixPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageMathrixQuestion ui-bar2 shadow" style="margin-top:5px;"><table width="100%" align="center" border="0"><tbody><tr><td><img src="images/delete.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table width="" align="center" border="0"><tbody><tr>'+pointToComma(result[0])+'<td>'+eqSign[1]+'</td><td>'+pointToComma(result2)+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playMathrixCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';
 
 
 
@@ -2744,7 +2754,7 @@ eqRes=(-1)*point;
 if(result[1]<=result2) eqRes=point;
 }
 
-result[0]='<div id="pageShootOutPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageShootOutQuestion ui-bar2 shadow" style="position:absolute; clear:none; float:none; width:auto;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table align="center" border="0"><tbody><tr>'+result[0]+'<td>'+eqSign[1]+'</td><td>'+result2+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';
+result[0]='<div id="pageShootOutPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageShootOutQuestion ui-bar2 shadow" style="position:absolute; clear:none; float:none; width:auto;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table align="center" border="0"><tbody><tr>'+pointToComma(result[0])+'<td>'+eqSign[1]+'</td><td>'+pointToComma(result2)+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';
 
 result3=$("#pageShootOutPlayQuestions").html()+result[0];
 
