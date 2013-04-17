@@ -1264,7 +1264,9 @@ for (var i2=0;i2<4;i2++){
 //alert("Eski lastSelFMOp = "+lastSelFMOp[gamePlayerID][i][i2]+" i="+i+" i2="+i2);	
 opt1[i2]=lastSelFMOp[gamePlayerID][i][i2];
 if(i2==op2 && dif==i){
+//alert("Eski lastSelFMOp = "+lastSelFMOp[gamePlayerID][i][i2]+" i="+i+" i2="+i2+" op[i2]="+opt1[i2]);
 opt1[i2]=(lastSelFMOp[gamePlayerID][i][i2]+1)%2;
+//alert("Eski lastSelFMOp = "+lastSelFMOp[gamePlayerID][i][i2]+" i="+i+" i2="+i2+" op[i2]="+opt1[i2]);
 }
 
 if(optDB!="") optDB=optDB+"|";
@@ -1389,6 +1391,7 @@ dif=lastSelDif[gamePlayerID][0];
 
 var j1=0, j2=0, j3=0; j4=0, j5=0;
 for(var i=0;i<4;i++){
+//alert("lastSelFMOp[gamePlayerID][dif][i]="+lastSelFMOp[gamePlayerID][dif][i]);
 if(lastSelFMOp[gamePlayerID][dif][i]!=0) j1=1;
 }
 if(j1==0){
