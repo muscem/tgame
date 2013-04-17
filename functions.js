@@ -249,186 +249,9 @@ pagePlayersLanguageChange();
 
 
 
-function changeOpt(op1, op2){
-//op1 opsiyon, 0:islem, 1:numara, 2:hane, 3:islem sayisi, 4:isaret
-//op2 opsiyon, hangi opsiyonun seçili oldugu (opt1=0 için; toplama, çikarma, çarma, bölme gibi)
-
-//alert("Eski lastSelFMOp = "+lastSelFMOp[gamePlayerID][i][i2]+" i="+i+" i2="+i2);
-//alert("Yeni lastSelFMOp = "+opt1[i2]+" i="+i+" i2="+i2);
-var m;
-var opt1=[];	//geçici deger
-var opt2=[[]];	//geçici deger
-var optDB="";	//Veritabanina yazdirilacak veri
-
-var dif;
-dif=lastSelDif[gamePlayerID][0];	//Seçili zorluk derecesi
-//alert("seçili dif= "+lastSelDif[gamePlayerID][0]);
-//alert("seçili dif= "+dif+" op1= "+op1+" op2= "+op2);
-if(op1==0){
-m="fmoperation";
-
-for(var i=0;i<3;i++){
-for (var i2=0;i2<4;i2++){
-	
-opt1[i2]=lastSelFMOp[gamePlayerID][i][i2];
-if(i2==op2 && dif==i){
-opt1[i2]=(lastSelFMOp[gamePlayerID][i][i2]+1)%2;
-}
-
-if(optDB!="") optDB=optDB+"|";
-optDB=optDB.toString()+opt1[i2].toString();
-}
-
-opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3]];
-}
-
-lastSelFMOp[gamePlayerID]=opt2;
-//lastSelFMOp[gamePlayerID]=[[1,1,1,1],[1,0,0,0],[1,0,0,0]];
-//alert("1-m="+m+" -optDB="+optDB); 
-}
-else if(op1==1){
-m="fmnumbers";
-//alert("op1==1 girildi");
-for(var i=0;i<3;i++){
-for (var i2=0;i2<5;i2++){
-
-opt1[i2]=lastSelFMNum[gamePlayerID][i][i2];
-if(i2==op2 && dif==i){
-opt1[i2]=(lastSelFMNum[gamePlayerID][i][i2]+1)%2;
-}
-
-if(optDB!="") optDB=optDB+"|";
-//alert("optDB="+optDB);
-//alert("i2="+i2);
-//alert("opt1[i2]="+opt1[i2]);
-//alert("cem4="+opt1[i2].toString());
-optDB=optDB.toString()+opt1[i2].toString();
-//alert("cem4-2");
-
-}
-//alert("cem5");
-opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4]];
-}
-//alert("cem6");
-lastSelFMNum[gamePlayerID]=opt2;
-//lastSelFMNum[gamePlayerID]=[[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0]];
-//alert("1-m="+m+" -optDB="+optDB); 
-}
-else if(op1==2){
-m="fmdigit";
-
-for(var i=0;i<3;i++){
-for (var i2=0;i2<5;i2++){
-	
-opt1[i2]=lastSelFMDig[gamePlayerID][i][i2];
-if(i2==op2 && dif==i){
-opt1[i2]=(lastSelFMDig[gamePlayerID][i][i2]+1)%2;
-}
-
-if(optDB!="") optDB=optDB+"|";
-optDB=optDB.toString()+opt1[i2].toString();
-}
-
-opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4]];
-}
-
-lastSelFMDig[gamePlayerID]=opt2;
-//lastSelFMDig[gamePlayerID]=[[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0]];
-//alert("1-m="+m+" -optDB="+optDB); 
-}
-else if(op1==3){
-m="fmocount";
-
-for(var i=0;i<3;i++){
-for (var i2=0;i2<5;i2++){
-	
-opt1[i2]=lastSelFMOC[gamePlayerID][i][i2];
-if(i2==op2 && dif==i){
-opt1[i2]=(lastSelFMOC[gamePlayerID][i][i2]+1)%2;
-}
-
-if(optDB!="") optDB=optDB+"|";
-optDB=optDB.toString()+opt1[i2].toString();
-}
-
-opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4]];
-}
-
-lastSelFMOC[gamePlayerID]=opt2;
-//lastSelFMOC[gamePlayerID]=[[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0]];
-//alert("1-m="+m+" -optDB="+optDB); 
-}
-else if(op1==4){
-m="fmsign";
-
-for(var i=0;i<3;i++){
-for (var i2=0;i2<6;i2++){
-	
-opt1[i2]=lastSelFMS[gamePlayerID][i][i2];
-if(i2==op2 && dif==i){
-opt1[i2]=(lastSelFMS[gamePlayerID][i][i2]+1)%2;
-}
-
-if(optDB!="") optDB=optDB+"|";
-optDB=optDB.toString()+opt1[i2].toString();
-}
-
-opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4],opt1[5]];
-}
-
-lastSelFMS[gamePlayerID]=opt2;
-//lastSelFMS[gamePlayerID]=[[1,1,1,1,1,1],[1,0,0,0,0,0],[1,0,0,0,0,0]];
-//alert("1-m="+m+" -optDB="+optDB); 
-}
 
 
-//alert("2-m="+m+" -optDB="+optDB); 
-if (dbOK==1) playerDBUpdate(m, optDB);	//Veritabanina kayit
-//fmoperation, fmnumbers, fmdigit, fmocount, fmsign
-//'1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0'
 
-var j1=0, j2=0, j3=0; j4=0, j5=0;
-for(var i=0;i<4;i++){
-if(lastSelFMOp[gamePlayerID][dif][i]!=0) j1=1;
-}
-if(j1==0){
-$("#freeModePlayButton").addClass("ui-disabled");
-}
-
-for(var i=0;i<5;i++){
-if(lastSelFMNum[gamePlayerID][dif][i]!=0) j2=1;
-}
-if(j2==0){
-$("#freeModePlayButton").addClass("ui-disabled");
-}
-
-for(var i=0;i<5;i++){
-if(lastSelFMDig[gamePlayerID][dif][i]!=0) j3=1;
-}
-if(j3==0){
-$("#freeModePlayButton").addClass("ui-disabled");
-}
-
-for(var i=0;i<5;i++){
-if(lastSelFMOC[gamePlayerID][dif][i]!=0) j4=1;
-}
-if(j4==0){
-$("#freeModePlayButton").addClass("ui-disabled");
-}
-
-for(var i=0;i<6;i++){
-if(lastSelFMS[gamePlayerID][dif][i]!=0) j5=1;
-}
-if(j5==0){
-$("#freeModePlayButton").addClass("ui-disabled");
-}
-
-
-if(j1!=0 && j2!=0 && j3!=0 && j4!=0 && j5!=0){
-$("#freeModePlayButton").removeClass("ui-disabled");	
-}
-
-}
 
 function changeDifficulty(mode, selDif){
 
@@ -1364,6 +1187,7 @@ if(lastSelFMOC[gamePlayerID][dif][0]==1) $("#pageFreeModeLevel").find("#oCount1"
 
 if(lastSelFMS[gamePlayerID][dif][0]==1) $("#pageFreeModeLevel").find("#eSign0").attr("checked",true).checkboxradio('refresh');
 
+freeModeLevelCheckControl();
 //alert("sifirlama tamam");
 
 }
@@ -1415,6 +1239,194 @@ $("#signH3").html(signH3[langID]);
 $("#playSpan").html(playSpan[langID]);
 //$("#").html([langID]);
 
+}
+
+function changeOpt(op1, op2){
+//op1 opsiyon, 0:islem, 1:numara, 2:hane, 3:islem sayisi, 4:isaret
+//op2 opsiyon, hangi opsiyonun seçili oldugu (opt1=0 için; toplama, çikarma, çarma, bölme gibi)
+
+//alert("Eski lastSelFMOp = "+lastSelFMOp[gamePlayerID][i][i2]+" i="+i+" i2="+i2);
+//alert("Yeni lastSelFMOp = "+opt1[i2]+" i="+i+" i2="+i2);
+var m;
+var opt1=[];	//geçici deger
+var opt2=[[]];	//geçici deger
+var optDB="";	//Veritabanina yazdirilacak veri
+
+var dif;
+dif=lastSelDif[gamePlayerID][0];	//Seçili zorluk derecesi
+//alert("seçili dif= "+lastSelDif[gamePlayerID][0]);
+//alert("seçili dif= "+dif+" op1= "+op1+" op2= "+op2);
+if(op1==0){
+m="fmoperation";
+
+for(var i=0;i<3;i++){
+for (var i2=0;i2<4;i2++){
+//alert("Eski lastSelFMOp = "+lastSelFMOp[gamePlayerID][i][i2]+" i="+i+" i2="+i2);	
+opt1[i2]=lastSelFMOp[gamePlayerID][i][i2];
+if(i2==op2 && dif==i){
+opt1[i2]=(lastSelFMOp[gamePlayerID][i][i2]+1)%2;
+}
+
+if(optDB!="") optDB=optDB+"|";
+optDB=optDB.toString()+opt1[i2].toString();
+}
+
+opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3]];
+}
+
+lastSelFMOp[gamePlayerID]=opt2;
+//lastSelFMOp[gamePlayerID]=[[1,1,1,1],[1,0,0,0],[1,0,0,0]];
+//alert("1-m="+m+" -optDB="+optDB); 
+}
+else if(op1==1){
+m="fmnumbers";
+//alert("op1==1 girildi");
+for(var i=0;i<3;i++){
+for (var i2=0;i2<5;i2++){
+
+opt1[i2]=lastSelFMNum[gamePlayerID][i][i2];
+if(i2==op2 && dif==i){
+opt1[i2]=(lastSelFMNum[gamePlayerID][i][i2]+1)%2;
+}
+
+if(optDB!="") optDB=optDB+"|";
+//alert("optDB="+optDB);
+//alert("i2="+i2);
+//alert("opt1[i2]="+opt1[i2]);
+//alert("cem4="+opt1[i2].toString());
+optDB=optDB.toString()+opt1[i2].toString();
+//alert("cem4-2");
+
+}
+//alert("cem5");
+opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4]];
+}
+//alert("cem6");
+lastSelFMNum[gamePlayerID]=opt2;
+//lastSelFMNum[gamePlayerID]=[[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0]];
+//alert("1-m="+m+" -optDB="+optDB); 
+}
+else if(op1==2){
+m="fmdigit";
+
+for(var i=0;i<3;i++){
+for (var i2=0;i2<5;i2++){
+	
+opt1[i2]=lastSelFMDig[gamePlayerID][i][i2];
+if(i2==op2 && dif==i){
+opt1[i2]=(lastSelFMDig[gamePlayerID][i][i2]+1)%2;
+}
+
+if(optDB!="") optDB=optDB+"|";
+optDB=optDB.toString()+opt1[i2].toString();
+}
+
+opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4]];
+}
+
+lastSelFMDig[gamePlayerID]=opt2;
+//lastSelFMDig[gamePlayerID]=[[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0]];
+//alert("1-m="+m+" -optDB="+optDB); 
+}
+else if(op1==3){
+m="fmocount";
+
+for(var i=0;i<3;i++){
+for (var i2=0;i2<5;i2++){
+	
+opt1[i2]=lastSelFMOC[gamePlayerID][i][i2];
+if(i2==op2 && dif==i){
+opt1[i2]=(lastSelFMOC[gamePlayerID][i][i2]+1)%2;
+}
+
+if(optDB!="") optDB=optDB+"|";
+optDB=optDB.toString()+opt1[i2].toString();
+}
+
+opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4]];
+}
+
+lastSelFMOC[gamePlayerID]=opt2;
+//lastSelFMOC[gamePlayerID]=[[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0]];
+//alert("1-m="+m+" -optDB="+optDB); 
+}
+else if(op1==4){
+m="fmsign";
+
+for(var i=0;i<3;i++){
+for (var i2=0;i2<6;i2++){
+	
+opt1[i2]=lastSelFMS[gamePlayerID][i][i2];
+if(i2==op2 && dif==i){
+opt1[i2]=(lastSelFMS[gamePlayerID][i][i2]+1)%2;
+}
+
+if(optDB!="") optDB=optDB+"|";
+optDB=optDB.toString()+opt1[i2].toString();
+}
+
+opt2[i]=[opt1[0],opt1[1],opt1[2],opt1[3],opt1[4],opt1[5]];
+}
+
+lastSelFMS[gamePlayerID]=opt2;
+//lastSelFMS[gamePlayerID]=[[1,1,1,1,1,1],[1,0,0,0,0,0],[1,0,0,0,0,0]];
+//alert("1-m="+m+" -optDB="+optDB); 
+}
+
+
+//alert("2-m="+m+" -optDB="+optDB); 
+if (dbOK==1) playerDBUpdate(m, optDB);	//Veritabanina kayit
+//fmoperation, fmnumbers, fmdigit, fmocount, fmsign
+//'1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0'
+freeModeLevelCheckControl();
+
+//alert("cem");
+}
+
+function freeModeLevelCheckControl(){
+var dif;
+dif=lastSelDif[gamePlayerID][0];
+
+var j1=0, j2=0, j3=0; j4=0, j5=0;
+for(var i=0;i<4;i++){
+if(lastSelFMOp[gamePlayerID][dif][i]!=0) j1=1;
+}
+if(j1==0){
+$("#freeModePlayButton").addClass("ui-disabled");
+}
+
+for(var i=0;i<5;i++){
+if(lastSelFMNum[gamePlayerID][dif][i]!=0) j2=1;
+}
+if(j2==0){
+$("#freeModePlayButton").addClass("ui-disabled");
+}
+
+for(var i=0;i<5;i++){
+if(lastSelFMDig[gamePlayerID][dif][i]!=0) j3=1;
+}
+if(j3==0){
+$("#freeModePlayButton").addClass("ui-disabled");
+}
+
+for(var i=0;i<5;i++){
+if(lastSelFMOC[gamePlayerID][dif][i]!=0) j4=1;
+}
+if(j4==0){
+$("#freeModePlayButton").addClass("ui-disabled");
+}
+
+for(var i=0;i<6;i++){
+if(lastSelFMS[gamePlayerID][dif][i]!=0) j5=1;
+}
+if(j5==0){
+$("#freeModePlayButton").addClass("ui-disabled");
+}
+
+
+if(j1!=0 && j2!=0 && j3!=0 && j4!=0 && j5!=0){
+$("#freeModePlayButton").removeClass("ui-disabled");	
+}
 }
 /* pageFreeModeLevel kodu sonu */
 
