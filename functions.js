@@ -387,7 +387,7 @@ if (dbOK==1) playerDBUpdate(m, optDB);	//Veritabanina kayit
 //fmoperation, fmnumbers, fmdigit, fmocount, fmsign
 //'1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0'
 
-/*var j1=0, j2=0, j3=0; j4=0, j5=0;
+var j1=0, j2=0, j3=0; j4=0, j5=0;
 for(var i=0;i<4;i++){
 if(lastSelFMOp[gamePlayerID][dif][i]!=0) j1=1;
 }
@@ -426,7 +426,7 @@ $("#freeModePlayButton").addClass("ui-disabled");
 
 if(j1!=0 && j2!=0 && j3!=0 && j4!=0 && j5!=0){
 $("#freeModePlayButton").removeClass("ui-disabled");	
-}*/
+}
 
 }
 
