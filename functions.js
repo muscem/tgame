@@ -971,7 +971,7 @@ var levelSpanShootout=$("#levelSpanShootout");*/
 
 // diller 	[ 0=de, 1=en, 2=es, 3=fr, 4=it, 5=tr]
 //["", "", "", "", "", ""]
-//alert("cem1");
+alert("cem lang change");
 var playersH=["Spieler :", "Players :", "Jugadores :", "Joueurs :", "Giocatori :", "Oyuncular :"];
 //alert("cem1_2");
 var levelSpanMode=["Modus","Mode","Modo","Mode","Moda","Mod"];
@@ -1000,28 +1000,29 @@ var playerCreateSpan=["Schaffen", "Create", "Crear", "Cr&eacute;er", "Creare", "
 //var levelSpanShootout=["Shoot-Out", "Shoot-Out", "Shoot-Out", "Shoot-Out", "Shoot-Out", "Shoot-Out"];
 
 //alert("cem9");
-alert($("#playersH").html()+" = "+playersH[langID]);
+//alert($("#playersH").html()+" = "+playersH[langID]);//
+//alert($(".levelSpanMode").html()+" = "+levelSpanMode[langID]);
+//alert($(".levelSpanDifE").html()+" = "+levelSpanDifE[langID]);
+//alert($(".levelSpanDifM").html()+" = "+levelSpanDifM[langID]);
+//alert($(".levelSpanDifH").html()+" = "+levelSpanDifH[langID]);
+//alert($(".playerRenameSpan").html()+" = "+playerRenameSpan[langID]);//
+//alert($(".playerDeleteSpan").html()+" = "+playerDeleteSpan[langID]);
+//alert($(".playerCreateSpan").html()+" = "+playerCreateSpan[langID]);//
+
 $("#playersH").html(playersH[langID]);
 //alert("cem10");
-alert($(".levelSpanMode").html()+" = "+levelSpanMode[langID]);
 $(".levelSpanMode").html(levelSpanMode[langID]);
 //alert("cem11");
-alert($(".levelSpanDifE").html()+" = "+levelSpanDifE[langID]);
 $(".levelSpanDifE").html(levelSpanDifE[langID]);
 //alert("cem12");
-alert($(".levelSpanDifM").html()+" = "+levelSpanDifM[langID]);
 $(".levelSpanDifM").html(levelSpanDifM[langID]);
 //alert("cem13");
-alert($(".levelSpanDifH").html()+" = "+levelSpanDifH[langID]);
 $(".levelSpanDifH").html(levelSpanDifH[langID]);
 //alert("cem14");
-alert($(".playerRenameSpan").html()+" = "+playerRenameSpan[langID]);
 $(".playerRenameSpan").html(playerRenameSpan[langID]);
 //alert("cem15");
-alert($(".playerDeleteSpan").html()+" = "+playerDeleteSpan[langID]);
 $(".playerDeleteSpan").html(playerDeleteSpan[langID]);
 //alert("cem16");
-alert($(".playerCreateSpan").html()+" = "+playerCreateSpan[langID]);
 $(".playerCreateSpan").html(playerCreateSpan[langID]);
 //alert("cem17");
 
@@ -1066,6 +1067,12 @@ $("#pagePlayers").live('pagebeforeshow', function(event){
 listPagePlayersUserInfoDB();
 pagePlayersLanguageChange();
 });
+
+$( '#pagePlayers' ).live( 'updatelayout',function(event){
+alert("cem updatelayout");
+pagePlayersLanguageChange();
+});
+
 /* PagePlayers kodu sonu */
 
 
