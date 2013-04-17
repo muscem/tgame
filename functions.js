@@ -248,6 +248,7 @@ pagePlayersLanguageChange();
 
 
 
+
 function changeOpt(op1, op2){
 //op1 opsiyon, 0:islem, 1:numara, 2:hane, 3:islem sayisi, 4:isaret
 //op2 opsiyon, hangi opsiyonun seçili oldugu (opt1=0 için; toplama, çikarma, çarma, bölme gibi)
@@ -385,6 +386,48 @@ lastSelFMS[gamePlayerID]=opt2;
 if (dbOK==1) playerDBUpdate(m, optDB);	//Veritabanina kayit
 //fmoperation, fmnumbers, fmdigit, fmocount, fmsign
 //'1|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0', '1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0'
+
+/*var j1=0, j2=0, j3=0; j4=0, j5=0;
+for(var i=0;i<4;i++){
+if(lastSelFMOp[gamePlayerID][dif][i]!=0) j1=1;
+}
+if(j1==0){
+$("#freeModePlayButton").addClass("ui-disabled");
+}
+
+for(var i=0;i<5;i++){
+if(lastSelFMNum[gamePlayerID][dif][i]!=0) j2=1;
+}
+if(j2==0){
+$("#freeModePlayButton").addClass("ui-disabled");
+}
+
+for(var i=0;i<5;i++){
+if(lastSelFMDig[gamePlayerID][dif][i]!=0) j3=1;
+}
+if(j3==0){
+$("#freeModePlayButton").addClass("ui-disabled");
+}
+
+for(var i=0;i<5;i++){
+if(lastSelFMOC[gamePlayerID][dif][i]!=0) j4=1;
+}
+if(j4==0){
+$("#freeModePlayButton").addClass("ui-disabled");
+}
+
+for(var i=0;i<6;i++){
+if(lastSelFMS[gamePlayerID][dif][i]!=0) j5=1;
+}
+if(j5==0){
+$("#freeModePlayButton").addClass("ui-disabled");
+}
+
+
+if(j1!=0 && j2!=0 && j3!=0 && j4!=0 && j5!=0){
+$("#freeModePlayButton").removeClass("ui-disabled");	
+}*/
+
 }
 
 function changeDifficulty(mode, selDif){
@@ -749,11 +792,16 @@ return Math.floor(time2);
 
 
 function pointToComma(vala){
+//alert("vala="+vala);
+//alert("lang="+gameLang);
+//alert("indexof="+vala.indexOf("."));
+vala=vala.toString();
 if(gameLang!="en"){
-while(vala.indexOf(".")>=0){
+while(vala.indexOf(".")>-1){
 vala=vala.replace(".",",");
 }
 }
+//alert("val12="+vala);
 return vala;
 }
 //Bir sayfaya ait olmayan kodlar sonu
@@ -971,7 +1019,7 @@ var levelSpanShootout=$("#levelSpanShootout");*/
 
 // diller 	[ 0=de, 1=en, 2=es, 3=fr, 4=it, 5=tr]
 //["", "", "", "", "", ""]
-alert("cem lang change");
+//alert("cem lang change");
 var playersH=["Spieler :", "Players :", "Jugadores :", "Joueurs :", "Giocatori :", "Oyuncular :"];
 //alert("cem1_2");
 var levelSpanMode=["Modus","Mode","Modo","Mode","Moda","Mod"];
@@ -1065,13 +1113,10 @@ $.mobile.changePage( $("#pageGameModes") , { transition: "none"} );
 
 $("#pagePlayers").live('pagebeforeshow', function(event){											
 listPagePlayersUserInfoDB();
-pagePlayersLanguageChange();
+//pagePlayersLanguageChange();
 });
 
-$( '#pagePlayers' ).live( 'updatelayout',function(event){
-alert("cem updatelayout");
-pagePlayersLanguageChange();
-});
+
 
 /* PagePlayers kodu sonu */
 
@@ -1394,7 +1439,7 @@ var iRand=Math.floor(Math.random()*gameDigit.length);
 //Free mode difficulty
 gameDifficulty=lastSelDif[gamePlayerID][0];
 
-
+//alert("cem1");
 
 //Free mode selected operations
 var gameOperation2=[];
@@ -1459,7 +1504,7 @@ gameSign[0]=gameSign2;
 
 
 
-
+//alert("cem2");
 //var varNum=[];
 //if($("#nInt").attr('checked')){
 //varNum[varNum.length]=0;
@@ -1538,9 +1583,12 @@ eqRes=(-1)*point;
 if(result[1]<=result2) eqRes=point;
 }
 
+//alert("result0="+result[0]);
+//alert("result2="+result2);
 
+//alert("cem3 "+ pointToComma(result[0])+ " - "+pointToComma(result2));
 result[0]='<table align="center" class="equationTable"><tr>'+pointToComma(result[0])+'<td>'+eqSign[1]+'</td><td>'+pointToComma(result2)+'</td></tr></table>';
-
+//alert("cem4");
 $("#playFreeModeWrong").attr("onClick","playFreeModeCal('"+(eqRes*(-1))+"')");
 $("#playFreeModeRight").attr("onClick","playFreeModeCal('"+eqRes+"')");
 

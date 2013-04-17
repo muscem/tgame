@@ -8,10 +8,10 @@
 <name>A Lords Of Maths</name> 
 <description>www.ozgurceuc.com app</description> 
 <author href="http://www.tayangu.com" email="tgame@tayangu.com">mci</author>
-<gap:splash src="splash.png" />
 
-<icon src="icon.png" />
 <gap:splash src="splash.png" width="310" height="114" />
+<icon src="icon.png" />
+
 <icon src="images/icons/android/ldpi.png" gap:platform="android" gap:density="ldpi" />
 <icon src="images/icons/android/mdpi.png" gap:platform="android" gap:density="mdpi" />
 <icon src="images/icons/android/hdpi.png" gap:platform="android" gap:density="hdpi" />
