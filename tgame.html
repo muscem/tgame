@@ -13,6 +13,619 @@
 <script src="functions.js"></script>
 <script src="phonegap.js"></script>
 
+
+
+<script type="text/javascript">
+var dbOK=0;		//Bilgisayarda kullanamk için gerekli. Sonra sil.
+
+//Oyunun her yerinde kullanilacak bazi degiskenler
+//Veritabanindan alinan bilgiler (p = player)
+var gameLang;			//Oyun dili		var gameLang="tr";
+var gamePlayerID;		//Oyuncu id			var gamePlayerID=0;
+var gameTheme;
+
+//Oyuncunun seçimleri
+var gameMode;				//Oyun modu
+var gameOperation=[[]];			//Oyun islem türü
+var gameOCount=[[]];				//Oyun islem sayisi
+var gameDigit=[[]];				//Oyun hane sayisi
+var gameNumber=[[]];				//Oyun sayi türü
+var gameSign=[[]];				//Oyun sayi türü	//Sonradan ekledim bölümlerde yok.
+var gameDifficulty;			//Oyun zorlugu 1-2-3
+var gameLevel;				//Oyun seviyesi
+var gameCountDown;			//Oyun sayaci
+
+
+//Oyuncu bilgileri
+var pId=[]; 		//id
+var pName=[];		//name
+
+var pLevels=[[[]]];		//pLevels[gamePlayerID][mode][Difficulty]=level
+//mode= 1-Free mode	2-Find out	3-Matris	4-Mathrix	5-Shoot out
+
+//son seçilen zorluk
+var lastSelDif=[[]];	//freemode diffiulty	 lastSelFMDif[gamePlayerID][mode]=dif
+//mode= 1-Free mode	2-Find out	3-Matris	4-Mathrix	5-Shoot out
+//dif= 1-easy, 2-moderate, 3-hard
+
+//
+
+
+//(seçilen son durum)
+var lastSelFMOp=[[[]]];		//son seçilen operation	lastSelFMOp[gamePlayerID][Dif][operation]= 0 or 1
+var lastSelFMNum=[[[]]];	// 0: not selected
+var lastSelFMDig=[[[]]];	// 1: selected
+var lastSelFMOC=[[[]]];		
+var lastSelFMS=[[[]]];	
+
+
+
+
+
+
+
+/*
+pId[0]=0; 		//id
+pName[0]="Oyuncuuu 1";
+
+//gamePlayerID=0 veritabanindan gelemeyecek bir sayi. Bu yüzden deneme kisisi (guest) için ayridim.
+
+for(var i1=1;i1<6;i1++){
+for(var i2=1;i2<4;i2++){
+pLevels[0][i1][i2]=1;
+lastSelFMOp[0][i1][i2]=1;
+lastSelFMNum[0][i1][i2]=1;
+lastSelFMDig[0][i1][i2]=1;
+lastSelFMOC[0][i1][i2]=1;
+lastSelFMS[0][i1][i2]=1;
+}
+}
+
+//son seçilen zorluk: 1-easy, 2-moderate, 3-hard (diffiulty )
+lastSelDif[0][1]=1;
+lastSelDif[0][2]=1;	
+lastSelDif[0][3]=1;	
+lastSelDif[0][4]=1;	
+lastSelDif[0][5]=1;	
+*/
+	
+
+var gameMessage1=[];	//Henüz kullanmadim, çok dil için dizi olusturmak gerek
+
+var db;	//Veritabani için kullanacagim.
+
+/* Veritanani baglanti kodlari baslangci */
+//Veritabani olmadan oyun çalismayacagi için açilista ilk yapilacak is bu olacak.
+document.addEventListener("deviceready", onDeviceReady, false);
+
+
+
+    // Cordova is ready
+    //
+    function onDeviceReady(){
+		//alert("veritabani olusturulacak");
+		dbOK=1;
+        //Veritabani açiliyor (yoksa yaratilacak)
+		db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
+		//alert("veritabani olusturuldu");
+		//alert("Tablolar olusturulacak");
+		//Oyunun ilk açilisi ise
+		//Veritabanina tablolar olusturulacak
+		db.transaction(createTable, errorCB, createTableSuccess);
+
+    }
+	
+	
+    // Populate the database 
+	//
+    function createTable(tx){
+		//Tablolar mevcut degilse olusturulacak (oyun yüklendikten sonra ilk defa açiliyorsa).
+//alert("game tablosu olusturulacak");
+		 tx.executeSql('CREATE TABLE IF NOT EXISTS game ('+
+					'id INTEGER PRIMARY KEY AUTOINCREMENT'+
+					', language VARCHAR(2)'+
+					', theme INTEGER)');
+		 
+//alert("player tablosu olusturulacak");			 
+		 tx.executeSql('CREATE TABLE IF NOT EXISTS players ('+
+					'id INTEGER PRIMARY KEY AUTOINCREMENT'+
+					', name VARCHAR(50)'+
+					', plfreemode VARCHAR(11)'+		//player level	Easy | Moderate | Hard
+					', plfindout VARCHAR(11)'+		//player level
+					', plmathris VARCHAR(11)'+		//player level
+					', plmathrix VARCHAR(11)'+		//player level
+					', plshootout VARCHAR(11)'+		//player level
+					', freemodedifficulty INTEGER'+	//Free mode last selected difficulty
+					', findoutdifficulty INTEGER'+	//Find out last selected difficulty
+					', mathrisdifficulty INTEGER'+	//Mathris last selected difficulty
+					', mathrixdifficulty INTEGER'+	//Mathrix mode last selected difficulty
+					', shootoutdifficulty INTEGER'+	//Shoo out mode last selected difficulty
+					', fmoperation VARCHAR(23)'+	//Free mode last selected easy operation
+					', fmnumbers VARCHAR(29)'+		//Free mode last selected easy number
+					', fmdigit VARCHAR(29)'+		//Free mode last selected easy digit
+					', fmocount VARCHAR(29)'+		//Free mode last selected easy op. c.
+					', fmsign VARCHAR(35) )');		//Free mode last selected esy sign
+
+//alert("tablolar olusturuldu");	
+		
+		}
+
+
+	function createTableSuccess(){
+	//Veritabani kullanilabilir durumda
+	//alert("Veritabani kullanilabilir durumda");
+	
+	//alert("dil kontrol edilecek");
+	db.transaction(getLangDB, errorCB, successCB);
+	//db.transaction(getLangDB, errorCB, getLangDBSuccess);
+	}
+
+	function getLangDB(tx){
+		//alert("dil kontrol ediliyor");
+		//Oyunun daha önce açilip, dil seçimi yapilip yapilmadigi bulunuyor.
+		//Yapilmadiysa dil seçim sayfasina,
+		//aksi halde oyuncu seçim sayfasin yönlendirme yapiliyor.
+		tx.executeSql('SELECT * FROM game', [], function(tx, results) {
+		var len = results.rows.length;
+		//alert("bulunan dil sayisi len= "+len);
+		if(len==1){
+		gameLang=results.rows.item(0).language;
+		gameTheme=results.rows.item(0).theme;
+		if(gameTheme!=1){
+		var theme="jquery.mobile-1.2.0.min"+gameTheme+".css";
+		$('#styleConf[rel=stylesheet]').attr('href', theme);
+		}
+		//alert("dil="+gameLang);
+		$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );	
+		//Dil daha önceden seçilmisse, oyuncu kaydida yapilmis olabilir. Kontrol ediliyor
+		//alert("oyuncu bilgileri kontrol edilecek");
+		//db.transaction(listPagePlayersUserInfoDB, errorCB, listPagePlayersUserInfoDBSuccess);
+		}
+		else if(len>1){
+		//Yanlislikla birden fazla kayit yapilirsa (programlama hatasiyla)
+		//alert("Birden fazla dil kaydi olmus. Hata!");
+		tx.executeSql('DELETE FROM game');
+		$.mobile.changePage( $("#pageLang") , { transition: "none"} );	
+		}
+		else{
+		//alert("dil yok=");
+		//Dil seçim sayfasi açilacak
+		$.mobile.changePage( $("#pageLang") , { transition: "none"} );		
+		}
+	}, errorCB);
+	}
+	
+	
+	function getLangDBSuccess(){
+	if (gameLang!=""){
+	$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
+	}
+	}
+	
+// Önemsiz callback'ler
+    function errorCB(err){
+		//Veritabanina baglanmakta sorun yasanmasi durumu
+        alert("Error processing SQL: "+err);
+    }
+
+    function successCB(){
+		//Veritabanina basariyla baglanilmasi durumu
+        //alert("success!");
+    }
+	
+	function updateCB(){
+	//Veritabaninda güncelleme yapildiginda, yani bir deger update edildiginde
+	}
+// Önemsiz callback'ler sonu
+
+	function gameLangChangeDB(){
+	//alert("oyun dili degistiriliyor dil="+gameLang);
+	//Oyun dili degistirildiginde çagrilacak
+	//Veritabanindaki dili ve gameLang degiskenini degistiren kod
+	
+	db.transaction(function(tx){
+							
+	tx.executeSql('SELECT * FROM game', [], function (tx, results){
+	var len = results.rows.length;
+	if(len==0 || len>1){
+	//alert("Daha öncesinde dil yok. Yeni kayit yapilacak "+gameLang);
+	tx.executeSql("INSERT INTO game (language, theme) VALUES ('"+gameLang+"', '1')");
+	
+	//Daha önce dil kaydi yapilmadigina göre oyuncu da kayitli degildir. Çünkü dil olmamasi durumu, oyun ilk yüklendiginde olacak sadece
+//		if(gameLang=="de") gamePlayerCreateDB("Neue Spieler");
+//		if(gameLang=="en") gamePlayerCreateDB("New player");
+//		if(gameLang=="es") gamePlayerCreateDB("Nuevo Jugador");
+//		if(gameLang=="fr") gamePlayerCreateDB("Nouveau Joueur");
+//		if(gameLang=="it") gamePlayerCreateDB("Nuovo Giocatore");
+//		if(gameLang=="tr") gamePlayerCreateDB("Yeni Oyuncu");
+		
+	}
+	else{
+	var dbLangId=results.rows.item(0).id;	
+	//alert("Daha önceki dil degeri degistirilecek. id="+dbLangId);
+	var dbLangPre=results.rows.item(0).language;	
+	//alert("Önceki dil. id="+dbLangPre);
+	tx.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + dbLangId + "'");
+	}
+	
+	}, errorCB);
+	
+	}, errorCB, successCB);
+	
+	}
+	
+	function gameDBUpdate(mode, v){	//v=value int veya char
+	mode=mode.toString();
+	v=v.toString();
+	//alert("update yapilacak, mode="+mode+" v="+v+" player ID="+gamePlayerID);
+	//alert("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID.toString() + "'");
+	if(dbOK==1){
+	db.transaction(function(tx){
+							
+	tx.executeSql("UPDATE game SET "+mode+" = '" + v + "' WHERE id = '1'");
+	
+	}, errorCB, successCB);
+	}
+	//alert("update yapildi");
+	}
+
+	function gamePlayerCreateDB(name){
+	var nameFrom="";
+	if(name==""){
+	name=encodeURIComponent($("#pagePlayerCreateContent").find("#createPlayerName").val());
+	//alert(name);
+	//alert(decodeURIComponent(name));
+	nameFrom="form";
+	}
+	//alert("name= "+name);
+
+	if(name!=""){
+	db.transaction(function (tx){
+	tx.executeSql("INSERT INTO players (name, plfreemode, plfindout, plmathris, plmathrix, plshootout, freemodedifficulty, findoutdifficulty, mathrisdifficulty, mathrixdifficulty, shootoutdifficulty, fmoperation, fmnumbers, fmdigit, fmocount, fmsign) VALUES ('"+name+"', '1|1|1', '1|1|1', '1|1|1', '1|1|1', '1|1|1', 0, 0, 0, 0, 0, '1|0|0|0|1|0|0|0|1|0|0|0', '1|0|0|0|0|1|0|0|0|0|1|0|0|0|0', '1|0|0|0|0|1|0|0|0|0|1|0|0|0|0', '1|0|0|0|0|1|0|0|0|0|1|0|0|0|0', '1|0|0|0|0|0|1|0|0|0|0|0|1|0|0|0|0|0')");
+	//alert("Yeni oyuncu kaydedildi");
+	}, errorCB, function (){
+	if(nameFrom="form"){
+	$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );	
+	}
+	}
+	);
+	}
+	}
+
+
+
+	function listPagePlayersUserInfoDB(){
+	//alert("oyuncu bilgileri listeleniyor");
+	//alert("dbOK= "+dbOK);
+	if(dbOK==1){
+		
+	//Kayitli oyuncu varsa,
+	//oyunculara ait bilgiler alinip pagePlayer sayfasina yazilacak.
+	db.transaction(function (tx){
+	
+	tx.executeSql('SELECT * FROM players', [], function (tx, results){
+		var len = results.rows.length;
+		
+		if(len==0){
+		//alert("Veritabaninda kayitli oyuncu bulunamadi. Yeni olusturulacak");
+		//eger bütün oyuncular silinmis ise
+		//seçili dilde "Yeni Oyuncu" adinda oyuncu olusturulacak
+		if(gameLang=="de") gamePlayerCreateDB("Neue Spieler");
+		if(gameLang=="en") gamePlayerCreateDB("New player");
+		if(gameLang=="es") gamePlayerCreateDB("Nuevo Jugador");
+		if(gameLang=="fr") gamePlayerCreateDB("Nouveau Joueur");
+		if(gameLang=="it") gamePlayerCreateDB("Nuovo Giocatore");
+		if(gameLang=="tr") gamePlayerCreateDB("Yeni Oyuncu");
+		listPagePlayersUserInfoDB();
+		return false;
+		}
+		
+		//Player'a ait degiskenler sifirlaniyor
+		pId=[];
+		pName=[];
+		pLevels=[[[]]];
+		lastSelFMOp=[[[]]];
+		lastSelFMNum=[[[]]];
+		lastSelFMDig=[[[]]];
+		lastSelFMOC=[[[]]];
+		lastSelFMS=[[[]]];
+		lastSelDif=[[]];
+
+
+
+		
+//		alert("Kayitli oyuncu sayisi ="+len);
+		var htmlCode="";
+		var id;
+		if(len>0){
+		for(var i=0;i<len;i++){
+		pId[i]=results.rows.item(i).id;
+		id=pId[i];
+		pName[id]=results.rows.item(i).name;
+		
+
+		var deg=[];
+		var mod=[[]];
+		var dif=[[]];
+		
+		deg=results.rows.item(i).plfreemode.split("|");
+		mod[0]=deg;
+		deg=[];
+		deg=results.rows.item(i).plfindout.split("|");
+		mod[1]=deg;
+		deg=[];
+		deg=results.rows.item(i).plmathris.split("|");
+		mod[2]=deg;
+		deg=[];
+		deg=results.rows.item(i).plmathrix.split("|");
+		mod[3]=deg;
+		deg=[];
+		deg=results.rows.item(i).plshootout.split("|");
+		mod[4]=deg;
+		pLevels[id]=mod;
+		
+		
+		deg=[];
+		dif=[];
+		deg=results.rows.item(i).fmoperation.split("|");
+		dif[0]=[Number(deg[0]),Number(deg[1]),Number(deg[2]),Number(deg[3])];
+		dif[1]=[Number(deg[4]),Number(deg[5]),Number(deg[6]),Number(deg[7])];
+		dif[2]=[Number(deg[8]),Number(deg[9]),Number(deg[10]),Number(deg[11])];
+		lastSelFMOp[id]=dif;
+		
+		deg=[];
+		dif=[[]];
+		deg=results.rows.item(i).fmnumbers.split("|");
+		dif[0]=[Number(deg[0]),Number(deg[1]),Number(deg[2]),Number(deg[3]),Number(deg[4])];
+		dif[1]=[Number(deg[5]),Number(deg[6]),Number(deg[7]),Number(deg[8]),Number(deg[9])];
+		dif[2]=[Number(deg[10]),Number(deg[11]),Number(deg[12]),Number(deg[13]),Number(deg[14])];
+		lastSelFMNum[id]=dif;
+		
+		deg=[];
+		dif=[[]];
+		deg=results.rows.item(i).fmdigit.split("|");
+		dif[0]=[Number(deg[0]),Number(deg[1]),Number(deg[2]),Number(deg[3]),Number(deg[4])];
+		dif[1]=[Number(deg[5]),Number(deg[6]),Number(deg[7]),Number(deg[8]),Number(deg[9])];
+		dif[2]=[Number(deg[10]),Number(deg[11]),Number(deg[12]),Number(deg[13]),Number(deg[14])];
+		lastSelFMDig[id]=dif;
+		
+		deg=[];
+		dif=[[]];
+		deg=results.rows.item(i).fmocount.split("|");
+		dif[0]=[Number(deg[0]),Number(deg[1]),Number(deg[2]),Number(deg[3]),Number(deg[4])];
+		dif[1]=[Number(deg[5]),Number(deg[6]),Number(deg[7]),Number(deg[8]),Number(deg[9])];
+		dif[2]=[Number(deg[10]),Number(deg[11]),Number(deg[12]),Number(deg[13]),Number(deg[14])];
+		lastSelFMOC[id]=dif;
+		
+		deg=[];
+		dif=[[]];
+		deg=results.rows.item(i).fmsign.split("|");
+		dif[0]=[Number(deg[0]),Number(deg[1]),Number(deg[2]),Number(deg[3]),Number(deg[4]),Number(deg[5])];
+		dif[1]=[Number(deg[6]),Number(deg[7]),Number(deg[8]),Number(deg[9]),Number(deg[10]),Number(deg[1])];
+		dif[2]=[Number(deg[12]),Number(deg[13]),Number(deg[14]),Number(deg[15]),Number(deg[15]),Number(deg[7])];
+
+/*		dif[0]=[deg[0],deg[1],deg[2],deg[3],deg[4],deg[5]];
+		dif[1]=[deg[6],deg[7],deg[8],deg[9],deg[10],deg[11]];
+		dif[2]=[deg[12],deg[13],deg[14],deg[15],deg[16],deg[17]];*/
+		lastSelFMS[id]=dif;
+		
+
+		deg=[];
+		deg[0]=results.rows.item(i).freemodedifficulty;
+		deg[1]=results.rows.item(i).findoutdifficulty;
+		deg[2]=results.rows.item(i).mathrisdifficulty;
+		deg[3]=results.rows.item(i).mathrixdifficulty;
+		deg[4]=results.rows.item(i).shootoutdifficulty;
+		lastSelDif[id]=deg;
+		
+
+htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="star" data-theme="d" onclick="playerSelect(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+decodeURIComponent(pName[id])+'</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a>'+
+'<table class="playerTable" cellpadding="0" cellspacing="0">'+
+'<tbody><tr>'+
+'<th colspan="2"><span class="levelSpanMode">Modes</span></th>'+
+'<th><span class="levelSpanDifE">Easy</span></th>'+
+'<th><span class="levelSpanDifM">Moderate</span></th>'+
+'<th><span class="levelSpanDifH">Hard</span></th>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanFreemode">Free Mode</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanFreemodeE">'+pLevels[id][0][0]+'</span></td>'+
+'<td><span class="playerLevelSpanFreemodeM">'+pLevels[id][0][1]+'</span></td>'+
+'<td><span class="playerLevelSpanFreemodeH">'+pLevels[id][0][2]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanFindout">Find Out</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanFindoutE">'+pLevels[id][1][0]+'</span></td>'+
+'<td><span class="playerLevelSpanFindoutM">'+pLevels[id][1][1]+'</span></td>'+
+'<td><span class="playerLevelSpanFindoutH">'+pLevels[id][1][2]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanMathris">Mathris</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanMathrisE">'+pLevels[id][2][0]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrisM">'+pLevels[id][2][1]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrisH">'+pLevels[id][2][2]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanMathrix">Mathrix</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanMathrixE">'+pLevels[id][3][0]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrixM">'+pLevels[id][3][1]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrixH">'+pLevels[id][3][2]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanShootout">Shoot Out</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanShootoutE">'+pLevels[id][4][0]+'</span></td>'+
+'<td><span class="playerLevelSpanShootoutM">'+pLevels[id][4][1]+'</span></td>'+
+'<td><span class="playerLevelSpanShootoutH">'+pLevels[id][4][2]+'</span></td>'+
+'</tr>'+
+'</tbody></table>'+
+'<p align="center">'+
+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="refresh" data-theme="d" data-inline="true" onclick="openPagePlayerRename(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text"><span class="playerRenameSpan">Rename</span></span><span class="ui-icon ui-icon-refresh ui-icon-shadow">&nbsp;</span></span></a>'+
+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="delete" data-theme="d" data-inline="true" onclick="openPagePlayerDelete(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text"><span class="playerDeleteSpan">Delete</span></span><span class="ui-icon ui-icon-delete ui-icon-shadow">&nbsp;</span></span></a>'+
+'</p>'+
+'</div>'+
+'</div>';
+
+//alert("htmlcode yazildi");
+			}
+		}
+		
+		//htmlcode sayfaya aktariliyor
+		$("#pagePlayersList").html(htmlCode);
+		$("#pagePlayersList").trigger( "create" );
+		//alert("hersey sayfaya yüklendi");
+		pagePlayersLanguageChange();
+		
+	}, errorCB);
+	
+	}, errorCB, successCB);
+	
+	}//if(dbOK==1){
+		else{	//veritabani olmadigi zamanlarda çalisacak, bilgisayarda yani
+		 bilgi_liste();
+		}
+	}
+
+
+	
+	
+//veritabani olmadigi zamanlarda çalisacak, bilgisayarda yani	
+function bilgi_liste(){
+	//alert("veritabani olmadan oyuncular listelenecek");
+var htmlCode="";	
+	for(var id=0;id<1;id++){
+<!--decodeURIComponent()-->
+htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="star" data-theme="d" onclick="playerSelect(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+pName[id]+'</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a>'+
+'<table class="playerTable" cellpadding="0" cellspacing="0">'+
+'<tbody><tr>'+
+'<th colspan="2"><span class="levelSpanMode">Modes</span></th>'+
+'<th><span class="levelSpanDifE">Easy</span></th>'+
+'<th><span class="levelSpanDifM">Moderate</span></th>'+
+'<th><span class="levelSpanDifH">Hard</span></th>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanFreemode">Free Mode</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanFreemodeE">'+pLevels[id][0][0]+'</span></td>'+
+'<td><span class="playerLevelSpanFreemodeM">'+pLevels[id][0][1]+'</span></td>'+
+'<td><span class="playerLevelSpanFreemodeH">'+pLevels[id][0][2]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanFindout">Find Out</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanFindoutE">'+pLevels[id][1][0]+'</span></td>'+
+'<td><span class="playerLevelSpanFindoutM">'+pLevels[id][1][1]+'</span></td>'+
+'<td><span class="playerLevelSpanFindoutH">'+pLevels[id][1][2]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanMathris">Mathris</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanMathrisE">'+pLevels[id][2][0]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrisM">'+pLevels[id][2][1]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrisH">'+pLevels[id][2][2]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanMathrix">Mathrix</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanMathrixE">'+pLevels[id][3][0]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrixM">'+pLevels[id][3][1]+'</span></td>'+
+'<td><span class="playerLevelSpanMathrixH">'+pLevels[id][3][2]+'</span></td>'+
+'</tr>'+
+'<tr>'+
+'<td class="td1"><span class="levelSpanShootout">Shoot Out</span></td>'+
+'<td>:</td>'+
+'<td><span class="playerLevelSpanShootoutE">'+pLevels[id][4][0]+'</span></td>'+
+'<td><span class="playerLevelSpanShootoutM">'+pLevels[id][4][1]+'</span></td>'+
+'<td><span class="playerLevelSpanShootoutH">'+pLevels[id][4][2]+'</span></td>'+
+'</tr>'+
+'</tbody></table>'+
+'<p align="center">'+
+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="refresh" data-theme="d" data-inline="true" onclick="openPagePlayerRename(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text"><span class="playerRenameSpan">Rename</span></span><span class="ui-icon ui-icon-refresh ui-icon-shadow">&nbsp;</span></span></a>'+
+'<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-inline ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="delete" data-theme="d" data-inline="true" onclick="openPagePlayerDelete(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text"><span class="playerDeleteSpan">Delete</span></span><span class="ui-icon ui-icon-delete ui-icon-shadow">&nbsp;</span></span></a>'+
+'</p>'+
+'</div>'+
+'</div>';
+
+//alert("htmlcode yazildi");
+
+		}
+		//htmlcode sayfaya aktariliyor
+		$("#pagePlayersList").html(htmlCode);
+		$("#pagePlayersList").trigger( "create" );
+		//alert("hersey sayfaya yüklendi");
+		pagePlayersLanguageChange();
+}
+	
+	
+//	function listPagePlayersUserInfoDBSuccess(){
+//	//Oyuncu veritabani basariyla kontrol edildikten sonra, pagePlayers sayfasi açiliyor
+//	$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
+//	}
+	
+	function gamePlayerDeleteDB(id){
+	//alert("oyuncu siliniyor")
+	//Veritabanindan bir oyuncu silen kod
+	db.transaction(function(tx){
+	tx.executeSql("DELETE FROM players WHERE id='"+id+"'");
+	}, errorCB, function(){
+	$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
+	}
+	);
+	}
+	
+	function gamePlayerRenameDB(id){
+	var name;
+	name=encodeURIComponent($("#pagePlayerRenameContent").find("#newname").val());
+	//alert("oyuncu adi degistiriliyor id="+id+" name ="+name);
+	
+	db.transaction(function(tx){
+
+	tx.executeSql("SELECT * FROM players WHERE id='"+id+"'", [], function (tx, results){
+
+	var len = results.rows.length;
+
+	if(len==0 || len>1){
+	//alert("Hata oldu. Daha önceden olmayan bir oyuncu sanildi");
+	}
+	else{
+
+	tx.executeSql("UPDATE players SET name = '" + name + "' WHERE id = '" + id + "'");
+	}
+
+	}, errorCB);
+	
+	}, errorCB,  function(){
+	$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
+	}
+	);
+	}
+	
+	
+	
+	
+	
+	function playerDBUpdate(mode, v){	//v=value int veya char
+	mode=mode.toString();
+	v=v.toString();
+	//alert("update yapilacak, mode="+mode+" v="+v+" player ID="+gamePlayerID);
+	//alert("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID.toString() + "'");
+	db.transaction(function(tx){
+							
+	tx.executeSql("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID + "'");
+	
+	}, errorCB, successCB);
+	//alert("update yapildi");
+	}
+	
+	
+/* Veritanani baglanti kodlari sonu */
+</script>
 </head> 
 <body id="body"> 
 
