@@ -369,7 +369,7 @@ body.ui-mobile-viewport, div.ui-mobile-viewport {
 	overflow:visible
 }
 .ui-page {
-	outline:none
+	outline:none;
 }
 @media screen and (orientation:portrait) {
 .ui-mobile, .ui-mobile .ui-page {
