@@ -1,0 +1,14 @@
+.pageGameModesInfoExplanation{
+	padding:5px;
+	margin:5px;
+	background-color:#CCC;
+	-moz-box-shadow: 3px 3px 5px #000000;
+    -webkit-box-shadow: 3px 3px 5px #000000;
+	box-shadow: 3px 3px 5px #000000;
+}
+.pageGameModesInfoExplanation table{
+	font-weight:bold;
+}
+.pageGameModesInfoExplanation table td.td1{
+	text-align:center;
+}
