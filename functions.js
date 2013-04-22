@@ -24,86 +24,9 @@ else if(gameLevel==17){gameOperation=[[2]];gameNumber=[[2]];gameDigit=[[0]];game
 else if(gameLevel==18){gameOperation=[[3]];gameNumber=[[2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
 else if(gameLevel==19){gameOperation=[[0]];gameNumber=[[2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
 else if(gameLevel==20){gameOperation=[[1]];gameNumber=[[2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==21){gameOperation=[[0,1,2,3]];gameNumber=[[2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==22){gameOperation=[[2]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[1]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==23){gameOperation=[[3]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[1]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==24){gameOperation=[[0,1,2,3]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[1]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==25){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==26){gameOperation=[[0]];gameNumber=[[1]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==27){gameOperation=[[1]];gameNumber=[[1]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==28){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==29){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==30){gameOperation=[[0,1]];gameNumber=[[0,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==31){gameOperation=[[0,1]];gameNumber=[[1,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==32){gameOperation=[[0,1]];gameNumber=[[0,1,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==33){gameOperation=[[2,3]];gameNumber=[[0,1]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==34){gameOperation=[[2,3]];gameNumber=[[0,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==35){gameOperation=[[2,3]];gameNumber=[[1,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==36){gameOperation=[[2,3]];gameNumber=[[0,1,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==37){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==38){gameOperation=[[0]];gameNumber=[[3]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==39){gameOperation=[[1]];gameNumber=[[3]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==40){gameOperation=[[2]];gameNumber=[[3]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==41){gameOperation=[[3]];gameNumber=[[3]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==42){gameOperation=[[0,1,2,3]];gameNumber=[[3]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==43){gameOperation=[[0]];gameNumber=[[4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==44){gameOperation=[[1]];gameNumber=[[4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==45){gameOperation=[[2]];gameNumber=[[4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==46){gameOperation=[[3]];gameNumber=[[4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==47){gameOperation=[[0,1,2,3]];gameNumber=[[4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==48){gameOperation=[[2,3]];gameNumber=[[3,4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==49){gameOperation=[[0,1]];gameNumber=[[3,4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==50){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==51){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==52){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==53){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==54){gameOperation=[[0,1]];gameNumber=[[2]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==55){gameOperation=[[0,1]];gameNumber=[[2]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==56){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==57){gameOperation=[[0,1]];gameNumber=[[0,2]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==58){gameOperation=[[0,1]];gameNumber=[[1,2]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==59){gameOperation=[[0,1]];gameNumber=[[0,1,2]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==60){gameOperation=[[0]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==61){gameOperation=[[1]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==62){gameOperation=[[2]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==63){gameOperation=[[3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==64){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==65){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[1]];gameOCount=[[2]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==66){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[1]];gameOCount=[[2]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==67){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[1]];gameOCount=[[3]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==68){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[1]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==69){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[2]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==70){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[2]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==71){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[2]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==72){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[2]];gameOCount=[[1,2]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==73){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[2]];gameOCount=[[1,2]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==74){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[2]];gameOCount=[[1,2]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==75){gameOperation=[[0,1]];gameNumber=[[3]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==76){gameOperation=[[0,1]];gameNumber=[[4]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==77){gameOperation=[[0,1]];gameNumber=[[3,4]];gameDigit=[[1]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==78){gameOperation=[[2,3]];gameNumber=[[0]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==79){gameOperation=[[2,3]];gameNumber=[[1]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==80){gameOperation=[[2,3]];gameNumber=[[2]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==81){gameOperation=[[0,1]];gameNumber=[[2]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==82){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[3]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==83){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[4]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==84){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[2,3,4]];gameOCount=[[0,1,2]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==85){gameOperation=[[2,3]];gameNumber=[[3]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==86){gameOperation=[[2,3]];gameNumber=[[4]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==87){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[2,3]];gameOCount=[[3]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==88){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[2,3]];gameOCount=[[3]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==89){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[3,4]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==90){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[3,4]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==91){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[4]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==92){gameOperation=[[2]];gameNumber=[[0]];gameDigit=[[2]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==93){gameOperation=[[3]];gameNumber=[[0]];gameDigit=[[3]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==94){gameOperation=[[2]];gameNumber=[[0]];gameDigit=[[2]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==95){gameOperation=[[3]];gameNumber=[[0]];gameDigit=[[3]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==96){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==97){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[1]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==98){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[2]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==99){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[3]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==100){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[4]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==21){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}//50
+else if(gameLevel==22){gameOperation=[[2,3]];gameNumber=[[2]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}//80
+else if(gameLevel==23){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[4]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}//100
 }
 function closePageToPlayers(){
 gamePlayerID=0;
@@ -523,6 +446,21 @@ $.mobile.changePage( $("#pagePlayerDelete") , { transition: "none"} );
 function openPagePlayerCreate(){
 $.mobile.changePage( $("#pagePlayerCreate") , { transition: "none"} );
 $("#pagePlayerCreateContent").find("#createPlayerName").val("");
+}
+$("#pageGameInfo").live('pagebeforeshow', function(event){
+pageGameInfoLanguageChange();
+});
+function pageGameInfoLanguageChange(){
+var langID=1;
+langID=findlangID();
+var pageGameInfo23AprilDiv = []; 
+pageGameInfo23AprilDiv[0]='<h4>T&#252;rkei</h4>Die Gro&szlig;en Nationalversammlung der T&#252;rkei wurde auf 1920, 23. April gegr&#252;ndet, und das Ereignis, 23. April verk&#252;ndet einen nationalen Feiertag wurde 1921 zu gedenken. Seit 1927 ist es auch geworden Weltkindertag (t&#252;rkisch: Ulusal Egemenlik ve &#199;ocuk Bayram&#305;, w&#246;rtlich "Der Feiertag der Nationalen Souver&atilde;nit&atilde;t und Kindertag"), ein offizieller Feiertag f&#252;r die Kinder in der T&#252;rkei gewidmet und (ab 1979) die Welt.<br><br>Neben dem Halten von vielen heimischen festlichen Veranstaltungen wie Auff&#252;hrungen Stadion, T&#252;rkei beherbergt auch <a href="http://www.trt23nisan.com/en/" target="_blank">TRT International April 23 Kinder-Festival</a>, wo Gruppen von Kindern aus anderen L&atilde;ndern eingeladen, an den Feierlichkeiten teilzunehmen w&atilde;hrend des Aufenthalts in t&#252;rkischen Familien zu Hause sind. In einigen L&atilde;ndern sind die Festivals mit Kindern der verschiedenen Ethnien gefeiert.'; 
+pageGameInfo23AprilDiv[1]='<h4>Turkey</h4>The Grand National Assembly of Turkey was established on 1920, April 23, and to commemorate the event, April 23 was proclaimed a national holiday in 1921. Since 1927 it has also become Children\'s Day (Turkish: Ulusal Egemenlik ve &#199;ocuk Bayram&#305;, literally "The Holiday of National Sovereignty and Children"), an official holiday dedicated to the children of Turkey and (from 1979 on) the world.<br><br>In addition to holding many domestic celebratory events such as stadium performances, Turkey also houses <a href="http://www.trt23nisan.com/en/" target="_blank">TRT International April 23 Children\'s Festival</a>, where groups of children from other countries are invited to participate in the festivities while staying at Turkish families\' homes. In some countries, Festivals are celebrated with children\'s of different ethnicities.';
+pageGameInfo23AprilDiv[2]='<h4>Turqu&iacute;a</h4>La Asamblea Nacional de Turqu&iacute;a fue establecida en 1920, 23 de abril, y para conmemorar el evento, 23 de abril se proclam&oacute; un d&iacute;a de fiesta nacional en 1921. Desde 1927, tambi&eacute;n se ha convertido en el D&iacute;a del Ni&ntilde;o (en turco: Ulusal Egemenlik ve &#199;ocuk Bayram&#305;, literalmente "La Fiesta de la Soberan&iacute;a Nacional y de la Infancia"), un d&iacute;a de fiesta oficial dedicado a los ni&ntilde;os de Turqu&iacute;a y (a partir de 1979) el mundo.<br><br>Adem&aacute;s de la celebraci&oacute;n de muchos eventos festivos nacionales como actuaciones estadio, Turqu&iacute;a tambi&eacute;n alberga <a href="http://www.trt23nisan.com/en/" target="_blank">TRT Festival Internacional 23 de abril de los ni&ntilde;os</a>, donde se invita a los grupos de ni&ntilde;os de otros pa&iacute;ses para participar en las festividades que se hospedan en casas de familias turcas. En algunos pa&iacute;ses, las fiestas se celebran con los ni&ntilde;os de diferentes etnias.'; 
+pageGameInfo23AprilDiv[3]='<h4>Turquie</h4>L\'Assembl&eacute;e Nationale de Turquie a &eacute;t&eacute; cr&eacute;&eacute; le 1920 23 Avril et pour comm&eacute;morer l\'&eacute;v&eacute;nement, le 23 Avril a &eacute;t&eacute; proclam&eacute;e f&ecirc;te nationale en 1921. Depuis 1927, il est aussi devenu le jour des enfants (turc: Ulusal Egemenlik ve &Ccedil;ocuk Bayram&#305;, litt&eacute;ralement "La F&ecirc;te de la souverainet&eacute; nationale et de l\'enfance"), un jour f&eacute;ri&eacute; d&eacute;di&eacute; aux enfants de Turquie et d\'(&agrave; partir de 1979) dans le monde.<br><br>En plus d\'organiser de nombreux &eacute;v&eacute;nements festifs domestiques telles que des spectacles stade, la Turquie abrite aussi <a href="http://www.trt23nisan.com/en/" target="_blank">le festival de la TRT International Avril 23 Enfants</a>, o&ugrave; des groupes d\'enfants d\'autres pays sont invit&eacute;s &agrave; participer aux festivit&eacute;s, tout en restant au domicile des familles turques. Dans certains pays, les festivals sont c&eacute;l&eacute;br&eacute;s avec de des diff&eacute;rentes ethnies enfants.'; 
+pageGameInfo23AprilDiv[4]='<h4>Turchia</h4>La Grande Assemblea Nazionale della Turchia &eacute; stato stabilito in 1920, 23 aprile e per commemorare l\'evento, il 23 aprile si &eacute; proclamata una festa nazionale nel 1921. Dal 1927 &eacute; diventato anche il giorno dei bambini (Turco: Ulusal Egemenlik ve &Ccedil;ocuk Bayram&#305;, letteralmente "La Casa della sovranit&agrave; nazionale e dei bambini"), una festa ufficiale dedicato ai figli di Turchia e (dal 1979) il mondo.<br><br>Oltre a tenere numerosi eventi celebrativi domestici come performance dello stadio, la Turchia ospita anche <a href="http://www.trt23nisan.com/en/" target="_blank">Festival Internazionale TRT 23 aprile per bambini</a>, dove gruppi di bambini provenienti da altri paesi sono invitati a partecipare ai festeggiamenti durante il soggiorno in case di famiglie turche. In alcuni paesi, i festival sono celebrati con bambini di diverse etnie.'; 
+pageGameInfo23AprilDiv[5]='<h4>T&#252;rkiye</h4>T&#252;rkiye B&#252;y&#252;k Millet Meclisinin 23 Nisan 1920\'de kurulmu&#351; olmas&#305; an&#305;s&#305;na, 23 Nisan 1921 y&#305;l&#305;nda milli tatil ilan edilmistir. 1927\'den bu yana ayn&#305; zamanda &#199;ocuk Bayram&#305; haline gelmi&#351;tir (Ulusal Egemenlik ve &#199;ocuk Bayram&#305;). T&#252;rkiye ve d&#252;nya &#231;ocuklar&#305;na adanm&#305;&#351; resmi tatildir (1979\'dan itibaren).<br><br>Stadyum g&#246;sterileri gibi &#231;ok say&#305;da yerli kutlama etkinliklerine ek olarak, T&#252;rkiye, di&#287;er &#252;lkelerden &#231;ocuk gruplar&#305;n&#305; &#351;enliklere kat&#305;lmaya davet etti&#287;i ve kat&#305;lanlarin, T&#252;rk ailelerin evlerinde kald&#305;&#287;&#305;, <a href="http://www.trt23nisan.com/en/" target="_blank">TRT Uluslararas&#305; 23 Nisan &#199;ocuk &#350;enli&#287;i\'ne</a> de ev sahipli&#287;i yapmaktad&#305;r. Baz&#305; &#252;lkelerde, Festivaller  farkl&#305; etnikteki &#231;ocuklarla kutlanmaktad&#305;r.'; 
+$("#pageGameInfo23AprilDiv").html(pageGameInfo23AprilDiv[langID]);
 }
 function pagePlayersLanguageChange(){
 var langID=1;
