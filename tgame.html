@@ -7,282 +7,164 @@
 <link rel="stylesheet" href="jquery.mobile-1.2.0.min1.css" id="styleConf" />
 
 <link rel="stylesheet" href="tgame.css" id="styleConf" />
+<style>
+#pageGameInfo23April{
+	padding:5px;
+	margin:15px 5px 5px 15px;
+	background-color:#CCC;
+	-moz-box-shadow: 3px 3px 5px #000000;
+    -webkit-box-shadow: 3px 3px 5px #000000;
+	box-shadow: 3px 3px 5px #000000;
+	font-size:larger;
+}
+</style>
+
 <script src="jquery-1.8.3.min.js"></script>
 <script src="jquery.mobile-1.2.0.min.js"></script>
 <script src="jquery.jqmts.js"></script>
 <script src="functions.js"></script>
 <script src="phonegap.js"></script>
 
-
-
 <script type="text/javascript">
-var dbOK=0;		//Bilgisayarda kullanamk için gerekli. Sonra sil.
-
-//Oyunun her yerinde kullanilacak bazi degiskenler
-//Veritabanindan alinan bilgiler (p = player)
-var gameLang;			//Oyun dili		var gameLang="tr";
-var gamePlayerID;		//Oyuncu id			var gamePlayerID=0;
+var dbOK=0;
+var gameLang;
+var gamePlayerID;
 var gameTheme;
-
-//Oyuncunun seçimleri
-var gameMode;				//Oyun modu
-var gameOperation=[[]];			//Oyun islem türü
-var gameOCount=[[]];				//Oyun islem sayisi
-var gameDigit=[[]];				//Oyun hane sayisi
-var gameNumber=[[]];				//Oyun sayi türü
-var gameSign=[[]];				//Oyun sayi türü	//Sonradan ekledim bölümlerde yok.
-var gameDifficulty;			//Oyun zorlugu 1-2-3
-var gameLevel;				//Oyun seviyesi
-var gameCountDown;			//Oyun sayaci
-
-
-//Oyuncu bilgileri
-var pId=[]; 		//id
-var pName=[];		//name
-
-var pLevels=[[[]]];		//pLevels[gamePlayerID][mode][Difficulty]=level
-//mode= 1-Free mode	2-Find out	3-Matris	4-Mathrix	5-Shoot out
-
-//son seçilen zorluk
-var lastSelDif=[[]];	//freemode diffiulty	 lastSelFMDif[gamePlayerID][mode]=dif
-//mode= 1-Free mode	2-Find out	3-Matris	4-Mathrix	5-Shoot out
-//dif= 1-easy, 2-moderate, 3-hard
-
-//
-
-
-//(seçilen son durum)
-var lastSelFMOp=[[[]]];		//son seçilen operation	lastSelFMOp[gamePlayerID][Dif][operation]= 0 or 1
-var lastSelFMNum=[[[]]];	// 0: not selected
-var lastSelFMDig=[[[]]];	// 1: selected
+var gameMode;
+var gameOperation=[[]];
+var gameOCount=[[]];
+var gameDigit=[[]];
+var gameNumber=[[]];
+var gameSign=[[]];
+var gameDifficulty;
+var gameLevel;
+var gameCountDown;
+var pId=[];
+var pName=[];
+var pLevels=[[[]]];
+var lastSelDif=[[]];
+var lastSelFMOp=[[[]]];
+var lastSelFMNum=[[[]]];
+var lastSelFMDig=[[[]]];
 var lastSelFMOC=[[[]]];		
 var lastSelFMS=[[[]]];	
-
-
-
-
-
-
-
-/*
-pId[0]=0; 		//id
-pName[0]="Oyuncuuu 1";
+var gameMessage1=[];
+var db;
 
 //gamePlayerID=0 veritabanindan gelemeyecek bir sayi. Bu yüzden deneme kisisi (guest) için ayridim.
+gamePlayerID=0;
+gameLang="tr";
+pId[0]=0;
+pName[0]=["cem"];	
+lastSelDif[0]=[0,0,0,0,0];	//[1,0,0,0,0]	[2,0,0,0,0]
+lastSelFMOp[0]=[[1,0,0,0],[1,0,0,0],[1,0,0,0]];
+lastSelFMNum[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
+lastSelFMDig[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
+lastSelFMOC[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
+lastSelFMS[0]=[[1,0,0,0,0,0],[1,0,0,0,0,0],[1,0,0,0,0,0]];
+pLevels[0]=[[5,3,1],[100,1,1],[100,1,1],[100,1,1],[100,1,1]];
 
-for(var i1=1;i1<6;i1++){
-for(var i2=1;i2<4;i2++){
-pLevels[0][i1][i2]=1;
-lastSelFMOp[0][i1][i2]=1;
-lastSelFMNum[0][i1][i2]=1;
-lastSelFMDig[0][i1][i2]=1;
-lastSelFMOC[0][i1][i2]=1;
-lastSelFMS[0][i1][i2]=1;
-}
-}
 
-//son seçilen zorluk: 1-easy, 2-moderate, 3-hard (diffiulty )
-lastSelDif[0][1]=1;
-lastSelDif[0][2]=1;	
-lastSelDif[0][3]=1;	
-lastSelDif[0][4]=1;	
-lastSelDif[0][5]=1;	
-*/
-	
 
-var gameMessage1=[];	//Henüz kullanmadim, çok dil için dizi olusturmak gerek
-
-var db;	//Veritabani için kullanacagim.
-
-/* Veritanani baglanti kodlari baslangci */
-//Veritabani olmadan oyun çalismayacagi için açilista ilk yapilacak is bu olacak.
 document.addEventListener("deviceready", onDeviceReady, false);
-
-
-
-    // Cordova is ready
-    //
-    function onDeviceReady(){
-		//alert("veritabani olusturulacak");
-		dbOK=1;
-        //Veritabani açiliyor (yoksa yaratilacak)
-		db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
-		//alert("veritabani olusturuldu");
-		//alert("Tablolar olusturulacak");
-		//Oyunun ilk açilisi ise
-		//Veritabanina tablolar olusturulacak
-		db.transaction(createTable, errorCB, createTableSuccess);
-
-    }
-	
-	
-    // Populate the database 
-	//
-    function createTable(tx){
-		//Tablolar mevcut degilse olusturulacak (oyun yüklendikten sonra ilk defa açiliyorsa).
-//alert("game tablosu olusturulacak");
-		 tx.executeSql('CREATE TABLE IF NOT EXISTS game ('+
-					'id INTEGER PRIMARY KEY AUTOINCREMENT'+
-					', language VARCHAR(2)'+
-					', theme INTEGER)');
-		 
-//alert("player tablosu olusturulacak");			 
-		 tx.executeSql('CREATE TABLE IF NOT EXISTS players ('+
-					'id INTEGER PRIMARY KEY AUTOINCREMENT'+
-					', name VARCHAR(50)'+
-					', plfreemode VARCHAR(11)'+		//player level	Easy | Moderate | Hard
-					', plfindout VARCHAR(11)'+		//player level
-					', plmathris VARCHAR(11)'+		//player level
-					', plmathrix VARCHAR(11)'+		//player level
-					', plshootout VARCHAR(11)'+		//player level
-					', freemodedifficulty INTEGER'+	//Free mode last selected difficulty
-					', findoutdifficulty INTEGER'+	//Find out last selected difficulty
-					', mathrisdifficulty INTEGER'+	//Mathris last selected difficulty
-					', mathrixdifficulty INTEGER'+	//Mathrix mode last selected difficulty
-					', shootoutdifficulty INTEGER'+	//Shoo out mode last selected difficulty
-					', fmoperation VARCHAR(23)'+	//Free mode last selected easy operation
-					', fmnumbers VARCHAR(29)'+		//Free mode last selected easy number
-					', fmdigit VARCHAR(29)'+		//Free mode last selected easy digit
-					', fmocount VARCHAR(29)'+		//Free mode last selected easy op. c.
-					', fmsign VARCHAR(35) )');		//Free mode last selected esy sign
-
-//alert("tablolar olusturuldu");	
-		
-		}
-
-
-	function createTableSuccess(){
-	//Veritabani kullanilabilir durumda
-	//alert("Veritabani kullanilabilir durumda");
-	
-	//alert("dil kontrol edilecek");
-	db.transaction(getLangDB, errorCB, successCB);
-	//db.transaction(getLangDB, errorCB, getLangDBSuccess);
-	}
-
-	function getLangDB(tx){
-		//alert("dil kontrol ediliyor");
-		//Oyunun daha önce açilip, dil seçimi yapilip yapilmadigi bulunuyor.
-		//Yapilmadiysa dil seçim sayfasina,
-		//aksi halde oyuncu seçim sayfasin yönlendirme yapiliyor.
-		tx.executeSql('SELECT * FROM game', [], function(tx, results) {
-		var len = results.rows.length;
-		//alert("bulunan dil sayisi len= "+len);
-		if(len==1){
-		gameLang=results.rows.item(0).language;
-		gameTheme=results.rows.item(0).theme;
-		if(gameTheme!=1){
-		var theme="jquery.mobile-1.2.0.min"+gameTheme+".css";
-		$('#styleConf[rel=stylesheet]').attr('href', theme);
-		}
-		//alert("dil="+gameLang);
-		$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );	
-		//Dil daha önceden seçilmisse, oyuncu kaydida yapilmis olabilir. Kontrol ediliyor
-		//alert("oyuncu bilgileri kontrol edilecek");
-		//db.transaction(listPagePlayersUserInfoDB, errorCB, listPagePlayersUserInfoDBSuccess);
-		}
-		else if(len>1){
-		//Yanlislikla birden fazla kayit yapilirsa (programlama hatasiyla)
-		//alert("Birden fazla dil kaydi olmus. Hata!");
-		tx.executeSql('DELETE FROM game');
-		$.mobile.changePage( $("#pageLang") , { transition: "none"} );	
-		}
-		else{
-		//alert("dil yok=");
-		//Dil seçim sayfasi açilacak
-		$.mobile.changePage( $("#pageLang") , { transition: "none"} );		
-		}
-	}, errorCB);
-	}
-	
-	
-	function getLangDBSuccess(){
-	if (gameLang!=""){
-	$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
-	}
-	}
-	
-// Önemsiz callback'ler
-    function errorCB(err){
-		//Veritabanina baglanmakta sorun yasanmasi durumu
-        alert("Error processing SQL: "+err);
-    }
-
-    function successCB(){
-		//Veritabanina basariyla baglanilmasi durumu
-        //alert("success!");
-    }
-	
-	function updateCB(){
-	//Veritabaninda güncelleme yapildiginda, yani bir deger update edildiginde
-	}
-// Önemsiz callback'ler sonu
-
-	function gameLangChangeDB(){
-	//alert("oyun dili degistiriliyor dil="+gameLang);
-	//Oyun dili degistirildiginde çagrilacak
-	//Veritabanindaki dili ve gameLang degiskenini degistiren kod
-	
-	db.transaction(function(tx){
-							
-	tx.executeSql('SELECT * FROM game', [], function (tx, results){
-	var len = results.rows.length;
-	if(len==0 || len>1){
-	//alert("Daha öncesinde dil yok. Yeni kayit yapilacak "+gameLang);
-	tx.executeSql("INSERT INTO game (language, theme) VALUES ('"+gameLang+"', '1')");
-	
-	//Daha önce dil kaydi yapilmadigina göre oyuncu da kayitli degildir. Çünkü dil olmamasi durumu, oyun ilk yüklendiginde olacak sadece
-//		if(gameLang=="de") gamePlayerCreateDB("Neue Spieler");
-//		if(gameLang=="en") gamePlayerCreateDB("New player");
-//		if(gameLang=="es") gamePlayerCreateDB("Nuevo Jugador");
-//		if(gameLang=="fr") gamePlayerCreateDB("Nouveau Joueur");
-//		if(gameLang=="it") gamePlayerCreateDB("Nuovo Giocatore");
-//		if(gameLang=="tr") gamePlayerCreateDB("Yeni Oyuncu");
-		
-	}
-	else{
-	var dbLangId=results.rows.item(0).id;	
-	//alert("Daha önceki dil degeri degistirilecek. id="+dbLangId);
-	var dbLangPre=results.rows.item(0).language;	
-	//alert("Önceki dil. id="+dbLangPre);
-	tx.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + dbLangId + "'");
-	}
-	
-	}, errorCB);
-	
-	}, errorCB, successCB);
-	
-	}
-	
-	function gameDBUpdate(mode, v){	//v=value int veya char
-	mode=mode.toString();
-	v=v.toString();
-	//alert("update yapilacak, mode="+mode+" v="+v+" player ID="+gamePlayerID);
-	//alert("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID.toString() + "'");
-	if(dbOK==1){
-	db.transaction(function(tx){
-							
-	tx.executeSql("UPDATE game SET "+mode+" = '" + v + "' WHERE id = '1'");
-	
-	}, errorCB, successCB);
-	}
-	//alert("update yapildi");
-	}
-
-	function gamePlayerCreateDB(name){
+function onDeviceReady(){
+dbOK=1;
+db = window.openDatabase("tGameDB", "1.0", "tGame Crazy Math DB", 1000000);
+db.transaction(createTable, errorCB, createTableSuccess);
+}
+function createTable(tx){
+ tx.executeSql('CREATE TABLE IF NOT EXISTS game ('+
+			'id INTEGER PRIMARY KEY AUTOINCREMENT'+
+			', language VARCHAR(2)'+
+			', theme INTEGER)'); 
+ tx.executeSql('CREATE TABLE IF NOT EXISTS players ('+
+			'id INTEGER PRIMARY KEY AUTOINCREMENT'+
+			', name VARCHAR(50)'+
+			', plfreemode VARCHAR(11)'+
+			', plfindout VARCHAR(11)'+
+			', plmathris VARCHAR(11)'+
+			', plmathrix VARCHAR(11)'+
+			', plshootout VARCHAR(11)'+
+			', freemodedifficulty INTEGER'+
+			', findoutdifficulty INTEGER'+
+			', mathrisdifficulty INTEGER'+
+			', mathrixdifficulty INTEGER'+
+			', shootoutdifficulty INTEGER'+
+			', fmoperation VARCHAR(23)'+
+			', fmnumbers VARCHAR(29)'+
+			', fmdigit VARCHAR(29)'+
+			', fmocount VARCHAR(29)'+
+			', fmsign VARCHAR(35) )');	
+}
+function createTableSuccess(){
+db.transaction(getLangDB, errorCB, successCB);
+}
+function getLangDB(tx){
+tx.executeSql('SELECT * FROM game', [], function(tx, results) {
+var len = results.rows.length;
+if(len==1){
+gameLang=results.rows.item(0).language;
+gameTheme=results.rows.item(0).theme;
+if(gameTheme!=1){
+var theme="jquery.mobile-1.2.0.min"+gameTheme+".css";
+$('#styleConf[rel=stylesheet]').attr('href', theme);
+}
+$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );	
+}
+else if(len>1){
+tx.executeSql('DELETE FROM game');
+$.mobile.changePage( $("#pageLang") , { transition: "none"} );	
+}
+else{
+$.mobile.changePage( $("#pageLang") , { transition: "none"} );		
+}
+}, errorCB);
+}
+function getLangDBSuccess(){
+if (gameLang!=""){
+$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
+}
+}
+function errorCB(err){
+alert("Error processing SQL: "+err);
+}
+function successCB(){
+}
+function updateCB(){
+}
+function gameLangChangeDB(){
+db.transaction(function(tx){		
+tx.executeSql('SELECT * FROM game', [], function (tx, results){
+var len = results.rows.length;
+if(len==0 || len>1){
+tx.executeSql("INSERT INTO game (language, theme) VALUES ('"+gameLang+"', '1')");
+}
+else{
+var dbLangId=results.rows.item(0).id;	
+var dbLangPre=results.rows.item(0).language;	
+tx.executeSql("UPDATE game SET language = '" + gameLang + "' WHERE id = '" + dbLangId + "'");
+}
+}, errorCB);
+}, errorCB, successCB);
+}
+function gameDBUpdate(mode, v){
+mode=mode.toString();
+v=v.toString();
+if(dbOK==1){
+db.transaction(function(tx){
+tx.executeSql("UPDATE game SET "+mode+" = '" + v + "' WHERE id = '1'");
+}, errorCB, successCB);
+}
+}
+function gamePlayerCreateDB(name){
 	var nameFrom="";
 	if(name==""){
 	name=encodeURIComponent($("#pagePlayerCreateContent").find("#createPlayerName").val());
-	//alert(name);
-	//alert(decodeURIComponent(name));
 	nameFrom="form";
 	}
-	//alert("name= "+name);
-
 	if(name!=""){
 	db.transaction(function (tx){
 	tx.executeSql("INSERT INTO players (name, plfreemode, plfindout, plmathris, plmathrix, plshootout, freemodedifficulty, findoutdifficulty, mathrisdifficulty, mathrixdifficulty, shootoutdifficulty, fmoperation, fmnumbers, fmdigit, fmocount, fmsign) VALUES ('"+name+"', '1|1|1', '1|1|1', '1|1|1', '1|1|1', '1|1|1', 0, 0, 0, 0, 0, '1|0|0|0|1|0|0|0|1|0|0|0', '1|0|0|0|0|1|0|0|0|0|1|0|0|0|0', '1|0|0|0|0|1|0|0|0|0|1|0|0|0|0', '1|0|0|0|0|1|0|0|0|0|1|0|0|0|0', '1|0|0|0|0|0|1|0|0|0|0|0|1|0|0|0|0|0')");
-	//alert("Yeni oyuncu kaydedildi");
 	}, errorCB, function (){
 	if(nameFrom="form"){
 	$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );	
@@ -291,25 +173,12 @@ document.addEventListener("deviceready", onDeviceReady, false);
 	);
 	}
 	}
-
-
-
-	function listPagePlayersUserInfoDB(){
-	//alert("oyuncu bilgileri listeleniyor");
-	//alert("dbOK= "+dbOK);
+function listPagePlayersUserInfoDB(){
 	if(dbOK==1){
-		
-	//Kayitli oyuncu varsa,
-	//oyunculara ait bilgiler alinip pagePlayer sayfasina yazilacak.
 	db.transaction(function (tx){
-	
 	tx.executeSql('SELECT * FROM players', [], function (tx, results){
 		var len = results.rows.length;
-		
 		if(len==0){
-		//alert("Veritabaninda kayitli oyuncu bulunamadi. Yeni olusturulacak");
-		//eger bütün oyuncular silinmis ise
-		//seçili dilde "Yeni Oyuncu" adinda oyuncu olusturulacak
 		if(gameLang=="de") gamePlayerCreateDB("Neue Spieler");
 		if(gameLang=="en") gamePlayerCreateDB("New player");
 		if(gameLang=="es") gamePlayerCreateDB("Nuevo Jugador");
@@ -319,8 +188,6 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		listPagePlayersUserInfoDB();
 		return false;
 		}
-		
-		//Player'a ait degiskenler sifirlaniyor
 		pId=[];
 		pName=[];
 		pLevels=[[[]]];
@@ -330,11 +197,6 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		lastSelFMOC=[[[]]];
 		lastSelFMS=[[[]]];
 		lastSelDif=[[]];
-
-
-
-		
-//		alert("Kayitli oyuncu sayisi ="+len);
 		var htmlCode="";
 		var id;
 		if(len>0){
@@ -342,12 +204,9 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		pId[i]=results.rows.item(i).id;
 		id=pId[i];
 		pName[id]=results.rows.item(i).name;
-		
-
 		var deg=[];
 		var mod=[[]];
 		var dif=[[]];
-		
 		deg=results.rows.item(i).plfreemode.split("|");
 		mod[0]=deg;
 		deg=[];
@@ -363,8 +222,6 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		deg=results.rows.item(i).plshootout.split("|");
 		mod[4]=deg;
 		pLevels[id]=mod;
-		
-		
 		deg=[];
 		dif=[];
 		deg=results.rows.item(i).fmoperation.split("|");
@@ -372,7 +229,6 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		dif[1]=[Number(deg[4]),Number(deg[5]),Number(deg[6]),Number(deg[7])];
 		dif[2]=[Number(deg[8]),Number(deg[9]),Number(deg[10]),Number(deg[11])];
 		lastSelFMOp[id]=dif;
-		
 		deg=[];
 		dif=[[]];
 		deg=results.rows.item(i).fmnumbers.split("|");
@@ -380,7 +236,6 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		dif[1]=[Number(deg[5]),Number(deg[6]),Number(deg[7]),Number(deg[8]),Number(deg[9])];
 		dif[2]=[Number(deg[10]),Number(deg[11]),Number(deg[12]),Number(deg[13]),Number(deg[14])];
 		lastSelFMNum[id]=dif;
-		
 		deg=[];
 		dif=[[]];
 		deg=results.rows.item(i).fmdigit.split("|");
@@ -388,7 +243,6 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		dif[1]=[Number(deg[5]),Number(deg[6]),Number(deg[7]),Number(deg[8]),Number(deg[9])];
 		dif[2]=[Number(deg[10]),Number(deg[11]),Number(deg[12]),Number(deg[13]),Number(deg[14])];
 		lastSelFMDig[id]=dif;
-		
 		deg=[];
 		dif=[[]];
 		deg=results.rows.item(i).fmocount.split("|");
@@ -396,20 +250,13 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		dif[1]=[Number(deg[5]),Number(deg[6]),Number(deg[7]),Number(deg[8]),Number(deg[9])];
 		dif[2]=[Number(deg[10]),Number(deg[11]),Number(deg[12]),Number(deg[13]),Number(deg[14])];
 		lastSelFMOC[id]=dif;
-		
 		deg=[];
 		dif=[[]];
 		deg=results.rows.item(i).fmsign.split("|");
 		dif[0]=[Number(deg[0]),Number(deg[1]),Number(deg[2]),Number(deg[3]),Number(deg[4]),Number(deg[5])];
 		dif[1]=[Number(deg[6]),Number(deg[7]),Number(deg[8]),Number(deg[9]),Number(deg[10]),Number(deg[1])];
 		dif[2]=[Number(deg[12]),Number(deg[13]),Number(deg[14]),Number(deg[15]),Number(deg[15]),Number(deg[7])];
-
-/*		dif[0]=[deg[0],deg[1],deg[2],deg[3],deg[4],deg[5]];
-		dif[1]=[deg[6],deg[7],deg[8],deg[9],deg[10],deg[11]];
-		dif[2]=[deg[12],deg[13],deg[14],deg[15],deg[16],deg[17]];*/
 		lastSelFMS[id]=dif;
-		
-
 		deg=[];
 		deg[0]=results.rows.item(i).freemodedifficulty;
 		deg[1]=results.rows.item(i).findoutdifficulty;
@@ -417,8 +264,6 @@ document.addEventListener("deviceready", onDeviceReady, false);
 		deg[3]=results.rows.item(i).mathrixdifficulty;
 		deg[4]=results.rows.item(i).shootoutdifficulty;
 		lastSelDif[id]=deg;
-		
-
 htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 '<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="star" data-theme="d" onclick="playerSelect(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+decodeURIComponent(pName[id])+'</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a>'+
 '<table class="playerTable" cellpadding="0" cellspacing="0">'+
@@ -470,36 +315,22 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 '</p>'+
 '</div>'+
 '</div>';
-
-//alert("htmlcode yazildi");
 			}
 		}
-		
-		//htmlcode sayfaya aktariliyor
 		$("#pagePlayersList").html(htmlCode);
 		$("#pagePlayersList").trigger( "create" );
-		//alert("hersey sayfaya yüklendi");
 		pagePlayersLanguageChange();
 		
 	}, errorCB);
-	
 	}, errorCB, successCB);
-	
-	}//if(dbOK==1){
-		else{	//veritabani olmadigi zamanlarda çalisacak, bilgisayarda yani
+	}
+		else{
 		 bilgi_liste();
 		}
 	}
-
-
-	
-	
-//veritabani olmadigi zamanlarda çalisacak, bilgisayarda yani	
 function bilgi_liste(){
-	//alert("veritabani olmadan oyuncular listelenecek");
 var htmlCode="";	
 	for(var id=0;id<1;id++){
-<!--decodeURIComponent()-->
 htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 '<a class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-d" data-wrapperels="span" data-iconshadow="true" data-shadow="true" data-corners="true" href="#" data-role="button" data-icon="star" data-theme="d" onclick="playerSelect(\''+id+'\')"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">'+pName[id]+'</span><span class="ui-icon ui-icon-star ui-icon-shadow">&nbsp;</span></span></a>'+
 '<table class="playerTable" cellpadding="0" cellspacing="0">'+
@@ -551,117 +382,74 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 '</p>'+
 '</div>'+
 '</div>';
-
-//alert("htmlcode yazildi");
-
 		}
-		//htmlcode sayfaya aktariliyor
 		$("#pagePlayersList").html(htmlCode);
 		$("#pagePlayersList").trigger( "create" );
-		//alert("hersey sayfaya yüklendi");
 		pagePlayersLanguageChange();
 }
-	
-	
-//	function listPagePlayersUserInfoDBSuccess(){
-//	//Oyuncu veritabani basariyla kontrol edildikten sonra, pagePlayers sayfasi açiliyor
-//	$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
-//	}
-	
-	function gamePlayerDeleteDB(id){
-	//alert("oyuncu siliniyor")
-	//Veritabanindan bir oyuncu silen kod
-	db.transaction(function(tx){
-	tx.executeSql("DELETE FROM players WHERE id='"+id+"'");
-	}, errorCB, function(){
-	$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
-	}
-	);
-	}
-	
-	function gamePlayerRenameDB(id){
-	var name;
-	name=encodeURIComponent($("#pagePlayerRenameContent").find("#newname").val());
-	//alert("oyuncu adi degistiriliyor id="+id+" name ="+name);
-	
-	db.transaction(function(tx){
+function gamePlayerDeleteDB(id){
+db.transaction(function(tx){
+tx.executeSql("DELETE FROM players WHERE id='"+id+"'");
+}, errorCB, function(){
+$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
+}
+);
+}
+function gamePlayerRenameDB(id){
+var name;
+name=encodeURIComponent($("#pagePlayerRenameContent").find("#newname").val());
+db.transaction(function(tx){
+tx.executeSql("SELECT * FROM players WHERE id='"+id+"'", [], function (tx, results){
+var len = results.rows.length;
+if(len==0 || len>1){
+}
+else{
+tx.executeSql("UPDATE players SET name = '" + name + "' WHERE id = '" + id + "'");
+}
+}, errorCB);
+}, errorCB,  function(){
+$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
+}
+);
+}
+function playerDBUpdate(mode, v){
+mode=mode.toString();
+v=v.toString();
+db.transaction(function(tx){				
+tx.executeSql("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID + "'");
+}, errorCB, successCB);
+}
 
-	tx.executeSql("SELECT * FROM players WHERE id='"+id+"'", [], function (tx, results){
-
-	var len = results.rows.length;
-
-	if(len==0 || len>1){
-	//alert("Hata oldu. Daha önceden olmayan bir oyuncu sanildi");
-	}
-	else{
-
-	tx.executeSql("UPDATE players SET name = '" + name + "' WHERE id = '" + id + "'");
-	}
-
-	}, errorCB);
-	
-	}, errorCB,  function(){
-	$.mobile.changePage( $("#pagePlayers") , { transition: "none"} );
-	}
-	);
-	}
-	
-	
-	
-	
-	
-	function playerDBUpdate(mode, v){	//v=value int veya char
-	mode=mode.toString();
-	v=v.toString();
-	//alert("update yapilacak, mode="+mode+" v="+v+" player ID="+gamePlayerID);
-	//alert("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID.toString() + "'");
-	db.transaction(function(tx){
-							
-	tx.executeSql("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePlayerID + "'");
-	
-	}, errorCB, successCB);
-	//alert("update yapildi");
-	}
-	
-	
-/* Veritanani baglanti kodlari sonu */
 </script>
 </head> 
 <body id="body"> 
 
-<!-- /Sayfa başlangıcı -->
+
 <div data-role="page" id="pageOpening">
-
 <div data-role="header" data-theme="b" data-position="fixed">
+<!--<a href="#" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>-->
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+<!--<a href="#pageLang" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>-->
+</div>
 <div data-role="content" id="pageLangContent" align="center">
 <h1 align="center">Lords Of Maths<br>The Awakening</h1>
+<h2 align="center">23rd April International Children Festival Special Edition</h2>
 <img src="images/ajax-loader.gif" alt="loading pic" height="46" width="46">
 <h2>Some controls are being checked.<br>Please wait.</h2>
 </div>
+</div>
 
-</div><!-- /page -->
-
-
-
-
-
-
-<!-- /Sayfa başlangıcı -->
-<!--Program yüklendikten sonraki ilk açılışta dil seçimi yaptıracak sayfa-->
 <div data-role="page" id="pageLang">
-
 <div data-role="header" data-theme="b" data-position="fixed">
+<!--<a href="#pageOpening" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>-->
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+<!--<a href="#pagePlayers" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>-->
+</div>
 <div data-role="content" id="pageLangContent" align="center">
 <h1 align="center">Lords Of Maths<br>The Awakening</h1>
+<h2 align="center">23rd April International Children Festival Special Edition</h2>
 <br>
 <h2>Choose Your Language</h2>
-
 <img src="images/de.png" onClick="chooseLang('de');">
 <img src="images/en.png" onClick="chooseLang('en');">
 <img src="images/es.png" onClick="chooseLang('es');">
@@ -670,179 +458,80 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 <img src="images/tr.png" onClick="chooseLang('tr');">
 <h3>You can change it later from game settings.</h3>
 </div>
+</div>
 
-</div><!-- /page -->
-
-
-
-<!-- /Sayfa başlangıcı -->
-<!--Program yüklendikten sonraki ilk açılışta dil seçimi yaptıracak sayfa-->
 <div data-role="page" id="pageIntro"  style=" background-color:#999;">
-
-<!-- <div data-role="header" data-theme="b" data-position="fixed">
-<a href="#pageLang" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
-<h1>Lords Of Maths</h1>
-<a href="#pagePlayers" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>
-</div>/header -->
-
 <div data-role="content" id="pageIntroContent" align="center" style=" background-color:#999; padding:0px; margin:0px; vertical-align:middle;">
 <table style="margin-top:50px;">
-<tr><td>
-<img src="splash.png" width="282" height="118" >
+<tr><td align="center">
+<img src="splash.png" width="282" height="118" align="middle" >
 </td>
 </tr>
-<tr><td height="50" align="center" style="font-size:18px;">powered by</td></tr>
+<tr><td><h2 align="center">23rd April International Children Festival Special Edition</h2></td></tr>
+<tr><td height="50" align="right" style="font-size:18px;">powered by</td></tr>
 <tr><td>
 <img src="logo_tayangu.png" width="74" height="66" align="right" >
 </td></tr>
 </table>
-
-<!--<p id="intro1" class="intro">This<br>Is<br>Just<br>A<br>Begining</p>
-<p id="intro2" class="intro">The<br>Day<br>Is<br>Coming</p>
-<p id="intro3" class="intro">Prepare<br>Yourself</p>-->
 </div>
-
-</div><!-- /page -->
-
-
-
-
-<!-- /Sayfa başlangıcı -->   
+</div>
+ 
 <div data-role="page" id="pagePlayers">
-
 <div data-role="header" data-theme="b" data-position="fixed">
+<!--<a href="#pageLang" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>-->
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+</div>
 <div data-role="content" id="pagePlayersContent">
-<h1 align="center">Lords Of Maths<br>The Awakening</h1>
+<h3 align="center">Lords Of Maths<br>The Awakening</h3>
+<h4 align="center">23rd April International Children Festival Special Edition</h4>
 <h2 id="playersH">Players :</h2>
 <div id="pagePlayersList">
-
-
-<!--<div class="pagePlayersPlayerInfo ui-corner-all">
-
-<a href="#" data-role="button" data-icon="star" data-theme="d" onClick="playerSelect('0')">Oyuncu 1</a>
-
-<table class="playerTable" cellpadding="0" cellspacing="0" >
-<tr>
-<th colspan="2"><span class="levelSpanMode">Modes</span></th>
-<th><span class="levelSpanDifE">Easy</span></th>
-<th><span class="levelSpanDifM">Moderate</span></th>
-<th><span class="levelSpanDifH">Hard</span></th>
-</tr>
-
-<tr>
-<td class="td1"><span class="levelSpanFreemode">Free Mode</span></td>
-<td>:</td>
-<td><span class="playerLevelSpanFreemodeE">1</span></td>
-<td><span class="playerLevelSpanFreemodeM">1</span></td>
-<td><span class="playerLevelSpanFreemodeH">1</span></td>
-</tr>
-
-<tr>
-<td class="td1"><span class="levelSpanFindout">Find Out</span></td>
-<td>:</td>
-<td><span class="playerLevelSpanFindoutE">1</span></td>
-<td><span class="playerLevelSpanFindoutM">1</span></td>
-<td><span class="playerLevelSpanFindoutH">1</span></td>
-</tr>
-
-<tr>
-<td class="td1"><span class="levelSpanMathris">Mathris</span></td>
-<td>:</td>
-<td><span class="playerLevelSpanMathrisE">1</span></td>
-<td><span class="playerLevelSpanMathrisM">1</span></td>
-<td><span class="playerLevelSpanMathrisH">1</span></td>
-</tr>
-
-<tr>
-<td class="td1"><span class="levelSpanMathrix">Mathrix</span></td>
-<td>:</td>
-<td><span class="playerLevelSpanMathrixE">1</span></td>
-<td><span class="playerLevelSpanMathrixM">1</span></td>
-<td><span class="playerLevelSpanMathrixH">1</span></td>
-</tr>
-
-<tr>
-<td class="td1"><span class="levelSpanShootout">Shoot Out</span></td>
-<td>:</td>
-<td><span class="playerLevelSpanShootoutE">1</span></td>
-<td><span class="playerLevelSpanShootoutM">1</span></td>
-<td><span class="playerLevelSpanShootoutH">1</span></td>
-</tr>
-
-</table>
-
-<p align="center">
-<a href="#" data-role="button" data-icon="refresh" data-theme="d" data-iconpos="left" data-mini="true" onClick="openPagePlayerRename('0');" data-inline="true" ><span class="playerRenameSpan">Rename</span></a>
-
-<a href="#" data-role="button" data-icon="refresh" data-theme="d" data-iconpos="left" data-mini="true" onClick="openPagePlayerDelete('0');" data-inline="true" ><span class="playerDeleteSpan">Delete</span></a>
-
-
-</p>
-
-
-</div>-->
 </div>
-
 <br>  
 <hr>  
 <br>
-
 <a href="#" data-role="button" data-theme="d" onClick="openPagePlayerCreate();" ><span class="playerCreateSpan">Create</span></a>
-
 </div> 
-
-
 <div data-role="footer" data-theme="b" data-position="fixed" align="center">
 <a href="#pageGameSettings" id="pageGameSettingsLink" onClick="" data-icon="gear" data-theme="b" data-iconpos="left" data-inline="true">&nbsp;</a>
 <a href="#pageGameInfo" id="pageGameInfoLink" onClick="" data-icon="info" data-theme="b" data-iconpos="left" data-inline="true">&nbsp;</a>
-</div><!-- /footer --> 
+</div>
+</div>
 
-</div><!-- /page -->
-
-
-
-<!-- /Sayfa başlangıcı -->
 <div data-role="page" id="pageGameInfo">
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
-<div data-role="content" id="pageGameInfoContent" align="center">
-<!--<h1 align="center">Lords Of Maths<br>The Awakening</h1>-->
-
+</div>
+<div data-role="content" id="pageGameInfoContent" align="center" style="margin-left:-15px;">
 <table width="100%" align="center">
 <tr><td align="center"><img src="splash.png" width="282" height="118" ></td></tr>
-<td height="50"></td>
+<tr><td><h2 align="center">23rd April International Children Festival Special Edition</h2></td></tr>
+<tr><td height="50"></td></tr>
 <tr><td align="center"><a href="//www.lordsofmaths.com" target="_blank" style="text-decoration:none">www.lordsofmaths.com</a></td></tr>
 <tr><td height="50"></td></tr>
 <tr><td align="center"><a href="mailto:info@lordsofmaths.com" target="_blank" style="text-decoration:none">info@lordsofmaths.com</a></td></tr>
 <tr><td align="center"><a href="mailto:theawakening@lordsofmaths.com" target="_blank" style="text-decoration:none">theawakening@lordsofmaths.com</a></td></tr>
-
 <tr><td height="50"></td></tr>
 <tr><td height="50" align="center" style="font-size:18px;">powered by</td></tr>
 <tr><td align="center"><img src="logo_tayangu.png" width="74" height="66"></td></tr>
 <tr><td align="center"><a href="//www.tayangu.com.tr" target="_blank" style="text-decoration:none">www.tayangu.com.tr</a></td></tr>
+<tr><td height="50"></td></tr>
+<tr><td align="center"><a href="https://en.wikipedia.org/wiki/Children%27s_Day#Turkey" target="_blank">23rd April International Children Festival wikipedia page</a></td></tr>
 </table>
-
+<div id="pageGameInfo23April" class="ui-corner-all">
+<h4>Turkey</h4>
+The Grand National Assembly of Turkey was established on 1920, April 23, and to commemorate the event, April 23 was proclaimed a national holiday in 1921. Since 1927[23] it has also become Children's Day (Turkish: Ulusal Egemenlik ve Çocuk Bayramı, literally "The Holiday of National Sovereignty and Children"), an official holiday dedicated to the children of Turkey and (from 1979 on) the world.<br><br>
+In addition to holding many domestic celebratory events such as stadium performances, Turkey also houses <a href="http://www.trt23nisan.com/en/" target="_blank">TRT International April 23 Children's Festival</a>, where groups of children from other countries are invited to participate in the festivities while staying at Turkish families' homes. In some countries, Festivals are celebrated with children's of different ethnicities.
+</div>
+</div>
 </div>
 
-</div><!-- /page -->
-
-
-
-<!-- /Sayfa başlangıcı -->
 <div data-role="page" id="pageGameSettings">
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+</div>
 <div data-role="content" id="pageGameSettingsContent">
 <h1 align="center" id="gameSettingsH1">Game Settings</h1>
 <label for="langSelect" class="select" style="margin-top:20px; font-weight:bold;"><h2 id="langLabelH">Language :</h2></label>
@@ -854,7 +543,6 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
    <option value="it">Italiano</option>
    <option value="tr">Türkçe</option>
 </select>
-
 <label for="styleSelect" class="select" style="margin-top:20px; font-weight:bold;"><h2 id="themeLabelH">Theme :</h2></label>
 <select name="styleSelect" id="styleSelect" onChange="styleChangeSelect();">
    <option value="1">1</option>
@@ -865,26 +553,18 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
    <option value="6">6</option>
 </select>
 </div>
+</div>
 
-</div><!-- /page -->
-
-
-
-<!-- /Sayfa başlangıcı -->
 <div data-role="page" id="pagePlayerRename">
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+</div>
 <div data-role="content" id="pagePlayerRenameContent" align="center">
 <form>
 <div style="padding:10px 10px;" align="left">
 <h2 id="pagePlayerRenamePlayerH" align="center">Rename Player</h2>
 <h3 id="pagePlayerRenamePlayerName" align="center">Player 1</h3>
-
-
 <label id="labelNewName" for="newname" style="font-weight:bold;">New Name :</label>
 <input type="text" name="newname" id="newname" value="" data-theme="d" />
 <p align="center">
@@ -894,18 +574,13 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 </div>
 </form>
 </div>
-</div><!-- /page -->
+</div>
 
-
-
-<!-- /Sayfa başlangıcı -->
 <div data-role="page" id="pagePlayerDelete">
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+</div>
 <div data-role="content" id="pagePlayerDeleteContent" align="center">
 <form>
 <div style="padding:10px 10px;" align="left">
@@ -919,19 +594,13 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 </div>
 </form>
 </div>
+</div>
 
-</div><!-- /page -->
-
-
-
-<!-- /Sayfa başlangıcı -->
 <div data-role="page" id="pagePlayerCreate">
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+</div>
 <div data-role="content" id="pagePlayerCreateContent" align="center">
 <form>
 <div style="padding:10px 10px;" align="left">
@@ -943,413 +612,285 @@ htmlCode=htmlCode+'<div class="pagePlayersPlayerInfo ui-corner-all">'+
 </p>
 </div>
 </form>
-
 </div>
-</div><!-- /page -->
+</div>
 
-
-
-
-
-
-<!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageGameModes">
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+</div>
 <div data-role="content" id="pageGameModesContent">
-<h1 align="center">Lords Of Maths<br>The Awakening</h1>
+<h3 align="center">Lords Of Maths<br>The Awakening</h3>
+<h4 align="center">23rd April International Children Festival Special Edition</h4>
 <a href="#" id="pageGameModesFreeMode" onClick="gameModeSelect(0);" data-role="button" data-theme="d" class="ui-disabled">Free Mode</a>
 <a href="#" id="pageGameModesFindOut" onClick="gameModeSelect(1);" data-role="button" data-theme="d" class="ui-disabled">Find-Out</a>
 <a href="#" id="pageGameModesMathris" onClick="gameModeSelect(2);" data-role="button" data-theme="d" class="ui-disabled">Mathris</a>
 <a href="#" id="pageGameModesMathrix" onClick="gameModeSelect(3);" data-role="button" data-theme="d" class="ui-disabled">Mathrix</a>
 <a href="#" id="pageGameModesShootOut" onClick="gameModeSelect(4);" data-role="button" data-theme="d" class="ui-disabled">Shoot-Out</a><!--class="ui-disabled"-->
-
 </div>
-
 <div data-role="footer" data-theme="b" data-position="fixed" align="center">
 <a href="#pageGameModesInfo" id="gameInfo" onClick="" data-icon="info" data-theme="b" data-iconpos="left" style="width:50px">&nbsp;</a>
-</div><!-- /footer -->
+</div>
+</div>
 
-</div><!-- /page -->
-
-
-
-<!-- /Sayfa başlangıcı -->
 <div data-role="page" id="pageGameModesInfo">
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+</div>
 <div data-role="content" id="pageInfoContent" align="center">
-<div class="pageGameModesInfoExplanation ui-corner-all"> 
+<h3 align="center">Lords Of Maths<br>The Awakening</h3>
+<h4 align="center">23rd April International Children Festival Special Edition</h4>
+<div class="pageGameModesInfoExplanation ui-corner-all">
 <table width="100%" align="center">
 <tr>
 <td></td>
 <td class="td1"><span id="pageGameModeInfoLevelsSpan">Levels</span></td>
 </tr>
-
 <tr>
 <td>Free Mode</td>
 <td class="td1">5</td>
 </tr>
-
 <tr>
 <td>Find Out</td>
-<td class="td1">100</td>
+<td class="td1">23</td>
 </tr>
-
 <tr>
 <td>Mathris</td>
-<td class="td1">100</td>
+<td class="td1">23</td>
 </tr>
-
 <tr>
 <td>Mathrix</td>
-<td class="td1">100</td>
+<td class="td1">23</td>
 </tr>
-
 <tr>
 <td>Shoot Out</td>
-<td class="td1">100</td>
+<td class="td1">23</td>
 </tr>
-
 </table>
 </div>
-
-
-
 <div class="pageGameModesInfoExplanation ui-corner-all">
 <table width="100%" align="center">
 <tr>
 <td></td>
 <td class="td1" colspan="2"><span id="pageGameModeInfoPointsSpan">Levels</span></td>
 </tr>
-
 <tr>
 <td></td>
 <td class="td1"><span id="pageGameModeInfoTrueSpan">True</span></td>
 <td class="td1"><span id="pageGameModeInfoFalseSpan">False</span></td>
 </tr>
-
 <tr>
 <td><span class="pageGameModeInfoEasySpan">Easy</span></td>
 <td class="td1">5</td>
 <td class="td1">- 5</td>
 </tr>
-
 <tr>
 <td><span class="pageGameModeInfoModerateSpan">Moderate</span></td>
 <td class="td1">2</td>
 <td class="td1">- 4</td>
 </tr>
-
 <tr>
 <td><span class="pageGameModeInfoHardSpan">Hard</span></td>
 <td class="td1">1</td>
 <td class="td1">- 3</td>
 </tr>
-
 </table>
 </div>
-
-
-
-
 <div class="pageGameModesInfoExplanation ui-corner-all">
 <table width="100%" align="center">
 <tr>
 <td></td>
 <td class="td1" colspan="3"><span id="pageGameModeInfoQuestionsSpan">Questions</span></td>
 </tr>
-
 <tr>
 <td></td>
 <td class="td1"><span class="pageGameModeInfoEasySpan">Easy</span></td>
 <td class="td1"><span class="pageGameModeInfoModerateSpan">Moderate</span></td>
 <td class="td1"><span class="pageGameModeInfoHardSpan">Hard</span></td>
 </tr>
-
 <tr>
 <td>Free Mode</td>
 <td class="td1">-</td>
 <td class="td1">-</td>
 <td class="td1">-</td>
 </tr>
-
 <tr>
 <td>Find Out</td>
 <td class="td1">-</td>
 <td class="td1">-</td>
 <td class="td1">-</td>
 </tr>
-
 <tr>
 <td>Mathris</td>
 <td class="td1">-</td>
 <td class="td1">-</td>
 <td class="td1">-</td>
 </tr>
-
 <tr>
 <td>Mathrix</td>
 <td class="td1">20</td>
 <td class="td1">50</td>
 <td class="td1">100</td>
 </tr>
-
 <tr>
 <td>Shoot Out</td>
 <td class="td1">20</td>
 <td class="td1">50</td>
 <td class="td1">100</td>
 </tr>
-
 </table>
 </div>
-
-
-
-
 <div class="pageGameModesInfoExplanation ui-corner-all">
 <table width="100%" align="center">
 <tr>
 <td></td>
 <td class="td1" colspan="3"><span id="pageGameModeInfoPTSSpan">Points To Success</span></td>
 </tr>
-
 <tr>
 <td></td>
 <td class="td1"><span class="pageGameModeInfoEasySpan">Easy</span></td>
 <td class="td1"><span class="pageGameModeInfoModerateSpan">Moderate</span></td>
 <td class="td1"><span class="pageGameModeInfoHardSpan">Hard</span></td>
 </tr>
-
 <tr>
 <td>Free Mode</td>
 <td class="td1">100</td>
 <td class="td1">100</td>
 <td class="td1">100</td>
 </tr>
-
 <tr>
 <td>Find Out</td>
 <td class="td1">100</td>
 <td class="td1">100</td>
 <td class="td1">100</td>
 </tr>
-
 <tr>
 <td>Mathris</td>
 <td class="td1">100</td>
 <td class="td1">100</td>
 <td class="td1">100</td>
 </tr>
-
 <tr>
 <td>Mathrix</td>
 <td class="td1">50</td>
 <td class="td1">75</td>
 <td class="td1">90</td>
 </tr>
-
 <tr>
 <td>Shoot Out</td>
 <td class="td1">50</td>
 <td class="td1">75</td>
 <td class="td1">90</td>
 </tr>
-
 </table>
 </div>
-
-
-
-
+</div>
 </div>
 
-</div><!-- /page -->
-
-
-
-
-
-
-<!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageFreeModeLevel">
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+</div>
 <div data-role="content" id="pageFreeModeLevelContent" align="center">
 <h1 align="center">Free Mode</h1>
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
-
 <input type="radio" name="gDifficulty" id="freeModeEasy" onClick="changeDifficulty(0, 0);" />
 <label class="labelEasy" for="freeModeEasy"><span id="spanEasyFreeMode">Kolay</span></label>
-
 <input type="radio" name="gDifficulty" id="freeModeModerate" onClick="changeDifficulty(0, 1);" />
 <label class="labelModerate" for="freeModeModerate"><span id="spanModerateFreeMode">Normal</span></label>
-
 <input type="radio" name="gDifficulty" id="freeModeHard" onClick="changeDifficulty(0, 2);" />
 <label class="labelHard" for="freeModeHard"><span id="spanHardFreeMode">Zor</span></label>
-
 </fieldset>
-
 <hr>
 <br>
-
 <h3 id="operationsH3">İşlemler</h3>
-
 <label><input type="checkbox" name="operation" id="oAdd" data-mini="true" onClick="changeOpt(0,0);" /><span id="spanOAdd">Toplama</span></label>
 <label><input type="checkbox" name="operation" id="oSub" data-mini="true" onClick="changeOpt(0,1);" disabled /><span id="spanOSub">Çıkarma</span></label>
 <label><input type="checkbox" name="operation" id="oMul" data-mini="true" onClick="changeOpt(0,2);" disabled /><span id="spanOMul">Çarpma</span></label>
 <label><input type="checkbox" name="operation" id="oDiv" data-mini="true" onClick="changeOpt(0,3);" disabled /><span id="spanODiv">Bölme</span></label>
-
 <hr>
 <br>
-
 <h3 id="numbersH3">Sayılar</h3>
 <label><input type="checkbox" name="number" id="nInt" data-mini="true" onClick="changeOpt(1,0);" /><span id="spanNInt">Tam Sayılar</span></label>
-
 <label><input type="checkbox" name="number" id="nDec" data-mini="true" onClick="changeOpt(1,1);" disabled /><span id="spanNDec">Ondalık Sayılar</span></label>
-
 <label><input type="checkbox" name="number" id="nRat" data-mini="true" onClick="changeOpt(1,2);" disabled /><span id="spanNRat">Kesirli Sayılar</span></label>
-
 <label><input type="checkbox" name="number" id="nExp" data-mini="true" onClick="changeOpt(1,3);" disabled /><span id="spanNExp">Üslü Sayılar</span></label>
-
 <label><input type="checkbox" name="number" id="nRoo" data-mini="true" onClick="changeOpt(1,4);" disabled /><span id="spanNRoo">Köklü Sayılar</span></label>
-
 <hr>
 <br>
-
 <h3 id="digitsH3">Hane Sayısı</h3>
-
 <label><input type="checkbox" name="digit" id="digit1" data-mini="true" onClick="changeOpt(2,0);" /><span id="spanDigit1">X</span></label>
-
 <label><input type="checkbox" name="digit" id="digit2" data-mini="true" onClick="changeOpt(2,1);" disabled /><span id="spanDigit2">XX</span></label>
-
 <label><input type="checkbox" name="digit" id="digit3" data-mini="true" onClick="changeOpt(2,2);" disabled /><span id="spanDigit3">XXX</span></label>
-
 <label><input type="checkbox" name="digit" id="digit4" data-mini="true" onClick="changeOpt(2,3);" disabled /><span id="spanDigit4">XXXX</span></label>
-
 <label><input type="checkbox" name="digit" id="digit5" data-mini="true" onClick="changeOpt(2,4);" disabled /><span id="spanDigit5">XXXXX</span></label>
-
-
 <hr>
 <br>
-
 <h3 id="oCountH3">İşlem sayısı</h3>
-
 <label><input type="checkbox" name="oCount" id="oCount1" data-mini="true" onClick="changeOpt(3,0);" /><span id="spanCount1">
 X ? X</span></label>
-
 <label><input type="checkbox" name="oCount" id="oCount2" data-mini="true" onClick="changeOpt(3,1);" disabled /><span id="spanCount2">
 X ? X ? X</span></label>
-
 <label><input type="checkbox" name="oCount" id="oCount3" data-mini="true" onClick="changeOpt(3,2);" disabled /><span id="spanCount3">
 X ? X ? X ? X</span></label>
-
 <label><input type="checkbox" name="oCount" id="oCount4" data-mini="true" onClick="changeOpt(3,3);" disabled /><span id="spanCount4">
 X ? X ? X ? X ? X</span></label>
-
 <label><input type="checkbox" name="oCount" id="oCount5" data-mini="true" onClick="changeOpt(3,4);" disabled /><span id="spanCount5">
 X ? X ? X ? X ? X ? X</span></label>
-
 <hr>
 <br>
-
 <h3 id="signH3">İşaret</h3>
-
 <label><input type="checkbox" name="eSign" id="eSign0" data-mini="true" onClick="changeOpt(4,0);" /><span id="spanESign0">=</span></label>
-
 <label><input type="checkbox" name="eSign" id="eSign1" data-mini="true" onClick="changeOpt(4,1);" disabled /><span id="spanESign1">&ne;</span></label>
-
 <label><input type="checkbox" name="eSign" id="eSign2" data-mini="true" onClick="changeOpt(4,2);" disabled /><span id="spanESign2">&gt;</span></label>
-
 <label><input type="checkbox" name="eSign" id="eSign3" data-mini="true" onClick="changeOpt(4,3);" disabled /><span id="spanESign3">&ge;</span></label>
-
 <label><input type="checkbox" name="eSign" id="eSign4" data-mini="true" onClick="changeOpt(4,4);" disabled /><span id="spanESign4">&lt;</span></label>
-
 <label><input type="checkbox" name="eSign" id="eSign5" data-mini="true" onClick="changeOpt(4,5);" disabled /><span id="spanESign5">&le;</span></label>
-
 <hr>
 <br>
 <a href="#" onClick="playFreeMode(0);" data-role="button" data-theme="d" id="freeModePlayButton"><span id="playSpan">Play</span></a>
+</div> 
+</div>
 
-</div><!-- /content -->
- 
-</div><!-- /page -->
-
-
-
-
-
-
-<!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageFreeModePlay" >
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageFreeModeLevel" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
-
+</div>
 <div data-role="content" id="pageFreeModePlayContent">
-
 <input type="range" name="pageFreeModePlaySlider" id="pageFreeModePlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
 <input type="text" value="" id="playFreeModeAnswer" style="visibility:hidden" disabled>
-
 <div style="margin:0px -20px; padding:0px">
 <div id="pageFreeModePlayQuestion" class="ui-bar ui-bar-d ui-corner-all pageFreeModePlayQuestion shadow">
 Question</div>
 </div>
-
 </div>
-
-
 <div align="center" data-role="popup" data-theme="b" id="popupFreeModePlaySuc" class="ui-content">
 <h1 id="popupFreeModePlaySucH1">CONGRATULATIONS</h1>
 <h3 id="popupFreeModePlaySucH3">You completed successfuly.</h3>
 <img src="images/true.png">
 <a href="#pageFreeModeLevel" data-role="button" data-theme="d"><span id="popupFreeModePlaySucSpan">OK</span></a>
 </div>
-
 <div align="center" data-role="popup" data-theme="b" id="popupFreeModePlayUnSuc" class="ui-content">
 <h1 id="popupFreeModePlayUnSucH1">SORRY</h1>
 <h3 id="popupFreeModePlayUnSucH3">You could not complete succesfully.</h3>
 <img src="images/wrong.png">
 <a href="#pageFreeModeLevel" data-role="button" data-theme="d"><span id="popupFreeModePlayUnSucSpan">OK</span></a>
 </div>
-
-
 <div data-role="footer" data-theme="b" data-position="fixed" align="center">
 <a href="#" id="playFreeModeWrong" onClick="" data-icon="delete" data-theme="b" data-iconpos="left" style="width:48%"><span id="playFreeModeFalseSpan">Yanlış</span></a>
 <a href="#" id="playFreeModeRight" onClick="" data-icon="check" data-theme="b" data-iconpos="right" style="width:48%"><span id="playFreeModeTrueSpan">Doğru</span></a>
-</div><!-- /footer --> 
+</div>
+</div>
 
-</div><!-- /page -->
-
-
-
-
-
-
-<!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageFindOutLevel">
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+</div>
 <div data-role="content" id="pageFindOutLevelContent" align="center">
 <h1>Find Out</h1>
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
@@ -1360,35 +901,21 @@ Question</div>
 <input type="radio" name="gDifficulty" id="hardFindOut" onClick="changeDifficulty(1, 2);" />
 <label class="labelHard" for="hardFindOut"><span id="spanHardFindOut">Zor</span></label>
 </fieldset>
-
-
 <hr>
 <div id="pageFindOutLevels">
 <a href="#" onClick="playFindOut(1,0)" data-role="button" data-theme="d" id="level1" >1</a>
 <a href="#" onClick="playFindOut(2,0)" data-role="button" data-theme="d" id="level2" >2</a>
 <a href="#" onClick="playFindOut(3,0)" data-role="button" data-theme="d" id="level3" >3</a>
 </div>
+</div>
+</div>
 
-</div><!-- /content -->
-
-</div><!-- /page -->
-
-
-
-
-
-
-<!--Boş sayfa-->
-<!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageFindOutPlay">
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageFindOutLevel" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+</div>
 <div data-role="content" id="pageFindOutPlayContent">
-
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr><td>
 <input type="range" name="pageFindOutPlaySlider" id="pageFindOutPlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
@@ -1397,32 +924,21 @@ Question</div>
 <span id="pageFindOutPlayTimeSpan" class="time1">600</span>
 </td>
 </tr></table>
-
-
-<!--<input type="range" name="pageFindOutPlaySlider" id="pageFindOutPlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />-->
-
-
-<!--<img class="pageFreeModePlayImage" src="background.png">-->
 <div id="pageFindOutPlayQuestion" class="ui-bar ui-bar-d ui-corner-all pageFindOutPlayQuestion shadow">
 </div>
 </div>
-
-
 <div align="center" data-role="popup" data-theme="b" id="popupFindOutPlaySuc" class="ui-content">
 <h1 id="popupFindOutPlaySucH1">CONGRATULATIONS</h1>
 <h3 id="popupFindOutPlaySucH3">You completed successfuly.</h3>
 <img src="images/true.png">
 <a href="#pageFindOutLevel" data-role="button" data-theme="d"><span id="popupFindOutPlaySucSpan">OK</span></a>
 </div>
-
 <div align="center" data-role="popup" data-theme="b" id="popupFindOutPlayUnSuc" class="ui-content">
 <h1 id="popupFindOutPlayUnSucH1">SORRY</h1>
 <h3 id="popupFindOutPlayUnSucH3">You could not complete succesfully.</h3>
 <img src="images/wrong.png">
 <a href="#pageFindOutLevel" data-role="button" data-theme="d"><span id="popupFindOutPlayUnSucSpan">OK</span></a>
 </div>
-
-
 <div data-role="footer" data-theme="b" data-position="fixed" align="center">
 <table width="100%" style="margin:0px;">
 <tr>
@@ -1433,236 +949,140 @@ Question</div>
 <td><a href="#" id="playFindOutLess" onClick="" data-role="button" data-theme="b">&lt;</a></td>
 <td><a href="#" id="playFindOutEqLess" onClick="" data-role="button" data-theme="b">&le;</a></td>
 </tr></table>
-</div><!-- /footer --> 
+</div>
+</div>
 
-</div><!-- /page -->
-
-
-
-
-
-
-<!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageMathrisLevel">
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+</div>
 <div data-role="content" id="pageMathrisLevelContent" align="center">
 <h1>Mathris</h1>
-
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
-
 <input type="radio" name="gDifficulty" id="easyMathris" onClick="changeDifficulty(2, 0);" />
 <label class="labelEasy" for="easyMathris"><span id="spanEasyMathris">Kolay</span></label>
-
 <input type="radio" name="gDifficulty" id="moderateMathris" onClick="changeDifficulty(2, 1);" />
 <label class="labelModerate" for="moderateMathris"><span id="spanModerateMathris">Normal</span></label>
-
 <input type="radio" name="gDifficulty" id="hardMathris" onClick="changeDifficulty(2, 2);" />
 <label class="labelHard" for="hardMathris"><span id="spanHardMathris">Zor</span></label>
-
 </fieldset>
-
 <hr>
 <div id="pageMathrisLevels">
 <a href="#" onClick="playMathris(1, null)" data-role="button" data-theme="d" id="level1" >1</a>
 <a href="#" onClick="playMathris(2,'')" data-role="button" data-theme="d" id="level2" >2</a>
 <a href="#" onClick="playMathris(3,'')" data-role="button" data-theme="d" id="level3" >3</a>
 </div>
-
-</div><!-- /content -->
-</div><!-- /page -->
-
-
-
-
-
-
-<!--Boş sayfa-->
-<!-- /Sayfa başlangıcı -->   
+</div>
+</div>
+ 
 <div data-role="page" id="pageMathrisPlay">
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageMathrisLevel" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
-<div data-role="content" id="pageMathrisPlayContent" >
-
-<input type="range" name="pageShootOutPlaySlider" id="pageMathrisPlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
-
-<div id="pageMathrisPlayQuestions2" style="margin:0px -20px; padding:0px 0px; height:470px;">
-<div id="pageMathrisPlayQuestions" style="margin:0px; padding:0px 0px; height:450px; width:auto;"><!--overflow:hidden-->
-
-
-<!--Sorular buraya gelecek-->
-
 </div>
-
-
+<div data-role="content" id="pageMathrisPlayContent" >
+<input type="range" name="pageShootOutPlaySlider" id="pageMathrisPlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
+<div id="pageMathrisPlayQuestions2" style="margin:0px -20px; padding:0px 0px; height:470px;">
+<div id="pageMathrisPlayQuestions" style="margin:0px; padding:0px 0px; height:450px; width:auto;">
+</div>
 <hr>
 </div>
 </div>
-
-
 <div align="center" data-role="popup" data-theme="b" id="popupMathrisPlaySuc" class="ui-content">
 <h1 id="popupMathrisPlaySucH1">CONGRATULATIONS</h1>
 <h3 id="popupMathrisPlaySucH3">You completed successfuly.</h3>
 <img src="images/true.png">
 <a href="#pageMathrisLevel" data-role="button" data-theme="d"><span id="popupMathrisPlaySucSpan">OK</span></a>
 </div>
-
 <div align="center" data-role="popup" data-theme="b" id="popupMathrisPlayUnSuc" class="ui-content">
 <h1 id="popupMathrisPlayUnSucH1">SORRY</h1>
 <h3 id="popupMathrisPlayUnSucH3">You could not complete succesfully.</h3>
 <img src="images/wrong.png">
 <a href="#pageMathrisLevel" data-role="button" data-theme="d"><span id="popupMathrisPlayUnSucSpan">OK</span></a>
 </div>
-
-</div><!-- /page -->
-
-
-
-
-
-
-<!-- /Sayfa başlangıcı -->   
-<div data-role="page" id="pageMathrixLevel">
-
-<div data-role="header" data-theme="b" data-position="fixed">
+</div>
+ 
+<div data-role="page" id="pageMathrixLevel"><div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+</div>
 <div data-role="content" id="pageMathrixLevelContent" align="center">
 <h1>Mathrix</h1>
-
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
-
 <input type="radio" name="gDifficulty" id="easyMathrix" onClick="changeDifficulty(3, 0);" />
 <label class="labelEasy" for="easyMathrix"><span id="spanEasyMathrix">Kolay</span></label>
-
 <input type="radio" name="gDifficulty" id="moderateMathrix" onClick="changeDifficulty(3, 1);" />
 <label class="labelModerate" for="moderateMathrix"><span id="spanModerateMathrix">Normal</span></label>
-
 <input type="radio" name="gDifficulty" id="hardMathrix" onClick="changeDifficulty(3, 2);" />
 <label class="labelHard" for="hardMathrix"><span id="spanHardMathrix">Zor</span></label>
-
 </fieldset>
-
 <hr>
 <div id="pageMathrixLevels">
 <a href="#" onClick="playMathrix(1)" data-role="button" data-theme="d" id="level1" >1</a>
 <a href="#" onClick="playMathrix(2)" data-role="button" data-theme="d" id="level2" >2</a>
 <a href="#" onClick="playMathrix(3)" data-role="button" data-theme="d" id="level3" >3</a>
 </div>
-
-</div><!-- /content -->
-</div><!-- /page -->
-
-
-
-
-
-<!--Boş sayfa-->
-<!-- /Sayfa başlangıcı -->   
+</div>
+</div>
+ 
 <div data-role="page" id="pageMathrixPlay">
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageMathrixLevel" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+</div>
 <div data-role="content" id="pageMathrixPlayContent" style="margin:0px; padding:0px" >
-
 <div>
 <input type="range" name="pageMathrixPlaySlider" id="pageMathrixPlaySlider" value="0" min="0" max="100" data-highlight="true" step="1" data-mini="true" disabled />
 </div>
-
-
 <div id="pageMathrixPlayQuestionsView" style="margin:0px; padding:0px 0px; overflow:hidden;">
 <div id="pageMathrixPlayQuestions" style="margin:0px; padding:0px 0px; position:relative;">
-
-<!--Sorular buraya gelecek-->
-
 </div>
-
 </div>
-
 </div>
-
-
 <div align="center" data-role="popup" data-theme="b" id="popupMathrixPlaySuc" class="ui-content">
 <h1 id="popupMathrixPlaySucH1">CONGRATULATIONS</h1>
 <h3 id="popupMathrixPlaySucH3">You completed successfuly.</h3>
 <img src="images/true.png">
 <a href="#pageMathrixLevel" data-role="button" data-theme="d"><span id="popupMathrixPlaySucSpan">OK</span></a>
 </div>
-
 <div align="center" data-role="popup" data-theme="b" id="popupMathrixPlayUnSuc" class="ui-content">
 <h1 id="popupMathrixPlayUnSucH1">SORRY</h1>
 <h3 id="popupMathrixPlayUnSucH3">You could not complete succesfully.</h3>
 <img src="images/wrong.png">
 <a href="#pageMathrixLevel" data-role="button" data-theme="d"><span id="popupMathrixPlayUnSucSpan">OK</span></a>
 </div>
-
-
-</div><!-- /page -->
-
-
-
-
-
-<!-- /Sayfa başlangıcı -->   
+</div>
+ 
 <div data-role="page" id="pageShootOutLevel">
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+</div>
 <div data-role="content" id="pageShootOutLevelContent" align="center">
 <h1>Shoot Out</h1>
-
 <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
-
 <input type="radio" name="gDifficulty" id="easyShootOut" onClick="changeDifficulty(4, 0);" />
 <label class="labelEasy" for="easyShootOut"><span id="spanEasyShootOut">Kolay</span></label>
-
 <input type="radio" name="gDifficulty" id="moderateShootOut" onClick="changeDifficulty(4, 1);" />
 <label class="labelModerate" for="moderateShootOut"><span id="spanModerateShootOut">Normal</span></label>
-
 <input type="radio" name="gDifficulty" id="hardShootOut" onClick="changeDifficulty(4, 2);" />
 <label class="labelHard" for="hardShootOut"><span id="spanHardShootOut">Zor</span></label>
-
 </fieldset>
-
 <hr>
 <div id="pageShootOutLevels">
 <a href="#" onClick="playShootOut(1)" data-role="button" data-theme="d" id="level1" >1</a>
 <a href="#" onClick="playShootOut(2)" data-role="button" data-theme="d" id="level2" >2</a>
 <a href="#" onClick="playShootOut(3)" data-role="button" data-theme="d" id="level3" >3</a>
 </div>
+</div>
+</div>
 
-</div><!-- /content -->
-</div><!-- /page -->
-
-
-
-
-
-
-<!-- /Sayfa başlangıcı -->   
 <div data-role="page" id="pageShootOutPlay">
-
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageShootOutLevel" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
-</div><!-- /header -->
-
+</div>
 <div data-role="content" id="pageShootOutPlayContent" >
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr><td>
@@ -1673,14 +1093,8 @@ Question</div>
 </td>
 </tr></table>
 <div id="pageShootOutPlayQuestions" style="margin:0px; padding:0px 0px; height:300px;">
-<!--Sorular buraya gelecek-->
-
 </div>
-
 </div>
-
-
-
 
 <div align="center" data-role="popup" data-theme="b" id="popupShootOutPlaySuc" class="ui-content">
 <h1 id="popupShootOutPlaySucH1">CONGRATULATIONS</h1>
@@ -1688,17 +1102,13 @@ Question</div>
 <img src="images/true.png">
 <a href="#pageShootOutLevel" data-role="button" data-theme="d"><span id="popupShootOutPlaySucSpan">OK</span></a>
 </div>
-
 <div align="center" data-role="popup" data-theme="b" id="popupShootOutPlayUnSuc" class="ui-content">
 <h1 id="popupShootOutPlayUnSucH1">SORRY</h1>
 <h3 id="popupShootOutPlayUnSucH3">You could not complete succesfully.</h3>
 <img src="images/wrong.png">
 <a href="#pageShootOutLevel" data-role="button" data-theme="d"><span id="popupShootOutPlayUnSucSpan">OK</span></a>
 </div>
-
-</div><!-- /page -->
-
-
+</div>
 
 </body>
 </html>
