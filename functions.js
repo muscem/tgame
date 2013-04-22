@@ -24,9 +24,86 @@ else if(gameLevel==17){gameOperation=[[2]];gameNumber=[[2]];gameDigit=[[0]];game
 else if(gameLevel==18){gameOperation=[[3]];gameNumber=[[2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
 else if(gameLevel==19){gameOperation=[[0]];gameNumber=[[2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
 else if(gameLevel==20){gameOperation=[[1]];gameNumber=[[2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
-else if(gameLevel==21){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}//50
-else if(gameLevel==22){gameOperation=[[2,3]];gameNumber=[[2]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}//80
-else if(gameLevel==23){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[4]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}//100
+else if(gameLevel==21){gameOperation=[[0,1,2,3]];gameNumber=[[2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==22){gameOperation=[[2]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==23){gameOperation=[[3]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==24){gameOperation=[[0,1,2,3]];gameNumber=[[0]];gameDigit=[[0]];gameOCount=[[1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==25){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==26){gameOperation=[[0]];gameNumber=[[1]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==27){gameOperation=[[1]];gameNumber=[[1]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==28){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==29){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==30){gameOperation=[[0,1]];gameNumber=[[0,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==31){gameOperation=[[0,1]];gameNumber=[[1,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==32){gameOperation=[[0,1]];gameNumber=[[0,1,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==33){gameOperation=[[2,3]];gameNumber=[[0,1]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==34){gameOperation=[[2,3]];gameNumber=[[0,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==35){gameOperation=[[2,3]];gameNumber=[[1,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==36){gameOperation=[[2,3]];gameNumber=[[0,1,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==37){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==38){gameOperation=[[0]];gameNumber=[[3]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==39){gameOperation=[[1]];gameNumber=[[3]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==40){gameOperation=[[2]];gameNumber=[[3]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==41){gameOperation=[[3]];gameNumber=[[3]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==42){gameOperation=[[0,1,2,3]];gameNumber=[[3]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==43){gameOperation=[[0]];gameNumber=[[4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==44){gameOperation=[[1]];gameNumber=[[4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==45){gameOperation=[[2]];gameNumber=[[4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==46){gameOperation=[[3]];gameNumber=[[4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==47){gameOperation=[[0,1,2,3]];gameNumber=[[4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==48){gameOperation=[[2,3]];gameNumber=[[3,4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==49){gameOperation=[[0,1]];gameNumber=[[3,4]];gameDigit=[[0]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==50){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==51){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==52){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==53){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==54){gameOperation=[[0,1]];gameNumber=[[2]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==55){gameOperation=[[0,1]];gameNumber=[[2]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==56){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==57){gameOperation=[[0,1]];gameNumber=[[0,2]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==58){gameOperation=[[0,1]];gameNumber=[[1,2]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==59){gameOperation=[[0,1]];gameNumber=[[0,1,2]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==60){gameOperation=[[0]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==61){gameOperation=[[1]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==62){gameOperation=[[2]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==63){gameOperation=[[3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==64){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==65){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[1]];gameOCount=[[2]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==66){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[1]];gameOCount=[[2]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==67){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[1]];gameOCount=[[3]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==68){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[1]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==69){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[2]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==70){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[2]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==71){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[2]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==72){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[2]];gameOCount=[[1,2]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==73){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[2]];gameOCount=[[1,2]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==74){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[2]];gameOCount=[[1,2]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==75){gameOperation=[[0,1]];gameNumber=[[3]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==76){gameOperation=[[0,1]];gameNumber=[[4]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==77){gameOperation=[[0,1]];gameNumber=[[3,4]];gameDigit=[[1]];gameOCount=[[0,1]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==78){gameOperation=[[2,3]];gameNumber=[[0]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==79){gameOperation=[[2,3]];gameNumber=[[1]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==80){gameOperation=[[2,3]];gameNumber=[[2]];gameDigit=[[0,1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==81){gameOperation=[[0,1]];gameNumber=[[2]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==82){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[3]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==83){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[4]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==84){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[2,3,4]];gameOCount=[[0,1,2]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==85){gameOperation=[[2,3]];gameNumber=[[3]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==86){gameOperation=[[2,3]];gameNumber=[[4]];gameDigit=[[1]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==87){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[2,3]];gameOCount=[[3]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==88){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[2,3]];gameOCount=[[3]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==89){gameOperation=[[0,1]];gameNumber=[[0]];gameDigit=[[3,4]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==90){gameOperation=[[0,1]];gameNumber=[[1]];gameDigit=[[3,4]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==91){gameOperation=[[0,1]];gameNumber=[[0,1]];gameDigit=[[4]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==92){gameOperation=[[2]];gameNumber=[[0]];gameDigit=[[2]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==93){gameOperation=[[3]];gameNumber=[[0]];gameDigit=[[3]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==94){gameOperation=[[2]];gameNumber=[[0]];gameDigit=[[2]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==95){gameOperation=[[3]];gameNumber=[[0]];gameDigit=[[3]];gameOCount=[[0]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==96){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[0]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==97){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[1]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==98){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[2]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==99){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[3]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
+else if(gameLevel==100){gameOperation=[[0,1,2,3]];gameNumber=[[0,1,2,3,4]];gameDigit=[[4]];gameOCount=[[4]];gameSign=[[0,1,2,3,4,5]];}
 }
 function closePageToPlayers(){
 gamePlayerID=0;
@@ -136,43 +213,57 @@ digitMul=digitMul*10;
 return digitMul;
 }
 function createNumber(iRand){
-var cNumber=[];
-var digitMul=1;
+//iRand, önceden belirlenen degisken degeri
+
+var cNumber=[];	//Olusturulan sayi
+var digitMul=1;	//Hane sayisina bagli olarak çarpimda kullanilacak sayi
+
+//Hangi sayi türü kullanilacagi belirlenecek, 
 var iNum=Math.floor(Math.random()*gameNumber[iRand].length);
+
+//Hangi hane sayisi kullanilacagi belirlenecek
 var iDig=Math.floor(Math.random()*gameDigit[iRand].length);	
+
 digitMul=createMul(iRand, iDig);
-if (gameNumber[iRand][iNum]==0){
+
+if (gameNumber[iRand][iNum]==0){	//Tam sayi
 cNumber[0]=0;
 cNumber[1]=Math.floor(Math.random()*digitMul).toString();
+while (cNumber[1]==0){
+cNumber[1]=Math.floor(Math.random()*digitMul).toString();
 }
-else if (gameNumber[iRand][iNum]==1){
+}
+else if (gameNumber[iRand][iNum]==1){	//Ondalik sayi
 cNumber[0]=1;
 cNumber[1]=(Math.random()*digitMul).toFixed(gameDigit[iRand][iDig]+1).toString();
+while(cNumber[1]==0){
+cNumber[1]=(Math.random()*digitMul).toFixed(gameDigit[iRand][iDig]+1).toString();
 }
-else if (gameNumber[iRand][iNum]==2){
+}
+else if (gameNumber[iRand][iNum]==2){	//Kesirli sayi
 cNumber[0]=2;
 cNumber[1]=Math.floor(Math.random()*digitMul).toString();
 iDig=Math.floor(Math.random()*gameDigit[iRand].length);	
 digitMul=createMul(iRand, iDig);
 cNumber[2]=Math.floor(Math.random()*digitMul).toString();
-while(cNumber[2]==0 && gameDifficulty==0 ){
+while(cNumber[2]==0){
 cNumber[2]=Math.floor(Math.random()*digitMul).toString();
 }
 }
-else if (gameNumber[iRand][iNum]==3){
+else if (gameNumber[iRand][iNum]==3){	//Üslü sayi
 cNumber[0]=3;
 cNumber[1]=Math.floor(Math.random()*digitMul).toString();
-while(cNumber[1]==0 && gameDifficulty==0 ){
+while(cNumber[1]==0){
 cNumber[1]=Math.floor(Math.random()*digitMul).toString();
 }
 iDig=Math.floor(Math.random()*gameDigit[iRand].length);	
 digitMul=createMul(iRand, iDig);
 cNumber[2]=Math.floor(Math.random()*digitMul).toString();
-while(cNumber[2]==0 && gameDifficulty==0 ){
+while(cNumber[2]==0){
 cNumber[2]=Math.floor(Math.random()*digitMul).toString();
 }
 }
-else if (gameNumber[iRand][iNum]==4){
+else if (gameNumber[iRand][iNum]==4){	//Köklü sayi
 cNumber[0]=4;
 cNumber[1]=Math.floor(Math.random()*digitMul).toString();
 while(cNumber[1]==0){
@@ -181,10 +272,11 @@ cNumber[1]=Math.floor(Math.random()*digitMul).toString();
 iDig=Math.floor(Math.random()*gameDigit[iRand].length);	
 digitMul=createMul(iRand, iDig);
 cNumber[2]=Math.floor(Math.random()*digitMul).toString();
-while(cNumber[2]==0 && gameDifficulty==0 ){
+while(cNumber[2]==0){
 cNumber[2]=Math.floor(Math.random()*digitMul).toString();
 }
 }
+
 return cNumber;
 }
 function creatEquation(iRand){
@@ -379,7 +471,7 @@ $("#pagePlayerRenameContent").find("#newname").val("");
 function pageRenameLanguageChange(){
 var langID=1;
 langID=findlangID();
-var playerCancelSpan=["Kündigen", "Cancel", "Cancelar", "Annuler", "Annullare", "Vazge&ccedil;"];
+var playerCancelSpan=["K&#252;ndigen", "Cancel", "Cancelar", "Annuler", "Annullare", "Vazge&ccedil;"];
 var playerRenameSpan=["Umbenennen", "Rename", "Cambiar el Nombre", "Renommer", "Rinominare", "&#304;smi De&#287;i&#351;tir"];
 var pagePlayerRenamePlayerH=["Umbenennen Spieler", "Rename Player", "Cambiar el Nombre de Jugador", "Renommer Joueur", "Renommer Joueur", "Oyuncu &#304;smini De&#287;i&#351;tir"];
 var labelNewName=["Neuen Namen", "New Name", "Nuevo Nombre", "Nouveau Nom", "Nuovo Nome", "Yeni &#304;sim"];
@@ -413,7 +505,7 @@ var langID=1;
 langID=findlangID();
 var pagePlayerCreatePlayerH=["Spieler Erstellen", "Create Player", "Crear Jugador", "Cr&eacute;er Un Joueur", "Creare Un Giocatore", "Yeni Oyuncu Olu&#351;tur"];
 var nameSpan=["Name", "Name", "Nombre", "Nom", "Nome", "&#304;sim"];
-var playerCreateCancelSpan=["Kündigen", "Cancel", "Cancelar", "Annuler", "Annullare", "Vazge&ccedil;"];
+var playerCreateCancelSpan=["K&#252;ndigen", "Cancel", "Cancelar", "Annuler", "Annullare", "Vazge&ccedil;"];
 var playerCreateCreateSpan=["Schaffen", "Create", "Crear", "Cr&eacute;er", "Creare", "Olu&#351;tur"];
 $("#pagePlayerCreatePlayerH").html(pagePlayerCreatePlayerH[langID]);
 $("#nameSpan").html(nameSpan[langID]);

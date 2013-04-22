@@ -8,7 +8,7 @@
 
 <link rel="stylesheet" href="tgame.css" id="styleConf" />
 <style>
-#pageGameInfo23April{
+#pageGameInfo23AprilDiv{
 	padding:5px;
 	margin:15px 5px 5px 15px;
 	background-color:#CCC;
@@ -16,6 +16,20 @@
     -webkit-box-shadow: 3px 3px 5px #000000;
 	box-shadow: 3px 3px 5px #000000;
 	font-size:larger;
+}
+.pageGameModesInfoExplanation{
+	padding:5px;
+	margin:15px 5px 5px 5px;
+	background-color:#CCC;
+	-moz-box-shadow: 3px 3px 5px #000000;
+    -webkit-box-shadow: 3px 3px 5px #000000;
+	box-shadow: 3px 3px 5px #000000;
+}
+.pageGameModesInfoExplanation table{
+	font-weight:bold;
+}
+.pageGameModesInfoExplanation table td.td1{
+	text-align:center;
 }
 </style>
 
@@ -26,6 +40,7 @@
 <script src="phonegap.js"></script>
 
 <script type="text/javascript">
+
 var dbOK=0;
 var gameLang;
 var gamePlayerID;
@@ -51,7 +66,18 @@ var lastSelFMS=[[[]]];
 var gameMessage1=[];
 var db;
 
-
+//gamePlayerID=0 veritabanindan gelemeyecek bir sayi. Bu yüzden deneme kisisi (guest) için ayridim.
+gamePlayerID=0;
+gameLang="tr";
+pId[0]=0;
+pName[0]=["cem"];	
+lastSelDif[0]=[0,0,0,0,0];	//[1,0,0,0,0]	[2,0,0,0,0]
+lastSelFMOp[0]=[[1,0,0,0],[1,0,0,0],[1,0,0,0]];
+lastSelFMNum[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
+lastSelFMDig[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
+lastSelFMOC[0]=[[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0]];
+lastSelFMS[0]=[[1,0,0,0,0,0],[1,0,0,0,0,0],[1,0,0,0,0,0]];
+pLevels[0]=[[5,3,1],[100,1,1],[100,1,1],[100,1,1],[100,1,1]];
 
 
 
@@ -412,31 +438,22 @@ tx.executeSql("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePla
 </script>
 </head> 
 <body id="body"> 
-
-
 <div data-role="page" id="pageOpening">
 <div data-role="header" data-theme="b" data-position="fixed">
-<!--<a href="#" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>-->
 <h1>Lords Of Maths</h1>
-<!--<a href="#pageLang" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>-->
 </div>
 <div data-role="content" id="pageLangContent" align="center">
 <h1 align="center">Lords Of Maths<br>The Awakening</h1>
-<h2 align="center">23rd April International Children Festival Special Edition</h2>
 <img src="images/ajax-loader.gif" alt="loading pic" height="46" width="46">
 <h2>Some controls are being checked.<br>Please wait.</h2>
 </div>
 </div>
-
 <div data-role="page" id="pageLang">
 <div data-role="header" data-theme="b" data-position="fixed">
-<!--<a href="#pageOpening" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>-->
 <h1>Lords Of Maths</h1>
-<!--<a href="#pagePlayers" data-role="button" data-icon="arrow-r" data-theme="b" data-iconpos="right" style="width:20%">&nbsp;</a>-->
 </div>
 <div data-role="content" id="pageLangContent" align="center">
 <h1 align="center">Lords Of Maths<br>The Awakening</h1>
-<h2 align="center">23rd April International Children Festival Special Edition</h2>
 <br>
 <h2>Choose Your Language</h2>
 <img src="images/de.png" onClick="chooseLang('de');">
@@ -448,31 +465,26 @@ tx.executeSql("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePla
 <h3>You can change it later from game settings.</h3>
 </div>
 </div>
-
 <div data-role="page" id="pageIntro"  style=" background-color:#999;">
 <div data-role="content" id="pageIntroContent" align="center" style=" background-color:#999; padding:0px; margin:0px; vertical-align:middle;">
 <table style="margin-top:50px;">
-<tr><td align="center">
-<img src="splash.png" width="282" height="118" align="middle" >
+<tr><td>
+<img src="splash.png" width="282" height="118" >
 </td>
 </tr>
-<tr><td><h2 align="center">23rd April International Children Festival Special Edition</h2></td></tr>
-<tr><td height="50" align="right" style="font-size:18px;">powered by</td></tr>
+<tr><td height="50" align="center" style="font-size:18px;">powered by</td></tr>
 <tr><td>
 <img src="logo_tayangu.png" width="74" height="66" align="right" >
 </td></tr>
 </table>
 </div>
 </div>
- 
 <div data-role="page" id="pagePlayers">
 <div data-role="header" data-theme="b" data-position="fixed">
-<!--<a href="#pageLang" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>-->
 <h1>Lords Of Maths</h1>
 </div>
 <div data-role="content" id="pagePlayersContent">
-<h3 align="center">Lords Of Maths<br>The Awakening</h3>
-<h4 align="center">23rd April International Children Festival Special Edition</h4>
+<h1 align="center">Lords Of Maths<br>The Awakening</h1>
 <h2 id="playersH">Players :</h2>
 <div id="pagePlayersList">
 </div>
@@ -486,36 +498,25 @@ tx.executeSql("UPDATE players SET "+mode+" = '" + v + "' WHERE id = '" + gamePla
 <a href="#pageGameInfo" id="pageGameInfoLink" onClick="" data-icon="info" data-theme="b" data-iconpos="left" data-inline="true">&nbsp;</a>
 </div>
 </div>
-
 <div data-role="page" id="pageGameInfo">
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
 </div>
-<div data-role="content" id="pageGameInfoContent" align="center" style="margin-left:-15px;">
+<div data-role="content" id="pageGameInfoContent" align="center" style="margin-left:-15px">
 <table width="100%" align="center">
 <tr><td align="center"><img src="splash.png" width="282" height="118" ></td></tr>
-<tr><td><h2 align="center">23rd April International Children Festival Special Edition</h2></td></tr>
 <tr><td height="50"></td></tr>
 <tr><td align="center"><a href="//www.lordsofmaths.com" target="_blank" style="text-decoration:none">www.lordsofmaths.com</a></td></tr>
 <tr><td height="50"></td></tr>
 <tr><td align="center"><a href="mailto:info@lordsofmaths.com" target="_blank" style="text-decoration:none">info@lordsofmaths.com</a></td></tr>
-<tr><td align="center"><a href="mailto:theawakening@lordsofmaths.com" target="_blank" style="text-decoration:none">theawakening@lordsofmaths.com</a></td></tr>
 <tr><td height="50"></td></tr>
 <tr><td height="50" align="center" style="font-size:18px;">powered by</td></tr>
 <tr><td align="center"><img src="logo_tayangu.png" width="74" height="66"></td></tr>
 <tr><td align="center"><a href="//www.tayangu.com.tr" target="_blank" style="text-decoration:none">www.tayangu.com.tr</a></td></tr>
-<tr><td height="50"></td></tr>
-<tr><td align="center"><a href="https://en.wikipedia.org/wiki/Children%27s_Day#Turkey" target="_blank">23rd April International Children Festival wikipedia page</a></td></tr>
 </table>
-<div id="pageGameInfo23April" class="ui-corner-all">
-<h4>Turkey</h4>
-The Grand National Assembly of Turkey was established on 1920, April 23, and to commemorate the event, April 23 was proclaimed a national holiday in 1921. Since 1927[23] it has also become Children's Day (Turkish: Ulusal Egemenlik ve Çocuk Bayramı, literally "The Holiday of National Sovereignty and Children"), an official holiday dedicated to the children of Turkey and (from 1979 on) the world.<br><br>
-In addition to holding many domestic celebratory events such as stadium performances, Turkey also houses <a href="http://www.trt23nisan.com/en/" target="_blank">TRT International April 23 Children's Festival</a>, where groups of children from other countries are invited to participate in the festivities while staying at Turkish families' homes. In some countries, Festivals are celebrated with children's of different ethnicities.
 </div>
 </div>
-</div>
-
 <div data-role="page" id="pageGameSettings">
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
@@ -543,7 +544,6 @@ In addition to holding many domestic celebratory events such as stadium performa
 </select>
 </div>
 </div>
-
 <div data-role="page" id="pagePlayerRename">
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
@@ -564,7 +564,6 @@ In addition to holding many domestic celebratory events such as stadium performa
 </form>
 </div>
 </div>
-
 <div data-role="page" id="pagePlayerDelete">
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
@@ -584,7 +583,6 @@ In addition to holding many domestic celebratory events such as stadium performa
 </form>
 </div>
 </div>
-
 <div data-role="page" id="pagePlayerCreate">
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
@@ -603,15 +601,13 @@ In addition to holding many domestic celebratory events such as stadium performa
 </form>
 </div>
 </div>
-
 <div data-role="page" id="pageGameModes">
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pagePlayers" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
 </div>
 <div data-role="content" id="pageGameModesContent">
-<h3 align="center">Lords Of Maths<br>The Awakening</h3>
-<h4 align="center">23rd April International Children Festival Special Edition</h4>
+<h1 align="center">Lords Of Maths<br>The Awakening</h1>
 <a href="#" id="pageGameModesFreeMode" onClick="gameModeSelect(0);" data-role="button" data-theme="d" class="ui-disabled">Free Mode</a>
 <a href="#" id="pageGameModesFindOut" onClick="gameModeSelect(1);" data-role="button" data-theme="d" class="ui-disabled">Find-Out</a>
 <a href="#" id="pageGameModesMathris" onClick="gameModeSelect(2);" data-role="button" data-theme="d" class="ui-disabled">Mathris</a>
@@ -622,16 +618,13 @@ In addition to holding many domestic celebratory events such as stadium performa
 <a href="#pageGameModesInfo" id="gameInfo" onClick="" data-icon="info" data-theme="b" data-iconpos="left" style="width:50px">&nbsp;</a>
 </div>
 </div>
-
 <div data-role="page" id="pageGameModesInfo">
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
 </div>
 <div data-role="content" id="pageInfoContent" align="center">
-<h3 align="center">Lords Of Maths<br>The Awakening</h3>
-<h4 align="center">23rd April International Children Festival Special Edition</h4>
-<div class="pageGameModesInfoExplanation ui-corner-all">
+<div class="pageGameModesInfoExplanation ui-corner-all"> 
 <table width="100%" align="center">
 <tr>
 <td></td>
@@ -643,19 +636,19 @@ In addition to holding many domestic celebratory events such as stadium performa
 </tr>
 <tr>
 <td>Find Out</td>
-<td class="td1">23</td>
+<td class="td1">100</td>
 </tr>
 <tr>
 <td>Mathris</td>
-<td class="td1">23</td>
+<td class="td1">100</td>
 </tr>
 <tr>
 <td>Mathrix</td>
-<td class="td1">23</td>
+<td class="td1">100</td>
 </tr>
 <tr>
 <td>Shoot Out</td>
-<td class="td1">23</td>
+<td class="td1">100</td>
 </tr>
 </table>
 </div>
@@ -777,7 +770,6 @@ In addition to holding many domestic celebratory events such as stadium performa
 </div>
 </div>
 </div>
-
 <div data-role="page" id="pageFreeModeLevel">
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
@@ -843,7 +835,6 @@ X ? X ? X ? X ? X ? X</span></label>
 <a href="#" onClick="playFreeMode(0);" data-role="button" data-theme="d" id="freeModePlayButton"><span id="playSpan">Play</span></a>
 </div> 
 </div>
-
 <div data-role="page" id="pageFreeModePlay" >
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageFreeModeLevel" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
@@ -874,7 +865,6 @@ Question</div>
 <a href="#" id="playFreeModeRight" onClick="" data-icon="check" data-theme="b" data-iconpos="right" style="width:48%"><span id="playFreeModeTrueSpan">Doğru</span></a>
 </div>
 </div>
-
 <div data-role="page" id="pageFindOutLevel">
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
@@ -898,7 +888,6 @@ Question</div>
 </div>
 </div>
 </div>
-
 <div data-role="page" id="pageFindOutPlay">
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageFindOutLevel" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
@@ -940,7 +929,6 @@ Question</div>
 </tr></table>
 </div>
 </div>
-
 <div data-role="page" id="pageMathrisLevel">
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
@@ -964,7 +952,6 @@ Question</div>
 </div>
 </div>
 </div>
- 
 <div data-role="page" id="pageMathrisPlay">
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageMathrisLevel" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
@@ -991,8 +978,8 @@ Question</div>
 <a href="#pageMathrisLevel" data-role="button" data-theme="d"><span id="popupMathrisPlayUnSucSpan">OK</span></a>
 </div>
 </div>
- 
-<div data-role="page" id="pageMathrixLevel"><div data-role="header" data-theme="b" data-position="fixed">
+<div data-role="page" id="pageMathrixLevel">
+<div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
 </div>
@@ -1014,7 +1001,6 @@ Question</div>
 </div>
 </div>
 </div>
- 
 <div data-role="page" id="pageMathrixPlay">
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageMathrixLevel" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
@@ -1042,7 +1028,6 @@ Question</div>
 <a href="#pageMathrixLevel" data-role="button" data-theme="d"><span id="popupMathrixPlayUnSucSpan">OK</span></a>
 </div>
 </div>
- 
 <div data-role="page" id="pageShootOutLevel">
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageGameModes" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
@@ -1068,6 +1053,7 @@ Question</div>
 </div>
 
 <div data-role="page" id="pageShootOutPlay">
+
 <div data-role="header" data-theme="b" data-position="fixed">
 <a href="#pageShootOutLevel" data-role="button" data-icon="arrow-l" data-theme="b" data-iconpos="left" style="width:20%">&nbsp;</a>
 <h1>Lords Of Maths</h1>
@@ -1084,7 +1070,6 @@ Question</div>
 <div id="pageShootOutPlayQuestions" style="margin:0px; padding:0px 0px; height:300px;">
 </div>
 </div>
-
 <div align="center" data-role="popup" data-theme="b" id="popupShootOutPlaySuc" class="ui-content">
 <h1 id="popupShootOutPlaySucH1">CONGRATULATIONS</h1>
 <h3 id="popupShootOutPlaySucH3">You completed successfuly.</h3>
@@ -1098,6 +1083,5 @@ Question</div>
 <a href="#pageShootOutLevel" data-role="button" data-theme="d"><span id="popupShootOutPlayUnSucSpan">OK</span></a>
 </div>
 </div>
-
 </body>
 </html>
