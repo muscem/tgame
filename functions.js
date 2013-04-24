@@ -1607,29 +1607,16 @@ $.mobile.changePage( $("#pageShootOutPlay") , { transition: "none"} );
 $("#pageShootOutPlay").live("pageshow", function(event, data){
 playShootOutRearrange();
 });
-$("#pageShootOutPlay").live("pagebeforeshow", function(event, data){
-pageShootOutPlayLanguageChange();
-$("#pageShootOutPlayQuestions").empty();
-$("#pageShootOutPlaySlider").val("0");
-$("#pageShootOutPlaySlider").slider('refresh');
-$("#pageShootOutPlayTimeSpan").removeClass("time1");
-$("#pageShootOutPlayTimeSpan").removeClass("time2");
-$("#pageShootOutPlayTimeSpan").addClass("time1");
-gameLevelsConfig();
-gameDifficulty=lastSelDif[gamePlayerID][4];
-var iRand=Math.floor(Math.random()*gameDigit.length);
+function questionShowShootOut(iRand, iQuestion){
 var result=[];
 var result2;
 var result3 ="";
-var qCount;
-qCount=100;
-if(gameDifficulty==0) qCount=20;
-if(gameDifficulty==1) qCount=50;
+if (iQuestion==0){
+}
 var point;
 point=1;
 if(gameDifficulty==0) point=5;
 if(gameDifficulty==1) point=2;
-for(iQuestion=0;iQuestion<qCount;iQuestion++){
 result =creatEquation(iRand); 
 result2=createResult(result[1]);
 var eqSign=[];
@@ -1666,10 +1653,48 @@ eqSign[1]="&le;";
 eqRes=(-1)*point;
 if(result[1]<=result2) eqRes=point;
 }
-result[0]='<div id="pageShootOutPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageShootOutQuestion ui-bar2 shadow" style="position:absolute; clear:none; float:none; width:auto;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\')"></td><td><table align="center" border="0"><tbody><tr>'+pointToComma(result[0])+'<td>'+eqSign[1]+'</td><td>'+pointToComma(result2)+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+eqRes+'\')"></td></tr></tbody></table></div>';
+result[0]='<div id="pageShootOutPlayQuestion'+iQuestion+'" class="ui-bar ui-bar-d ui-corner-all pageShootOutQuestion ui-bar2 shadow" style="position:absolute; clear:none; float:none; width:auto;"><table align="center" border="0"><tbody><tr><td><span id="id'+iQuestion+'"></span><img src="images/delete.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+(eqRes*(-1))+'\',\''+iRand+'\')"></td><td><table align="center" border="0"><tbody><tr>'+pointToComma(result[0])+'<td>'+eqSign[1]+'</td><td>'+pointToComma(result2)+'</td></tr></tbody></table></td><td align="right"><img src="images/check.png" onclick="playShootOutCal(\''+iQuestion+'\',\''+eqRes+'\',\''+iRand+'\')"></td></tr></tbody></table></div>';
 result3=$("#pageShootOutPlayQuestions").html()+result[0];
 $("#pageShootOutPlayQuestions").append(result[0]).trigger("create");
+var w0, w1, w2, w3, w4, w5, h0, h1, h2, t1, t2;
+w0=$(window).width();
+w1=$("#pageShootOutPlayQuestions").width();
+w2=$("#pageShootOutPlayQuestion"+iQuestion).width();
+w3=w1*100/w0;
+w4=w2*100/w0
+w2=($("#pageShootOutPlayQuestions").offset().left+(Math.random()*(100-((w1*100)/w0)))).toString();
+w5=100-w3+Math.random()*(100-2*(100-w3)-w4);
+if(w2<w1){
+$("#pageShootOutPlayQuestion"+iQuestion).css("left",w5+"%");
 }
+else{
+$("#pageShootOutPlayQuestion"+iQuestion).css("left","0px");
+}
+h0=$(window).height();
+t1=$("#pageShootOutPlayQuestions").offset().top;
+h1=h0-t1-h0*3/100;
+h2=$("#pageShootOutPlayQuestion"+iQuestion).height();
+t2=(h0/100)*(t1*100/h0+Math.random()*(100-t1*100/h0-3-h2*100/h0));
+$("#pageShootOutPlayQuestions").css("height",h1+"px");
+$("#pageShootOutPlayQuestion"+iQuestion).css("top",t2+"px");
+$("#pageShootOutPlayQuestion"+iQuestion).trigger("create");
+}
+var shootOutQuestion;
+$("#pageShootOutPlay").live("pagebeforeshow", function(event, data){
+pageShootOutPlayLanguageChange();
+$("#pageShootOutPlayQuestions").empty();
+$("#pageShootOutPlaySlider").val("0");
+$("#pageShootOutPlaySlider").slider('refresh');
+$("#pageShootOutPlayTimeSpan").removeClass("time1");
+$("#pageShootOutPlayTimeSpan").removeClass("time2");
+$("#pageShootOutPlayTimeSpan").addClass("time1");
+gameLevelsConfig();
+gameDifficulty=lastSelDif[gamePlayerID][4];
+var iRand=Math.floor(Math.random()*gameDigit.length);
+for(iQuestion=0;iQuestion<10;iQuestion++){
+questionShowShootOut(iRand, iQuestion);
+}
+shootOutQuestion=10;
 var time=120;
 if(gameDifficulty==1) time=225;
 if(gameDifficulty==2) time=300;
@@ -1704,7 +1729,7 @@ $("#popupShootOutPlayUnSucH1").html(popupShootOutPlayUnSucH1[langID]);
 $("#popupShootOutPlayUnSucH3").html(popupShootOutPlayUnSucH3[langID]);
 $("#popupShootOutPlayUnSucSpan").html(popupShootOutPlayUnSucSpan[langID]);
 }
-function playShootOutCal(qNum, point){
+function playShootOutCal(qNum, point, iRand){
 $('#pageShootOutPlayQuestion'+qNum).addClass("ui-disabled");
 $("#pageShootOutPlayQuestion"+qNum).css("visibility","hidden");
 var points;
@@ -1727,6 +1752,14 @@ n++;
 $('#pageShootOutPlayQuestions').find(".ui-disabled").each(function(){
 n2++;
 })
+var qCount;
+qCount=100;
+if(gameDifficulty==0) qCount=20;
+if(gameDifficulty==1) qCount=50;
+if(shootOutQuestion<qCount){
+questionShowShootOut(iRand, shootOutQuestion);
+shootOutQuestion++;
+}
 if(n2>=n){
 playShootOutFinish();
 }
@@ -1735,7 +1768,7 @@ function playShootOutFinish(){
 var points, gameDifficulty, scoreForLevelUp;
 points=Number($("#pageShootOutPlaySlider").val());
 gameDifficulty=lastSelDif[gamePlayerID][4];
-scoreForLevelUp=90;		//gameDifficulty=2
+scoreForLevelUp=90;
 if (gameDifficulty==0) scoreForLevelUp=50;
 if (gameDifficulty==1) scoreForLevelUp=75;
 if(points>=scoreForLevelUp){
@@ -1749,7 +1782,9 @@ else{
 $("#popupShootOutPlayUnSuc").popup("open");
 clearInterval(gameCountDown);
 }
-}
+}$("#pageShootOutPlay").live("orientationchange", function(event, data){
+playShootOutRearrange();
+});
 function gamesModesLevels(mode1, mode2){
 var maxLevel;
 if(mode1==1){
