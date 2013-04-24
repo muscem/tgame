@@ -2,7 +2,7 @@
 <widget xmlns="http://www.w3.org/ns/widgets" 
 	  xmlns:gap="http://phonegap.com/ns/1.0" 
 	  id="com.lordsofmathstheawakening23rdAprilSE.app" 
-	  version="1" 
+	  version="2014" 
 	  versionCode="1">
 <name>LOM The Awakening 23rd SE</name> 
 <description>Lords of maths the awakening is a game based on mathematics. This is 23rd April children festival special edition.</description> 
