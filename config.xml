@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <widget xmlns="http://www.w3.org/ns/widgets" 
 	  xmlns:gap="http://phonegap.com/ns/1.0" 
-	  id="com.lordsofmathstheawakening.app" 
+	  id="com.lordsofmathstheawakening23rdAprilSE.app" 
 	  version="1" 
 	  versionCode="2015">
-<name>LOM The Awakening</name> 
-<description>Lords of maths the awakening is a game based on mathematics.</description> 
+<name>LOM The Awakening 23rd SE</name> 
+<description>Lords of maths the awakening is a game based on mathematics. This is 23rd April children festival special edition.</description> 
 <author href="http://www.lordsofmaths.com" email="info@lordsofmaths.com">lordsofmaths</author>
 <preference name="permissions" value="none"/>
 <icon src="icon.png" />
