@@ -7,6 +7,7 @@
 <name>LOM The Awakening</name> 
 <description>Lords of maths the awakening is a game based on mathematics.</description> 
 <author href="http://www.lordsofmaths.com" email="info@lordsofmaths.com">lordsofmaths</author>
+<preference name="permissions" value="none"/>
 <icon src="icon.png" />
 <icon src="images/icons/android/ldpi.png" gap:platform="android" gap:density="ldpi" />
 <icon src="images/icons/android/mdpi.png" gap:platform="android" gap:density="mdpi" />
